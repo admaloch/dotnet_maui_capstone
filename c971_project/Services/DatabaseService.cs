@@ -31,7 +31,7 @@ namespace c971_project.Services
             }
             else
             {
-                Debug.WriteLine("Students already exists. Skipping seeding.");
+                Debug.WriteLine("Students already exist. Skipping seeding.");
             }
         }
 
