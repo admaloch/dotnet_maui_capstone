@@ -1,0 +1,58 @@
+  # Build results
+bin/
+obj/
+[Bb]uild/
+[Bb]uilds/
+
+# Visual Studio cache/options directory
+.vs/
+
+# Rider / JetBrains IDE
+.idea/
+
+# User-specific files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Mono Auto Generated Files
+mono_crash.*
+
+# NuGet Packages
+*.nupkg
+# The packages folder can be ignored because of Package Restore
+**/packages/*
+# except build/, which is used as an MSBuild target.
+!**/packages/build/
+# Uncomment if necessary
+#!**/packages/repositories.config
+
+# Visual Studio for Mac cache
+*.pidb
+*.userprefs
+
+# .NET MAUI related
+Platforms/*/bin/
+Platforms/*/obj/
+Resources/Raw/*
+wwwroot/
+
+# Logs
+*.log
+
+# Temporary files
+~$*
+*.tmp
+*.temp
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# SQLite database files (optional, keep if you want them tracked)
+*.db
+*.db-wal
+*.db-shm
+
+
