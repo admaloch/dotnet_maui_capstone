@@ -13,6 +13,7 @@ namespace c971_project.Services
         public DatabaseService()
         {
             var dbPath = Path.Combine(FileSystem.AppDataDirectory, "app.db");
+
             _connection = new SQLiteConnection(dbPath);
 
             // Create tables
@@ -32,16 +33,21 @@ namespace c971_project.Services
             else
             {
                 Debug.WriteLine("Students already exist. Skipping seeding.");
+                Console.WriteLine($"Database path: {dbPath}");
+
             }
         }
+
+     
 
         private void SeedData()
         {
             // 1. Student
             var student = new Student
             {
-                Name = "John Doe",
-                Email = "johndoe@example.com",
+                Name = "Brock Hensen",
+                StudentId = "03829483938",
+                Email = "brockhensen05@fakeemail.com",
                 Status = "Currently Enrolled",
                 Major = "Computer Science"
             };
@@ -49,8 +55,8 @@ namespace c971_project.Services
             Debug.WriteLine($"Inserted student: {student.Name}, ID: {student.StudentId}");
 
             // 2. Terms
-            var term1 = new Term { StudentId = student.StudentId, TermNum = 1, StartDate = DateTime.Now.AddMonths(-6), EndDate = DateTime.Now };
-            var term2 = new Term { StudentId = student.StudentId, TermNum = 2, StartDate = DateTime.Now, EndDate = DateTime.Now.AddMonths(6) };
+            var term1 = new Term {  TermNum = 1, StartDate = DateTime.Now.AddMonths(-6), EndDate = DateTime.Now };
+            var term2 = new Term {  TermNum = 2, StartDate = DateTime.Now, EndDate = DateTime.Now.AddMonths(6) };
             _connection.Insert(term1);
             _connection.Insert(term2);
             Debug.WriteLine($"Inserted terms: {term1.TermId}, {term2.TermId}");
@@ -104,6 +110,22 @@ namespace c971_project.Services
         public List<Student> GetStudents()
         {
             return _connection.Table<Student>().ToList();
+        }
+
+
+
+        private void DeleteDatabase()
+        {
+            var dbPath = Path.Combine(FileSystem.AppDataDirectory, "app.db");
+            if (File.Exists(dbPath))
+            {
+                File.Delete(dbPath);
+                Debug.WriteLine("Database deleted.");
+            }
+            else
+            {
+                Debug.WriteLine("No database file found to delete.");
+            }
         }
 
         public SQLiteConnection Connection => _connection;

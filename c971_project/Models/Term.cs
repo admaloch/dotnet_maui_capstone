@@ -10,7 +10,7 @@ namespace c971_project.Models
         public int TermId { get; set; }
 
         [Indexed]
-        public int StudentId { get; set; }  // Foreign key to Student
+        public string StudentId { get; set; } = string.Empty;  // Foreign key to Student
         public string Name { get; set; } = string.Empty;
         public int TermNum { get; set; } = 1; // Default term number
         public DateTime StartDate { get; set; }

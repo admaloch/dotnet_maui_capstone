@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="c971_project.Views.HomePage"
+             Title="Student Portal">
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="20" Padding="20">
+
+            <!-- Header -->
+            <Label Text="Student Information" 
+                   FontSize="24" 
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"
+                   TextColor="#2C3E50"/>
+
+            <!-- Student Info Card -->
+            <Frame CornerRadius="12" 
+                   BackgroundColor="#FFFFFF"
+                   BorderColor="#DDDDDD"
+                   Padding="20"
+                   HasShadow="True">
+
+                <VerticalStackLayout Spacing="12">
+
+                    <!-- Student ID -->
+                    <HorizontalStackLayout Spacing="10">
+                        <Label Text="Student ID:" 
+                               FontSize="16"
+                               FontAttributes="Bold"
+                               TextColor="#2C3E50"
+                               WidthRequest="100"/>
+                        <Label Text="{Binding CurrentStudent.StudentId}" 
+                               FontSize="16"
+                               TextColor="#34495E"/>
+                    </HorizontalStackLayout>
+
+                    <!-- Name -->
+                    <HorizontalStackLayout Spacing="10">
+                        <Label Text="Name:" 
+                               FontSize="16"
+                               FontAttributes="Bold"
+                               TextColor="#2C3E50"
+                               WidthRequest="100"/>
+                        <Label Text="{Binding CurrentStudent.Name}" 
+                               FontSize="16"
+                               TextColor="#34495E"/>
+                    </HorizontalStackLayout>
+
+                    <!-- Email -->
+                    <HorizontalStackLayout Spacing="10">
+                        <Label Text="Email:" 
+                               FontSize="16"
+                               FontAttributes="Bold"
+                               TextColor="#2C3E50"
+                               WidthRequest="100"/>
+                        <Label Text="{Binding CurrentStudent.Email}" 
+                               FontSize="16"
+                               TextColor="#34495E"/>
+                    </HorizontalStackLayout>
+
+                    <!-- Status -->
+                    <HorizontalStackLayout Spacing="10">
+                        <Label Text="Status:" 
+                               FontSize="16"
+                               FontAttributes="Bold"
+                               TextColor="#2C3E50"
+                               WidthRequest="100"/>
+                        <Label Text="{Binding CurrentStudent.Status}" 
+                               FontSize="16"
+                               TextColor="#34495E"/>
+                    </HorizontalStackLayout>
+
+                    <!-- Major -->
+                    <HorizontalStackLayout Spacing="10">
+                        <Label Text="Major:" 
+                               FontSize="16"
+                               FontAttributes="Bold"
+                               TextColor="#2C3E50"
+                               WidthRequest="100"/>
+                        <Label Text="{Binding CurrentStudent.Major}" 
+                               FontSize="16"
+                               TextColor="#34495E"/>
+                    </HorizontalStackLayout>
+
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Terms Section Header -->
+            <Label Text="Academic Terms" 
+                   FontSize="20" 
+                   FontAttributes="Bold"
+                   TextColor="#2C3E50"
+                   Margin="0,20,0,10"/>
+
+            <!-- Terms List (We'll add this next) -->
+            <Label Text="No terms available yet. Add your first term to get started!"
+                   FontSize="14"
+                   TextColor="#7F8C8D"
+                   HorizontalOptions="Center"
+                   HorizontalTextAlignment="Center"/>
+
+            <!-- Add Term Button -->
+            <Button Text="Add New Term" 
+                    BackgroundColor="#3498DB"
+                    TextColor="White"
+                    CornerRadius="8"
+                    HeightRequest="50"
+                    FontSize="16"
+                    Margin="0,20,0,0"/>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

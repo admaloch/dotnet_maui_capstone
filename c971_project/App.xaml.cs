@@ -1,21 +1,15 @@
-﻿using c971_project.Services;
+﻿using c971_project.Views;
 
 namespace c971_project
 {
     public partial class App : Application
     {
-        // Expose the database service globally
-        public static DatabaseService Database { get; private set; } = null!;
-
-        public App()
+        public App(HomePage homePage) // Injected -- HomePage is provided by the DI container
         {
             InitializeComponent();
 
-            // Initialize the database once at startup
-            Database = new DatabaseService();
-
-            MainPage = new AppShell();
-
+            MainPage = new NavigationPage(homePage); // Set the main page to the injected HomePage -- wrapped in a NavigationPage for navigation support
         }
+
     }
 }
