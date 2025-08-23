@@ -107,13 +107,6 @@ namespace c971_project.Services
             _connection.Insert(note1);
             Debug.WriteLine($"Inserted note: {note1.NoteId}");
         }
-        public List<Student> GetStudents()
-        {
-            return _connection.Table<Student>().ToList();
-        }
-
-
-
         private void DeleteDatabase()
         {
             var dbPath = Path.Combine(FileSystem.AppDataDirectory, "app.db");
@@ -127,7 +120,29 @@ namespace c971_project.Services
                 Debug.WriteLine("No database file found to delete.");
             }
         }
+        public async Task<List<Student>> GetStudentsAsync()
+        {
+            return await Task.Run(() => _connection.Table<Student>().ToList());
+        }
 
+        public async Task<List<Term>> GetTermsByStudentIdAsync(string studentId)
+        {
+            return await Task.Run(() =>
+                _connection.Table<Term>()
+                          .Where(t => t.StudentId == studentId)
+                          .ToList()
+            );
+        }
+
+        public async Task<List<Course>> GetCoursesAsync()
+        {
+            return await Task.Run(() => _connection.Table<Course>().ToList());
+        }
+        // Keep your synchronous methods too for now
+        public List<Student> GetStudents()
+        {
+            return _connection.Table<Student>().ToList();
+        }
         public SQLiteConnection Connection => _connection;
     }
 }

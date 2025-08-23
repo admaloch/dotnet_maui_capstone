@@ -94,11 +94,40 @@
                    Margin="0,20,0,10"/>
 
             <!-- Terms List (We'll add this next) -->
-            <Label Text="No terms available yet. Add your first term to get started!"
-                   FontSize="14"
-                   TextColor="#7F8C8D"
-                   HorizontalOptions="Center"
-                   HorizontalTextAlignment="Center"/>
+            <CollectionView ItemsSource="{Binding Terms}"
+                EmptyView="No terms available yet. Add your first term to get started!"
+                SelectionMode="Single">
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame CornerRadius="10" 
+                   BackgroundColor="#F8F9FA"
+                   BorderColor="#E9ECEF"
+                   Padding="15"
+                   Margin="0,5">
+
+                            <VerticalStackLayout Spacing="8">
+                                <Label Text="{Binding Name}" 
+                           FontSize="16" 
+                           FontAttributes="Bold"
+                           TextColor="#2C3E50"/>
+
+                                <Label Text="{Binding TermNum, StringFormat='Term {0}'}" 
+                           FontSize="14"
+                           TextColor="#7F8C8D"/>
+
+                                <Label Text="{Binding StartDate, StringFormat='Start: {0:MMM dd, yyyy}'}" 
+                           FontSize="12"
+                           TextColor="#7F8C8D"/>
+
+                                <Label Text="{Binding EndDate, StringFormat='End: {0:MMM dd, yyyy}'}" 
+                           FontSize="12"
+                           TextColor="#7F8C8D"/>
+                            </VerticalStackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
 
             <!-- Add Term Button -->
             <Button Text="Add New Term" 
