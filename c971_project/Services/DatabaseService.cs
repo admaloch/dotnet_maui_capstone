@@ -2,6 +2,7 @@
 using c971_project.Models;
 using System.IO;
 using System.Diagnostics;
+using System.ComponentModel;
 
 
 namespace c971_project.Services
@@ -181,6 +182,17 @@ namespace c971_project.Services
         {
             return _connection.Table<Student>().ToList();
         }
+
+        public async Task<int> InsertStudentAsync(Student student)
+        {
+            return await Task.Run(() => _connection.Insert(student));
+        }
+
+        public async Task<int> UpdateStudentAsync(Student student)
+        {
+            return await Task.Run(() => _connection.Update(student));
+        }
+
         public SQLiteConnection Connection => _connection;
     }
 }

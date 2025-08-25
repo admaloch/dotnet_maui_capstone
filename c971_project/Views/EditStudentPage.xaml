@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="c971_project.Views.EditStudentPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Edit Student">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="20">
+
+            <!--  Header  -->
+            <Label
+                Margin="0,20,0,0"
+                HorizontalOptions="Center"
+                Style="{StaticResource HeaderLabel}"
+                Text="Edit Student Information" />
+
+            <!--  Student Info Form  -->
+            <Frame Style="{StaticResource CardFrame}">
+                <VerticalStackLayout Spacing="15">
+
+                    <!--  Student ID  -->
+                    <VerticalStackLayout Spacing="5">
+                        <Label Style="{StaticResource FieldLabel}" Text="Student ID" />
+                        <Entry
+                            Placeholder="Enter student ID"
+                            Style="{StaticResource InputField}"
+                            Text="{Binding Student.StudentId}" />
+                    </VerticalStackLayout>
+
+                    <!--  Name  -->
+                    <VerticalStackLayout Spacing="5">
+                        <Label Style="{StaticResource FieldLabel}" Text="Full Name" />
+                        <Entry
+                            Placeholder="Enter full name"
+                            Style="{StaticResource InputField}"
+                            Text="{Binding Student.Name}" />
+                    </VerticalStackLayout>
+
+                    <!--  Email  -->
+                    <VerticalStackLayout Spacing="5">
+                        <Label Style="{StaticResource FieldLabel}" Text="Email" />
+                        <Entry
+                            Keyboard="Email"
+                            Placeholder="Enter email address"
+                            Style="{StaticResource InputField}"
+                            Text="{Binding Student.Email}" />
+                    </VerticalStackLayout>
+
+                    <!--  Status  -->
+                    <VerticalStackLayout Spacing="5">
+                        <Label Style="{StaticResource FieldLabel}" Text="Status" />
+                        <Picker
+                            Title="Select status"
+                            ItemsSource="{Binding StatusOptions}"
+                            SelectedItem="{Binding Student.Status}"
+                            Style="{StaticResource InputField}" />
+                    </VerticalStackLayout>
+
+                    <!--  Major  -->
+                    <VerticalStackLayout Spacing="5">
+                        <Label Style="{StaticResource FieldLabel}" Text="Major" />
+                        <Entry
+                            Placeholder="Enter major"
+                            Style="{StaticResource InputField}"
+                            Text="{Binding Student.Major}" />
+                    </VerticalStackLayout>
+
+                </VerticalStackLayout>
+            </Frame>
+
+            <!--  Action Buttons  -->
+            <HorizontalStackLayout HorizontalOptions="Center" Spacing="15">
+                <Button
+                    Clicked="OnCancelClicked"
+                    Style="{StaticResource SecondaryButton}"
+                    Text="Cancel" />
+
+                <Button
+                    Clicked="OnSaveClicked"
+                    Style="{StaticResource PrimaryButton}"
+                    Text="Save Changes" />
+            </HorizontalStackLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

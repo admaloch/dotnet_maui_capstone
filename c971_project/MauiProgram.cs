@@ -23,10 +23,8 @@ namespace c971_project
 
             // Pages - Transient (new instance each time)
             builder.Services.AddTransient<HomePage>();
-            // Add these as you create them:
-            // builder.Services.AddTransient<TermDetailPage>();
-            // builder.Services.AddTransient<AddEditTermPage>(); 
-            // builder.Services.AddTransient<CourseDetailPage>();
+            builder.Services.AddTransient<EditStudentPage>();
+
 
 #if DEBUG
             builder.Logging.AddDebug();

@@ -119,9 +119,8 @@ public partial class HomePage : ContentPage, INotifyPropertyChanged
         Debug.WriteLine("Add Term clicked");
         // await Navigation.PushAsync(new AddEditTermPage(_databaseService));
     }
-    private void OnEditStudentClicked(object sender, EventArgs e)
+    private async void OnEditStudentClicked(object sender, EventArgs e)
     {
-        Debug.WriteLine("Add Term clicked");
-        // await Navigation.PushAsync(new AddEditTermPage(_databaseService));
+        await Navigation.PushAsync(new EditStudentPage(_databaseService, CurrentStudent));
     }
 }

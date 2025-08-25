@@ -1,22 +1,21 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
-<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 
     <ResourceDictionary.MergedDictionaries>
-        <!-- FIXED PATH -->
+        <!--  FIXED PATH  -->
         <ResourceDictionary Source="/Resources/Styles/Colors.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
-    <!-- Default Label Style -->
+    <!--  Default Label Style  -->
     <Style TargetType="Label">
         <Setter Property="TextColor" Value="{StaticResource DarkBlue}" />
-        <!-- FIXED: Use Color, not Brush -->
+        <!--  FIXED: Use Color, not Brush  -->
         <Setter Property="FontFamily" Value="Arial" />
         <Setter Property="FontSize" Value="16" />
     </Style>
 
-    <!-- Header Label Style -->
-    <Style TargetType="Label" x:Key="HeaderLabel">
+    <!--  Header Label Style  -->
+    <Style x:Key="HeaderLabel" TargetType="Label">
         <Setter Property="TextColor" Value="{StaticResource Cream}" />
         <Setter Property="FontSize" Value="24" />
         <Setter Property="FontAttributes" Value="Bold" />
@@ -24,35 +23,35 @@
         <Setter Property="BackgroundColor" Value="{StaticResource Charcoal}" />
         <Setter Property="Padding" Value="20,10" />
         <Setter Property="Margin" Value="-20,-20,-20,20" />
-        <!-- Extend to edges -->
+        <!--  Extend to edges  -->
     </Style>
 
-    <!-- Button Style -->
+    <!--  Button Style  -->
     <Style TargetType="Button">
         <Setter Property="BackgroundColor" Value="{StaticResource DarkBlue}" />
-        <!-- FIXED -->
+        <!--  FIXED  -->
         <Setter Property="TextColor" Value="{StaticResource Cream}" />
-        <!-- FIXED -->
+        <!--  FIXED  -->
         <Setter Property="CornerRadius" Value="12" />
         <Setter Property="Padding" Value="12,8" />
         <Setter Property="FontAttributes" Value="Bold" />
         <Setter Property="FontSize" Value="16" />
     </Style>
 
-    <!-- ContentPage Style -->
+    <!--  ContentPage Style  -->
     <Style TargetType="ContentPage">
         <Setter Property="BackgroundColor" Value="{StaticResource Cream}" />
-        <!-- FIXED -->
+        <!--  FIXED  -->
     </Style>
 
-    <!-- Entry Style -->
+    <!--  Entry Style  -->
     <Style TargetType="Entry">
         <Setter Property="BackgroundColor" Value="{StaticResource White}" />
-        <!-- FIXED -->
+        <!--  FIXED  -->
         <Setter Property="TextColor" Value="{StaticResource DarkBlue}" />
-        <!-- FIXED -->
+        <!--  FIXED  -->
         <Setter Property="PlaceholderColor" Value="{StaticResource MediumGray}" />
-        <!-- FIXED -->
+        <!--  FIXED  -->
         <Setter Property="FontSize" Value="16" />
         <Setter Property="HeightRequest" Value="40" />
         <Setter Property="Margin" Value="0,5" />

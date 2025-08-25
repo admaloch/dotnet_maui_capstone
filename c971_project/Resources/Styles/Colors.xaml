@@ -1,8 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
-<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 
-    <!-- Custom Color Palette -->
+    <!--  Custom Color Palette  -->
     <Color x:Key="DarkBlue">#22223B</Color>
     <Color x:Key="Charcoal">#4A4E69</Color>
     <Color x:Key="MediumGray">#9A8C98</Color>
@@ -11,5 +10,5 @@
     <Color x:Key="White">#FFFFFF</Color>
     <Color x:Key="Black">#000000</Color>
 
-    <!-- REMOVE THE BRUSHES - MAUI uses Colors directly -->
+    <!--  REMOVE THE BRUSHES - MAUI uses Colors directly  -->
 </ResourceDictionary>
