@@ -18,15 +18,19 @@ namespace c971_project
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
-            // Register your services
-            builder.Services.AddSingleton<DatabaseService>();// Singleton for shared database access -- one shared instance for the app
+            // Services - Singleton (shared resources)
+            builder.Services.AddSingleton<DatabaseService>();
 
-            // Register your pages
-            builder.Services.AddTransient<HomePage>(); // Transient for pages -- create a new instance each time
+            // Pages - Transient (new instance each time)
+            builder.Services.AddTransient<HomePage>();
+            // Add these as you create them:
+            // builder.Services.AddTransient<TermDetailPage>();
+            // builder.Services.AddTransient<AddEditTermPage>(); 
+            // builder.Services.AddTransient<CourseDetailPage>();
 
 #if DEBUG
             builder.Logging.AddDebug();
-            #endif
+#endif
 
             return builder.Build();
         }

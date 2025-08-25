@@ -1,67 +1,70 @@
 using c971_project.Services;
 using c971_project.Models;
-using c971_project.Extensions;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
-namespace c971_project.Views
+namespace c971_project.Views;
+
+public partial class HomePage : ContentPage, INotifyPropertyChanged
 {
-    public partial class HomePage : ContentPage, INotifyPropertyChanged
+    private readonly DatabaseService _databaseService;
+    private Student _currentStudent = new Student();
+    private ObservableCollection<Term> _terms = new ObservableCollection<Term>();
+
+    public Student CurrentStudent
     {
-        private readonly DatabaseService _databaseService;
-        private Student _currentStudent;
-        private ObservableCollection<Term> _terms;
-
-        public Student CurrentStudent
+        get => _currentStudent;
+        set
         {
-            get => _currentStudent;
-            set
-            {
-                _currentStudent = value;
-                OnPropertyChanged(nameof(CurrentStudent));
-            }
+            _currentStudent = value;
+            OnPropertyChanged();
         }
+    }
 
-        public ObservableCollection<Term> Terms
+    public ObservableCollection<Term> Terms
+    {
+        get => _terms;
+        set
         {
-            get => _terms;
-            set
-            {
-                _terms = value;
-                OnPropertyChanged(nameof(Terms));
-            }
+            _terms = value;
+            OnPropertyChanged();
         }
+    }
 
-        public HomePage(DatabaseService databaseService)
-        {
-            InitializeComponent();
-            _databaseService = databaseService;
+    public HomePage(DatabaseService databaseService)
+    {
+        InitializeComponent();
+        _databaseService = databaseService;
+        BindingContext = this;
+    }
 
-            // Initialize the terms collection
-            Terms = new ObservableCollection<Term>();
+    protected override async void OnAppearing()
+    {
+        base.OnAppearing();
+        await LoadStudentDataAsync();
+        Debug.WriteLine("HomePage Appearing");
+    }
 
-            // Set binding context
-            BindingContext = this;
-        }
+    protected override void OnDisappearing()
+    {
+        base.OnDisappearing();
+        Debug.WriteLine("HomePage Disappearing");
+    }
 
-        protected override async void OnAppearing()
-        {
-            base.OnAppearing();
-            await LoadStudentDataAsync(); // Refresh data when page appears
-        }
-
-        private async Task LoadStudentDataAsync()
+    private async Task LoadStudentDataAsync()
+    {
+        try
         {
             var students = await _databaseService.GetStudentsAsync();
-            if (students.Any())
+            if (students != null && students.Count > 0)
             {
-                CurrentStudent = students.First();
+                CurrentStudent = students[0];
                 await LoadTermsForCurrentStudentAsync();
             }
             else
             {
-                // Fallback if no student data
                 CurrentStudent = new Student
                 {
                     StudentId = "N/A",
@@ -73,28 +76,52 @@ namespace c971_project.Views
                 Terms.Clear();
             }
         }
-
-        private async Task LoadTermsForCurrentStudentAsync()
+        catch (Exception ex)
         {
-            if (CurrentStudent == null || string.IsNullOrEmpty(CurrentStudent.StudentId))
-                return;
+            Debug.WriteLine($"Error loading student data: {ex.Message}");
+        }
+    }
 
+    private async Task LoadTermsForCurrentStudentAsync()
+    {
+        if (string.IsNullOrEmpty(CurrentStudent?.StudentId))
+            return;
+
+        try
+        {
             var terms = await _databaseService.GetTermsByStudentIdAsync(CurrentStudent.StudentId);
 
-            // Update the observable collection on the UI thread
             Terms.Clear();
-            foreach (var term in terms)
+            if (terms != null)
             {
-                Terms.Add(term);
+                foreach (var term in terms)
+                {
+                    Terms.Add(term);
+                }
             }
         }
-
-        // INotifyPropertyChanged implementation
-        public new event PropertyChangedEventHandler PropertyChanged; //creates "station" that UI controls tune into
-
-        protected virtual void OnPropertyChanged(string propertyName)
+        catch (Exception ex)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            Debug.WriteLine($"Error loading terms: {ex.Message}");
         }
+    }
+
+    // INotifyPropertyChanged implementation
+    public new event PropertyChangedEventHandler? PropertyChanged;
+
+    protected virtual void OnPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null!)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+
+    private  void OnAddTermClicked(object sender, EventArgs e)
+    {
+        Debug.WriteLine("Add Term clicked");
+        // await Navigation.PushAsync(new AddEditTermPage(_databaseService));
+    }
+    private void OnEditStudentClicked(object sender, EventArgs e)
+    {
+        Debug.WriteLine("Add Term clicked");
+        // await Navigation.PushAsync(new AddEditTermPage(_databaseService));
     }
 }
