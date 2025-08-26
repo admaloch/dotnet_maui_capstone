@@ -10,5 +10,11 @@
     <Color x:Key="White">#FFFFFF</Color>
     <Color x:Key="Black">#000000</Color>
 
+    <!-- Navigation Bar Specific Colors -->
+    <Color x:Key="NavigationBarBackground">#22223B</Color>
+    <!-- Same as DarkBlue -->
+    <Color x:Key="NavigationBarText">#F2E9E4</Color>
+    <!-- Same as Cream -->
+
     <!--  REMOVE THE BRUSHES - MAUI uses Colors directly  -->
 </ResourceDictionary>

@@ -6,25 +6,16 @@ namespace c971_project
 {
     public partial class App : Application
     {
-        private readonly IServiceProvider _serviceProvider;
-
-        public App(IServiceProvider serviceProvider)
+        public App()
         {
             InitializeComponent();
-
-            var homePage = serviceProvider.GetRequiredService<HomePage>();
-
-            // Create ONE NavigationPage and use it
-            var navigationPage = new NavigationPage(homePage);
-
-            // Set navigation bar colors
-            navigationPage.BarBackgroundColor = Color.FromArgb("#22223B"); // darkblue
-            navigationPage.BarTextColor = Color.FromArgb("#F2E9E4"); // cream
-
-            // Assign the styled navigation page
-            MainPage = navigationPage;
         }
 
-
+        protected override Window CreateWindow(IActivationState? activationState)
+        {
+            // Use the static Services property from MauiProgram
+            var homePage = MauiProgram.Services.GetRequiredService<HomePage>();
+            return new Window(new NavigationPage(homePage));
+        }
     }
 }

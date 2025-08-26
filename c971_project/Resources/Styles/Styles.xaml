@@ -6,6 +6,14 @@
         <ResourceDictionary Source="/Resources/Styles/Colors.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
+    <!--  ===== NAVIGATION BAR STYLES =====  -->
+    <Style TargetType="NavigationPage">
+        <Setter Property="BarBackgroundColor" Value="{StaticResource NavigationBarBackground}" />
+        <Setter Property="BarTextColor" Value="{StaticResource NavigationBarText}" />
+
+    </Style>
+
+    <!--  ===== EXISTING STYLES =====  -->
     <!--  Default Label Style  -->
     <Style TargetType="Label">
         <Setter Property="TextColor" Value="{StaticResource DarkBlue}" />
@@ -42,6 +50,7 @@
     <Style TargetType="ContentPage">
         <Setter Property="BackgroundColor" Value="{StaticResource Cream}" />
         <!--  FIXED  -->
+        <Setter Property="Padding" Value="20" />
     </Style>
 
     <!--  Entry Style  -->
@@ -56,4 +65,13 @@
         <Setter Property="HeightRequest" Value="40" />
         <Setter Property="Margin" Value="0,5" />
     </Style>
+
+    <!--  CollectionView/ListView Style  -->
+    <Style TargetType="CollectionView">
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="SelectionMode" Value="None" />
+    </Style>
+
+
+
 </ResourceDictionary>
