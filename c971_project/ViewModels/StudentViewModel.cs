@@ -41,7 +41,7 @@ namespace c971_project.ViewModels
             }
         }
 
-        public async Task LoadStudentAsync(string studentId = null)
+        public async Task LoadStudentAsync(string studentId)
         {
             if (!string.IsNullOrEmpty(studentId))
             {

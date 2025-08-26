@@ -26,6 +26,7 @@ namespace c971_project
             builder.Services.AddTransient<StudentViewModel>();
 
             // Pages - Transient (new instance each time)
+            builder.Services.AddTransient<HomeViewModel>();
             builder.Services.AddTransient<HomePage>();
             builder.Services.AddTransient<EditStudentPage>();
 

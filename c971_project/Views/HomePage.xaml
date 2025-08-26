@@ -117,7 +117,7 @@
                                 VerticalOptions="Center"
                                 WidthRequest="20">
                                 <Image.GestureRecognizers>
-                                    <TapGestureRecognizer Tapped="OnEditStudentClicked" />
+                                    <TapGestureRecognizer Command="{Binding EditStudentCommand}" />
                                 </Image.GestureRecognizers>
                             </Image>
                         </Border>
@@ -191,7 +191,7 @@
                 TextColor="{StaticResource DarkBlue}"
                 VerticalOptions="Center">
                 <Label.GestureRecognizers>
-                    <TapGestureRecognizer Tapped="OnAddTermClicked" />
+                    <TapGestureRecognizer Command="{Binding AddTermCommand}" />
                 </Label.GestureRecognizers>
             </Label>
 
@@ -220,7 +220,7 @@
                     VerticalOptions="Center"
                     WidthRequest="31">
                     <Image.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="OnAddTermClicked" />
+                        <TapGestureRecognizer Command="{Binding AddTermCommand}" />
                     </Image.GestureRecognizers>
                 </Image>
             </Border>
