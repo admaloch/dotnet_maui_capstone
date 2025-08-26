@@ -3,7 +3,9 @@
     x:Class="c971_project.Views.EditStudentPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    Title="Edit Student">
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    Title="Edit Student"
+    BackgroundColor="{StaticResource Cream}">
 
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="20">
@@ -16,68 +18,141 @@
                 Text="Edit Student Information" />
 
             <!--  Student Info Form  -->
-            <Frame Style="{StaticResource CardFrame}">
+            <Border
+                Padding="20"
+                BackgroundColor="{StaticResource White}"
+                Stroke="{StaticResource Charcoal}"
+                StrokeShape="RoundRectangle 12"
+                StrokeThickness="2"
+                Style="{StaticResource CardFrame}">
+
+                <Border.Shadow>
+                    <Shadow
+                        Brush="{StaticResource DarkBlue}"
+                        Opacity="0.2"
+                        Radius="8"
+                        Offset="0,4" />
+                </Border.Shadow>
+
                 <VerticalStackLayout Spacing="15">
 
                     <!--  Student ID  -->
                     <VerticalStackLayout Spacing="5">
-                        <Label Style="{StaticResource FieldLabel}" Text="Student ID" />
+                        <Label
+                            Style="{StaticResource FieldLabel}"
+                            Text="Student ID"
+                            TextColor="{StaticResource DarkBlue}" />
                         <Entry
                             Placeholder="Enter student ID"
-                            Style="{StaticResource InputField}"
-                            Text="{Binding Student.StudentId}" />
+                            PlaceholderColor="{StaticResource LightBrown}"
+                            Text="{Binding Student.StudentId, Mode=TwoWay}"
+                            TextColor="{StaticResource DarkBlue}" />
+                        <Label
+                            Margin="5,0,0,0"
+                            FontSize="12"
+                            IsVisible="{Binding Student.HasErrors}"
+                            Text="{Binding Student.Errors[StudentId].FirstOrDefault}"
+                            TextColor="Red" />
                     </VerticalStackLayout>
 
                     <!--  Name  -->
                     <VerticalStackLayout Spacing="5">
-                        <Label Style="{StaticResource FieldLabel}" Text="Full Name" />
+                        <Label
+                            Style="{StaticResource FieldLabel}"
+                            Text="Full Name"
+                            TextColor="{StaticResource DarkBlue}" />
                         <Entry
                             Placeholder="Enter full name"
-                            Style="{StaticResource InputField}"
-                            Text="{Binding Student.Name}" />
+                            PlaceholderColor="{StaticResource LightBrown}"
+                            Text="{Binding Student.Name, Mode=TwoWay}"
+                            TextColor="{StaticResource DarkBlue}" />
+                        <Label
+                            Margin="5,0,0,0"
+                            FontSize="12"
+                            IsVisible="{Binding Student.HasErrors}"
+                            Text="{Binding Student.Errors[Name].FirstOrDefault}"
+                            TextColor="Red" />
                     </VerticalStackLayout>
 
                     <!--  Email  -->
                     <VerticalStackLayout Spacing="5">
-                        <Label Style="{StaticResource FieldLabel}" Text="Email" />
+                        <Label
+                            Style="{StaticResource FieldLabel}"
+                            Text="Email"
+                            TextColor="{StaticResource DarkBlue}" />
                         <Entry
                             Keyboard="Email"
                             Placeholder="Enter email address"
-                            Style="{StaticResource InputField}"
-                            Text="{Binding Student.Email}" />
+                            PlaceholderColor="{StaticResource LightBrown}"
+                            Text="{Binding Student.Email, Mode=TwoWay}"
+                            TextColor="{StaticResource DarkBlue}" />
+                        <Label
+                            Margin="5,0,0,0"
+                            FontSize="12"
+                            IsVisible="{Binding Student.HasErrors}"
+                            Text="{Binding Student.Errors[Email].FirstOrDefault}"
+                            TextColor="Red" />
                     </VerticalStackLayout>
 
                     <!--  Status  -->
                     <VerticalStackLayout Spacing="5">
-                        <Label Style="{StaticResource FieldLabel}" Text="Status" />
+                        <Label
+                            Style="{StaticResource FieldLabel}"
+                            Text="Status"
+                            TextColor="{StaticResource DarkBlue}" />
                         <Picker
                             Title="Select status"
                             ItemsSource="{Binding StatusOptions}"
-                            SelectedItem="{Binding Student.Status}"
-                            Style="{StaticResource InputField}" />
+                            SelectedItem="{Binding Student.Status, Mode=TwoWay}"
+                            TextColor="{StaticResource DarkBlue}"
+                            TitleColor="{StaticResource LightBrown}">
+
+                            <Picker.BackgroundColor>
+                                <OnPlatform x:TypeArguments="Color">
+                                    <On Platform="iOS, Android" Value="Transparent" />
+                                </OnPlatform>
+                            </Picker.BackgroundColor>
+
+                        </Picker>
+                        <Label
+                            Margin="5,0,0,0"
+                            FontSize="12"
+                            IsVisible="{Binding Student.HasErrors}"
+                            Text="{Binding Student.Errors[Status].FirstOrDefault}"
+                            TextColor="Red" />
                     </VerticalStackLayout>
 
                     <!--  Major  -->
                     <VerticalStackLayout Spacing="5">
-                        <Label Style="{StaticResource FieldLabel}" Text="Major" />
+                        <Label
+                            Style="{StaticResource FieldLabel}"
+                            Text="Major"
+                            TextColor="{StaticResource DarkBlue}" />
                         <Entry
                             Placeholder="Enter major"
-                            Style="{StaticResource InputField}"
-                            Text="{Binding Student.Major}" />
+                            PlaceholderColor="{StaticResource LightBrown}"
+                            Text="{Binding Student.Major, Mode=TwoWay}"
+                            TextColor="{StaticResource DarkBlue}" />
+                        <Label
+                            Margin="5,0,0,0"
+                            FontSize="12"
+                            IsVisible="{Binding Student.HasErrors}"
+                            Text="{Binding Student.Errors[Major].FirstOrDefault}"
+                            TextColor="Red" />
                     </VerticalStackLayout>
 
                 </VerticalStackLayout>
-            </Frame>
+            </Border>
 
             <!--  Action Buttons  -->
             <HorizontalStackLayout HorizontalOptions="Center" Spacing="15">
                 <Button
-                    Clicked="OnCancelClicked"
+                    Command="{Binding CancelCommand}"
                     Style="{StaticResource SecondaryButton}"
                     Text="Cancel" />
 
                 <Button
-                    Clicked="OnSaveClicked"
+                    Command="{Binding SaveStudentCommand}"
                     Style="{StaticResource PrimaryButton}"
                     Text="Save Changes" />
             </HorizontalStackLayout>

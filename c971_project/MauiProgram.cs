@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using c971_project.Services;
 using c971_project.Views;
+using c971_project.ViewModels;
 
 namespace c971_project
 {
@@ -21,10 +22,12 @@ namespace c971_project
             // Services - Singleton (shared resources)
             builder.Services.AddSingleton<DatabaseService>();
 
+            // ViewModels - Transient (new instance for each page)
+            builder.Services.AddTransient<StudentViewModel>();
+
             // Pages - Transient (new instance each time)
             builder.Services.AddTransient<HomePage>();
             builder.Services.AddTransient<EditStudentPage>();
-
 
 #if DEBUG
             builder.Logging.AddDebug();

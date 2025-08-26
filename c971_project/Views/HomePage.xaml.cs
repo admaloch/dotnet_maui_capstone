@@ -114,13 +114,20 @@ public partial class HomePage : ContentPage, INotifyPropertyChanged
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
-    private  void OnAddTermClicked(object sender, EventArgs e)
+    private void OnAddTermClicked(object sender, EventArgs e)
     {
         Debug.WriteLine("Add Term clicked");
         // await Navigation.PushAsync(new AddEditTermPage(_databaseService));
     }
     private async void OnEditStudentClicked(object sender, EventArgs e)
     {
-        await Navigation.PushAsync(new EditStudentPage(_databaseService, CurrentStudent));
+        if (CurrentStudent != null && !string.IsNullOrEmpty(CurrentStudent.StudentId))
+        {
+            await Shell.Current.GoToAsync($"{nameof(EditStudentPage)}?studentId={CurrentStudent.StudentId}");
+        }
+        else
+        {
+            await Shell.Current.GoToAsync(nameof(EditStudentPage));
+        }
     }
 }

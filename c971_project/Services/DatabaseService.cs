@@ -41,7 +41,7 @@ namespace c971_project.Services
             }
         }
 
-    
+
         private void SeedData()
         {
             // 1. Student
@@ -69,7 +69,8 @@ namespace c971_project.Services
             Debug.WriteLine($"Inserted term: {term1.Name}");
 
             // 3. Instructors
-            var instructor1 = new Instructor{
+            var instructor1 = new Instructor
+            {
                 Name = "Anika Patel",
                 Email = "anika.patel@strimeuniversity.edu",
                 Phone = "555-123-4567"  // Note the format: 555-123-4567
@@ -84,7 +85,7 @@ namespace c971_project.Services
                 CourseNum = "CS101",
                 CuNum = 3,
                 InstructorId = instructor1.InstructorId
-            }; 
+            };
             _connection.Insert(course1);
             Debug.WriteLine($"Inserted courses: {course1.CourseId}");
 
@@ -96,7 +97,7 @@ namespace c971_project.Services
                 Status = "Currently Enrolled",
                 StartDate = term1.StartDate,
                 EndDate = term1.StartDate.AddMonths(2)
-            }; 
+            };
             _connection.Insert(termCourse1);
             Debug.WriteLine($"Inserted term-course associations: {termCourse1.Id}");
 
@@ -164,6 +165,14 @@ namespace c971_project.Services
             return await Task.Run(() => _connection.Table<Student>().ToList());
         }
 
+        public async Task<Student> GetStudentAsync(string studentId)
+        {
+            return await Task.Run(() =>
+                _connection.Table<Student>()
+                          .FirstOrDefault(s => s.StudentId == studentId)
+            );
+        }
+
         public async Task<List<Term>> GetTermsByStudentIdAsync(string studentId)
         {
             return await Task.Run(() =>
@@ -176,11 +185,6 @@ namespace c971_project.Services
         public async Task<List<Course>> GetCoursesAsync()
         {
             return await Task.Run(() => _connection.Table<Course>().ToList());
-        }
-        // Keep your synchronous methods too for now
-        public List<Student> GetStudents()
-        {
-            return _connection.Table<Student>().ToList();
         }
 
         public async Task<int> InsertStudentAsync(Student student)
