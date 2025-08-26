@@ -9,41 +9,40 @@ namespace c971_project.Services
 {
     public class DatabaseService
     {
-        private readonly SQLiteConnection _connection;
+        private readonly SQLiteAsyncConnection _connection;
 
         public DatabaseService()
         {
             var dbPath = Path.Combine(FileSystem.AppDataDirectory, "app.db");
 
+            // Use async connection
+            _connection = new SQLiteAsyncConnection(dbPath);
 
-            _connection = new SQLiteConnection(dbPath);
+            // Create tables (async, but safe to Wait() here since it's in constructor)
+            _connection.CreateTableAsync<Student>().Wait();
+            _connection.CreateTableAsync<Term>().Wait();
+            _connection.CreateTableAsync<Instructor>().Wait();
+            _connection.CreateTableAsync<Course>().Wait();
+            _connection.CreateTableAsync<TermCourse>().Wait();
+            _connection.CreateTableAsync<Assessment>().Wait();
+            _connection.CreateTableAsync<Note>().Wait();
 
+            SeedDataAsync();
 
-            // Create tables
-            _connection.CreateTable<Student>();
-            _connection.CreateTable<Term>();
-            _connection.CreateTable<Instructor>();
-            _connection.CreateTable<Course>();
-            _connection.CreateTable<TermCourse>();
-            _connection.CreateTable<Assessment>();
-            _connection.CreateTable<Note>();
-
-            if (!_connection.Table<Student>().Any())
-            {
-                Debug.WriteLine("No students found. Seeding database...");
-                SeedData();
-            }
-            else
-            {
-                Debug.WriteLine("Students already exist. Skipping seeding.");
-                Console.WriteLine($"Database path: {dbPath}");
-
-            }
         }
 
 
-        private void SeedData()
+        private async void SeedDataAsync()
         {
+            var existingStudent = await _connection.Table<Student>().FirstOrDefaultAsync();
+            if (existingStudent != null)
+            {
+                Debug.WriteLine("No students found. Seeding database...");
+                return; // Already seeded
+            }
+
+
+            Debug.WriteLine("No students found. Seeding database...");
             // 1. Student
             var student = new Student
             {
@@ -53,7 +52,8 @@ namespace c971_project.Services
                 Status = "Currently Enrolled",
                 Major = "Computer Science"
             };
-            _connection.Insert(student);
+
+            await _connection.InsertAsync(student);
             Debug.WriteLine($"Inserted student: {student.Name}, ID: {student.StudentId}");
 
             // 2. Terms
@@ -65,7 +65,7 @@ namespace c971_project.Services
                 StartDate = DateTime.Now.AddMonths(-6),
                 EndDate = DateTime.Now
             };
-            _connection.Insert(term1);
+            await _connection.InsertAsync(term1);
             Debug.WriteLine($"Inserted term: {term1.Name}");
 
             // 3. Instructors
@@ -75,7 +75,7 @@ namespace c971_project.Services
                 Email = "anika.patel@strimeuniversity.edu",
                 Phone = "555-123-4567"  // Note the format: 555-123-4567
             };
-            _connection.Insert(instructor1);
+            await _connection.InsertAsync(instructor1);
             Debug.WriteLine($"Inserted instructor: {instructor1.Name}");
 
             // 4. Courses
@@ -86,7 +86,7 @@ namespace c971_project.Services
                 CuNum = 3,
                 InstructorId = instructor1.InstructorId
             };
-            _connection.Insert(course1);
+            await _connection.InsertAsync(course1);
             Debug.WriteLine($"Inserted courses: {course1.CourseId}");
 
             // 5. TermCourse associations
@@ -98,7 +98,7 @@ namespace c971_project.Services
                 StartDate = term1.StartDate,
                 EndDate = term1.StartDate.AddMonths(2)
             };
-            _connection.Insert(termCourse1);
+            await _connection.InsertAsync(termCourse1);
             Debug.WriteLine($"Inserted term-course associations: {termCourse1.Id}");
 
             // 6. Assessments
@@ -124,8 +124,8 @@ namespace c971_project.Services
                 StartDate = term1.StartDate,
                 EndDate = term1.StartDate.AddDays(30)
             };
-            _connection.Insert(assess1);
-            _connection.Insert(assess2);
+            await _connection.InsertAsync(assess1);
+            await _connection.InsertAsync(assess2);
 
             Debug.WriteLine($"Inserted assessments: {assess1.AssessmentId} -- {assess2.AssessmentId}");
 
@@ -142,61 +142,46 @@ namespace c971_project.Services
                 Title = "Assessment Tip",
                 Body = "The assessment requires demonstrating core programming concepts: 1) Data types and variables 2) Operators and expressions 3) Control structures (conditionals and loops) 4) Basic input/output 5) Problem-solving approach. Prepare by writing small programs that showcase each concept. Example: a program that takes user input, processes it using loops and conditionals, and produces formatted output. Focus on clean code and proper syntax."
             };
-            _connection.Insert(note1);
-            _connection.Insert(note2);
+            await _connection.InsertAsync(note1);
+            await _connection.InsertAsync(note2);
 
             Debug.WriteLine($"Inserted notes: {note1.NoteId} -- {note2.NoteId}");
         }
-        private void DeleteDatabase()
+        //private void DeleteDatabase()
+        //{
+        //    var dbPath = Path.Combine(FileSystem.AppDataDirectory, "app.db");
+        //    if (File.Exists(dbPath))
+        //    {
+        //        File.Delete(dbPath);
+        //        Debug.WriteLine("Database deleted.");
+        //    }
+        //    else
+        //    {
+        //        Debug.WriteLine("No database file found to delete.");
+        //    }
+        //}
+        public async Task<Student> GetCurrentStudentAsync()
         {
-            var dbPath = Path.Combine(FileSystem.AppDataDirectory, "app.db");
-            if (File.Exists(dbPath))
-            {
-                File.Delete(dbPath);
-                Debug.WriteLine("Database deleted.");
-            }
+            var students = await _connection.Table<Student>().ToListAsync();
+            return students.FirstOrDefault(); // Returns null if no student
+        }
+
+        // Save or update student
+        public async Task<int> SaveStudentAsync(Student student)
+        {
+            if (string.IsNullOrEmpty(student.StudentId))
+                return await _connection.InsertAsync(student);
             else
-            {
-                Debug.WriteLine("No database file found to delete.");
-            }
-        }
-        public async Task<List<Student>> GetStudentsAsync()
-        {
-            return await Task.Run(() => _connection.Table<Student>().ToList());
+                return await _connection.UpdateAsync(student);
         }
 
-        public async Task<Student> GetStudentAsync(string studentId)
+
+        // Example: Get all terms
+        public async Task<List<Term>> GetTermsAsync()
         {
-            return await Task.Run(() =>
-                _connection.Table<Student>()
-                          .FirstOrDefault(s => s.StudentId == studentId)
-            );
+            return await _connection.Table<Term>().ToListAsync();
         }
 
-        public async Task<List<Term>> GetTermsByStudentIdAsync(string studentId)
-        {
-            return await Task.Run(() =>
-                _connection.Table<Term>()
-                          .Where(t => t.StudentId == studentId)
-                          .ToList()
-            );
-        }
 
-        public async Task<List<Course>> GetCoursesAsync()
-        {
-            return await Task.Run(() => _connection.Table<Course>().ToList());
-        }
-
-        public async Task<int> InsertStudentAsync(Student student)
-        {
-            return await Task.Run(() => _connection.Insert(student));
-        }
-
-        public async Task<int> UpdateStudentAsync(Student student)
-        {
-            return await Task.Run(() => _connection.Update(student));
-        }
-
-        public SQLiteConnection Connection => _connection;
     }
 }

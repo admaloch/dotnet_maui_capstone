@@ -1,16 +1,13 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using c971_project.Services;
 using c971_project.Views;
 using c971_project.ViewModels;
+
 
 namespace c971_project
 {
     public static class MauiProgram
     {
-        // Initialize with default value to avoid null warnings
-        public static IServiceProvider Services { get; private set; } = null!;
-
         public static MauiApp CreateMauiApp()
         {
             var builder = MauiApp.CreateBuilder();
@@ -23,26 +20,21 @@ namespace c971_project
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
-            // Register services
+            builder.Services.AddSingleton<AppShell>();
             builder.Services.AddSingleton<DatabaseService>();
-
-            // Register ViewModels
             builder.Services.AddTransient<HomeViewModel>();
-            builder.Services.AddTransient<StudentViewModel>();
-
-            // Register Pages
             builder.Services.AddTransient<HomePage>();
             builder.Services.AddTransient<EditStudentPage>();
+            builder.Services.AddTransient<AddTermViewModel>();
+            builder.Services.AddTransient<AddTermPage>();
 
-            // Add debug logging
-            builder.Services.AddLogging(configure =>
-            {
-                configure.AddDebug();
-            });
 
-            var app = builder.Build();
-            Services = app.Services;
-            return app;
+
+#if DEBUG
+            builder.Logging.AddDebug();
+#endif
+
+            return builder.Build();
         }
     }
 }

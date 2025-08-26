@@ -1,20 +1,22 @@
 ﻿using c971_project.Models;
-using c971_project.Services;
 using c971_project.Views;
-
+using c971_project.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Threading.Tasks;
+using c971_project.ViewModels;
+
 
 namespace c971_project.ViewModels
 {
-    public partial class HomeViewModel : ObservableObject
+    public partial class HomeViewModel : BaseViewModel
     {
         private readonly DatabaseService _databaseService;
 
         [ObservableProperty]
-        private Student _currentStudent = new();
+        private Student _currentStudent;
 
         [ObservableProperty]
         private ObservableCollection<Term> _terms = new();
@@ -22,74 +24,58 @@ namespace c971_project.ViewModels
         public HomeViewModel(DatabaseService databaseService)
         {
             _databaseService = databaseService;
-            LoadStudentDataCommand.ExecuteAsync(null);
+            Title = "Home";
+
+            _ = LoadDataAsync();
         }
 
-        [RelayCommand]
-        private async Task LoadStudentDataAsync()
+        public async Task LoadDataAsync()
         {
             try
             {
-                var students = await _databaseService.GetStudentsAsync();
-                if (students != null && students.Count > 0)
-                {
-                    CurrentStudent = students[0];
-                    await LoadTermsForCurrentStudentAsync();
-                }
-                else
-                {
-                    CurrentStudent = new Student
-                    {
-                        StudentId = "N/A",
-                        Name = "No Student Data",
-                        Email = "N/A",
-                        Status = "Not Enrolled",
-                        Major = "N/A"
-                    };
-                    Terms.Clear();
-                }
+                CurrentStudent = await _databaseService.GetCurrentStudentAsync();
+                Terms = new ObservableCollection<Term>(await _databaseService.GetTermsAsync());
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error loading student data: {ex.Message}");
+                Debug.WriteLine($"Error loading HomeViewModel data: {ex.Message}");
+                CurrentStudent = null;
+                var termList = await _databaseService.GetTermsAsync();
+                // Clear the collection first (optional depending on use case)
+                Terms.Clear();
+                // Loop through the terms and update/add them to the ObservableCollection
+                foreach (var term in termList)
+                {
+                    // Example: update some property if needed
+                    term.Name = term.Name.ToUpper(); // just an example update
+                    Terms.Add(term); // this will notify UI because ObservableCollection
+                }
             }
         }
 
         [RelayCommand]
-        private async Task LoadTermsForCurrentStudentAsync()
+        private async Task OnAddTermAsync()
         {
-            if (string.IsNullOrEmpty(CurrentStudent?.StudentId))
-                return;
-
+            if (IsBusy) return;
             try
             {
-                var terms = await _databaseService.GetTermsByStudentIdAsync(CurrentStudent.StudentId);
-                Terms = new ObservableCollection<Term>(terms ?? new List<Term>());
+                IsBusy = true;
+                await Shell.Current.GoToAsync(nameof(AddTermPage));
             }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"Error loading terms: {ex.Message}");
-            }
+            finally { IsBusy = false; }
         }
 
         [RelayCommand]
-        private async Task EditStudentAsync()
+        private async Task OnEditStudentAsync()
         {
-            if (CurrentStudent != null && !string.IsNullOrEmpty(CurrentStudent.StudentId))
+            if (IsBusy) return;
+            try
             {
-                await Shell.Current.GoToAsync($"{nameof(EditStudentPage)}?studentId={CurrentStudent.StudentId}");
+                IsBusy = true;
+                await Shell.Current.GoToAsync(nameof(EditStudentPage),
+                    new Dictionary<string, object> { { "Student", CurrentStudent } });
             }
-            else
-            {
-                await Shell.Current.GoToAsync(nameof(EditStudentPage));
-            }
-        }
-
-        [RelayCommand]
-        private async Task AddTermAsync()
-        {
-            Debug.WriteLine("Add Term clicked");
-            // await Shell.Current.GoToAsync(nameof(AddEditTermPage));
+            finally { IsBusy = false; }
         }
     }
 }

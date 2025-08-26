@@ -6,7 +6,7 @@ namespace c971_project.Extensions
 {
     public static class TaskExtensions
     {
-        public static void SafeFireAndForget(this Task task, bool returnToCallingContext = true, Action<Exception> onException = null)
+        public static void SafeFireAndForget(this Task task, bool returnToCallingContext = true, Action<Exception>? onException = null) // ← ADD ? after Action<Exception>
         {
             task.ContinueWith(t =>
             {
@@ -17,5 +17,3 @@ namespace c971_project.Extensions
         }
     }
 }
-// custom extension method that provides a safe way to call async methods without
-// awaiting them, while also handling any exceptions that might occur.

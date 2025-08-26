@@ -4,20 +4,27 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:converters="clr-namespace:c971_project.Converters"
     Title="Edit Student"
     BackgroundColor="{StaticResource Cream}">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:FirstErrorConverter x:Key="FirstErrorConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
 
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="20">
 
-            <!--  Header  -->
+            <!-- Header -->
             <Label
                 Margin="0,20,0,0"
                 HorizontalOptions="Center"
                 Style="{StaticResource HeaderLabel}"
                 Text="Edit Student Information" />
 
-            <!--  Student Info Form  -->
+            <!-- Student Info Form -->
             <Border
                 Padding="20"
                 BackgroundColor="{StaticResource White}"
@@ -36,12 +43,9 @@
 
                 <VerticalStackLayout Spacing="15">
 
-                    <!--  Student ID  -->
+                    <!-- Student ID -->
                     <VerticalStackLayout Spacing="5">
-                        <Label
-                            Style="{StaticResource FieldLabel}"
-                            Text="Student ID"
-                            TextColor="{StaticResource DarkBlue}" />
+                        <Label Style="{StaticResource FieldLabel}" Text="Student ID" TextColor="{StaticResource DarkBlue}" />
                         <Entry
                             Placeholder="Enter student ID"
                             PlaceholderColor="{StaticResource LightBrown}"
@@ -51,16 +55,13 @@
                             Margin="5,0,0,0"
                             FontSize="12"
                             IsVisible="{Binding Student.HasErrors}"
-                            Text="{Binding Student.Errors[StudentId].FirstOrDefault}"
+                            Text="{Binding Student, Converter={StaticResource FirstErrorConverter}, ConverterParameter=StudentId}"
                             TextColor="Red" />
                     </VerticalStackLayout>
 
-                    <!--  Name  -->
+                    <!-- Full Name -->
                     <VerticalStackLayout Spacing="5">
-                        <Label
-                            Style="{StaticResource FieldLabel}"
-                            Text="Full Name"
-                            TextColor="{StaticResource DarkBlue}" />
+                        <Label Style="{StaticResource FieldLabel}" Text="Full Name" TextColor="{StaticResource DarkBlue}" />
                         <Entry
                             Placeholder="Enter full name"
                             PlaceholderColor="{StaticResource LightBrown}"
@@ -70,16 +71,13 @@
                             Margin="5,0,0,0"
                             FontSize="12"
                             IsVisible="{Binding Student.HasErrors}"
-                            Text="{Binding Student.Errors[Name].FirstOrDefault}"
+                            Text="{Binding Student, Converter={StaticResource FirstErrorConverter}, ConverterParameter=Name}"
                             TextColor="Red" />
                     </VerticalStackLayout>
 
-                    <!--  Email  -->
+                    <!-- Email -->
                     <VerticalStackLayout Spacing="5">
-                        <Label
-                            Style="{StaticResource FieldLabel}"
-                            Text="Email"
-                            TextColor="{StaticResource DarkBlue}" />
+                        <Label Style="{StaticResource FieldLabel}" Text="Email" TextColor="{StaticResource DarkBlue}" />
                         <Entry
                             Keyboard="Email"
                             Placeholder="Enter email address"
@@ -90,44 +88,36 @@
                             Margin="5,0,0,0"
                             FontSize="12"
                             IsVisible="{Binding Student.HasErrors}"
-                            Text="{Binding Student.Errors[Email].FirstOrDefault}"
+                            Text="{Binding Student, Converter={StaticResource FirstErrorConverter}, ConverterParameter=Email}"
                             TextColor="Red" />
                     </VerticalStackLayout>
 
-                    <!--  Status  -->
+                    <!-- Status -->
                     <VerticalStackLayout Spacing="5">
-                        <Label
-                            Style="{StaticResource FieldLabel}"
-                            Text="Status"
-                            TextColor="{StaticResource DarkBlue}" />
+                        <Label Style="{StaticResource FieldLabel}" Text="Status" TextColor="{StaticResource DarkBlue}" />
                         <Picker
                             Title="Select status"
                             ItemsSource="{Binding StatusOptions}"
                             SelectedItem="{Binding Student.Status, Mode=TwoWay}"
                             TextColor="{StaticResource DarkBlue}"
                             TitleColor="{StaticResource LightBrown}">
-
                             <Picker.BackgroundColor>
                                 <OnPlatform x:TypeArguments="Color">
                                     <On Platform="iOS, Android" Value="Transparent" />
                                 </OnPlatform>
                             </Picker.BackgroundColor>
-
                         </Picker>
                         <Label
                             Margin="5,0,0,0"
                             FontSize="12"
                             IsVisible="{Binding Student.HasErrors}"
-                            Text="{Binding Student.Errors[Status].FirstOrDefault}"
+                            Text="{Binding Student, Converter={StaticResource FirstErrorConverter}, ConverterParameter=Status}"
                             TextColor="Red" />
                     </VerticalStackLayout>
 
-                    <!--  Major  -->
+                    <!-- Major -->
                     <VerticalStackLayout Spacing="5">
-                        <Label
-                            Style="{StaticResource FieldLabel}"
-                            Text="Major"
-                            TextColor="{StaticResource DarkBlue}" />
+                        <Label Style="{StaticResource FieldLabel}" Text="Major" TextColor="{StaticResource DarkBlue}" />
                         <Entry
                             Placeholder="Enter major"
                             PlaceholderColor="{StaticResource LightBrown}"
@@ -137,24 +127,17 @@
                             Margin="5,0,0,0"
                             FontSize="12"
                             IsVisible="{Binding Student.HasErrors}"
-                            Text="{Binding Student.Errors[Major].FirstOrDefault}"
+                            Text="{Binding Student, Converter={StaticResource FirstErrorConverter}, ConverterParameter=Major}"
                             TextColor="Red" />
                     </VerticalStackLayout>
 
                 </VerticalStackLayout>
             </Border>
 
-            <!--  Action Buttons  -->
+            <!-- Action Buttons -->
             <HorizontalStackLayout HorizontalOptions="Center" Spacing="15">
-                <Button
-                    Command="{Binding CancelCommand}"
-                    Style="{StaticResource SecondaryButton}"
-                    Text="Cancel" />
-
-                <Button
-                    Command="{Binding SaveStudentCommand}"
-                    Style="{StaticResource PrimaryButton}"
-                    Text="Save Changes" />
+                <Button Command="{Binding CancelCommand}" Style="{StaticResource SecondaryButton}" Text="Cancel" />
+                <Button Command="{Binding SaveStudentCommand}" Style="{StaticResource PrimaryButton}" Text="Save Changes" />
             </HorizontalStackLayout>
 
         </VerticalStackLayout>

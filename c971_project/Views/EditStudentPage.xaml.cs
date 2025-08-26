@@ -6,9 +6,8 @@ namespace c971_project.Views
     {
         public EditStudentPage(StudentViewModel viewModel)
         {
-
             InitializeComponent();
-            BindingContext = viewModel;  // ViewModel is automatically injected
+            BindingContext = viewModel;
         }
     }
 }

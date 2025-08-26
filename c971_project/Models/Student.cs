@@ -1,13 +1,19 @@
-using SQLite;
+﻿using SQLite;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using MaxLengthAttribute = System.ComponentModel.DataAnnotations.MaxLengthAttribute;
 using MinLengthAttribute = System.ComponentModel.DataAnnotations.MinLengthAttribute;
-
 namespace c971_project.Models
 {
     public partial class Student : ObservableValidator
     {
+        // Backing fields initialized to avoid nulls
+        private string _studentId = string.Empty;
+        private string _name = string.Empty;
+        private string _email = string.Empty;
+        private string _status = "Currently Enrolled";
+        private string _major = string.Empty;
+
         [PrimaryKey]
         public string StudentId
         {
@@ -15,39 +21,54 @@ namespace c971_project.Models
             set => SetProperty(ref _studentId, value, true); // true enables validation
         }
 
-        [Required(ErrorMessage = "Student ID is required")]
-        [MinLength(3)]
-        [MaxLength(20)]
-        [RegularExpression(@"^[a-zA-Z0-9]+$")]
-        private string _studentId = string.Empty;
-
-        [ObservableProperty]
-        [NotifyDataErrorInfo]
         [Required(ErrorMessage = "Full name is required")]
         [MinLength(2, ErrorMessage = "Name must be at least 2 characters")]
         [MaxLength(50, ErrorMessage = "Name cannot exceed 50 characters")]
         [RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage = "Name can only contain letters and spaces")]
-        private string _name = string.Empty;
+        public string Name
+        {
+            get => _name;
+            set => SetProperty(ref _name, value, true);
+        }
 
-        [ObservableProperty]
-        [NotifyDataErrorInfo]
         [EmailAddress(ErrorMessage = "Please enter a valid email address")]
-        private string _email = string.Empty;
+        public string Email
+        {
+            get => _email;
+            set => SetProperty(ref _email, value, true);
+        }
 
-        [ObservableProperty]
-        [NotifyDataErrorInfo]
         [Required(ErrorMessage = "Status is required")]
-        private string _status = "Currently Enrolled";
+        public string Status
+        {
+            get => _status;
+            set => SetProperty(ref _status, value, true);
+        }
 
-        [ObservableProperty]
-        [NotifyDataErrorInfo]
         [MaxLength(50, ErrorMessage = "Major cannot exceed 50 characters")]
-        private string _major = string.Empty;
+        public string Major
+        {
+            get => _major;
+            set => SetProperty(ref _major, value, true);
+        }
+
+        // Helper to validate all properties
         public bool Validate()
         {
             ValidateAllProperties();
             return !HasErrors;
         }
-    }
 
+        // Optional: safe helper to get error for a property
+        public string? GetFirstError(string propertyName)
+        {
+            var errors = GetErrors(propertyName);
+            if (errors != null)
+            {
+                foreach (var err in errors)
+                    return err.ErrorMessage;
+            }
+            return null;
+        }
+    }
 }

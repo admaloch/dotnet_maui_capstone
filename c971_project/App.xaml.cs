@@ -6,16 +6,14 @@ namespace c971_project
 {
     public partial class App : Application
     {
-        public App()
+        private readonly IServiceProvider _serviceProvider;
+
+        public App(IServiceProvider serviceProvider)
         {
             InitializeComponent();
-        }
 
-        protected override Window CreateWindow(IActivationState? activationState)
-        {
-            // Use the static Services property from MauiProgram
-            var homePage = MauiProgram.Services.GetRequiredService<HomePage>();
-            return new Window(new NavigationPage(homePage));
+            // Set MainPage to the AppShell
+            MainPage = serviceProvider.GetRequiredService<AppShell>();
         }
     }
 }

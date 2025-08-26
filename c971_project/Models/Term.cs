@@ -4,18 +4,31 @@ using System;
 namespace c971_project.Models
 {
 
-    public class Term
+    using CommunityToolkit.Mvvm.ComponentModel;
+    using SQLite;
+    using System;
+
+    public partial class Term : ObservableObject
     {
         [PrimaryKey, AutoIncrement]
         public int TermId { get; set; }
 
         [Indexed]
         public string StudentId { get; set; } = string.Empty;  // Foreign key to Student
-        public string Name { get; set; } = string.Empty;
-        public int TermNum { get; set; } = 1; // Default term number
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
+
+        [ObservableProperty]
+        private string _name = string.Empty;
+
+        [ObservableProperty]
+        private int _termNum = 1;
+
+        [ObservableProperty]
+        private DateTime _startDate;
+
+        [ObservableProperty]
+        private DateTime _endDate;
     }
+
 
 
 }
