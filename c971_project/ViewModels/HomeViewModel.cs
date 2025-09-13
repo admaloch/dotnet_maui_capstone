@@ -7,9 +7,6 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using c971_project.ViewModels;
-using c971_project.Messages;
-using CommunityToolkit.Mvvm.Messaging;
-
 
 
 namespace c971_project.ViewModels
@@ -29,51 +26,30 @@ namespace c971_project.ViewModels
             _databaseService = databaseService;
             Title = "Home";
 
-            // Load initial data
             _ = LoadDataAsync();
-
-            // Listen for term updates
-            WeakReferenceMessenger.Default.Register<TermUpdatedMessage>(this, async (r, m) =>
-            {
-                await LoadDataAsync();
-            });
-
-            // Listen for student updates
-            WeakReferenceMessenger.Default.Register<StudentUpdatedMessage>(this, async (r, m) =>
-            {
-                await LoadDataAsync();
-            });
         }
 
         public async Task LoadDataAsync()
         {
-            if (IsBusy) return;
-
             try
             {
-                IsBusy = true;
-
                 CurrentStudent = await _databaseService.GetCurrentStudentAsync();
-                var termList = await _databaseService.GetTermsAsync();
-
-                Terms.Clear();
-                foreach (var term in termList)
-                {
-                    Terms.Add(term); // ObservableCollection will update UI automatically
-                }
+                Terms = new ObservableCollection<Term>(await _databaseService.GetTermsAsync());
             }
             catch (Exception ex)
             {
                 Debug.WriteLine($"Error loading HomeViewModel data: {ex.Message}");
                 CurrentStudent = null;
+                var termList = await _databaseService.GetTermsAsync();
+                // Clear the collection first (optional depending on use case)
                 Terms.Clear();
-            }
-            finally
-            {
-                IsBusy = false;
+                foreach (var term in termList)
+                {
+                    term.Name = term.Name.ToUpper(); // just an example update
+                    Terms.Add(term); // this will notify UI because ObservableCollection
+                }
             }
         }
-
 
         [RelayCommand]
         private async Task OnAddTermAsync()
