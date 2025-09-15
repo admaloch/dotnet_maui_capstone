@@ -3,16 +3,19 @@
     x:Class="c971_project.Views.AddTermPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    Title="Add Term"
-    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:System="clr-namespace:System;assembly=mscorlib"
-
-    >
+    Title="Add Term"
+    BackgroundColor="{StaticResource Cream}">
 
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="15">
-
-            <!-- Term Name -->
+            <!--  Header  -->
+            <Label
+                Margin="0,20,0,0"
+                HorizontalOptions="Center"
+                Style="{StaticResource HeaderLabel}"
+                Text="Add new Term" />
+            <!--  Term Name  -->
             <VerticalStackLayout Spacing="5">
                 <Label
                     Style="{StaticResource FieldLabel}"
@@ -22,37 +25,21 @@
                     Placeholder="Enter term name"
                     Text="{Binding NewTerm.Name, Mode=TwoWay}"
                     TextColor="{StaticResource DarkBlue}" />
-                <Label
-                    Margin="5,0,0,0"
-                    FontSize="12"
-                    TextColor="Red"
-                    IsVisible="{Binding NewTerm.HasErrors}"
-                    Text="{Binding NewTerm, Converter={StaticResource FirstErrorConverter}, ConverterParameter=Name}" />
             </VerticalStackLayout>
-
-            <!-- Start Date -->
+            <!--  Start Date  -->
             <VerticalStackLayout Spacing="5">
                 <Label
                     Style="{StaticResource FieldLabel}"
                     Text="Start Date"
                     TextColor="{StaticResource DarkBlue}" />
-                <DatePicker
-                    Date="{Binding NewTerm.StartDate, Mode=TwoWay}"
-                    MinimumDate="{x:Static System:DateTime.Today}" />
-                <Label
-                    Margin="5,0,0,0"
-                    FontSize="12"
-                    TextColor="Red"
-                    IsVisible="{Binding NewTerm.HasErrors}"
-                    Text="{Binding NewTerm, Converter={StaticResource FirstErrorConverter}, ConverterParameter=StartDate}" />
+                <DatePicker Date="{Binding NewTerm.StartDate, Mode=TwoWay}" MinimumDate="{x:Static System:DateTime.Today}" />
             </VerticalStackLayout>
-
-            <!-- Save Button -->
+            <!--  Save Button  -->
             <Button
-                Text="Save Term"
                 Command="{Binding SaveTermCommand}"
-                HorizontalOptions="Center" />
-
+                HorizontalOptions="Center"
+                Text="Save Term" />
         </VerticalStackLayout>
     </ScrollView>
+
 </ContentPage>

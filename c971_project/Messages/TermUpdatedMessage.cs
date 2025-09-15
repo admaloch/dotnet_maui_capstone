@@ -2,8 +2,8 @@
 
 namespace c971_project.Messages
 {
-    public class TermUpdatedMessage : ValueChangedMessage<int>
+    public class TermUpdatedMessage : ValueChangedMessage<bool>
     {
-        public TermUpdatedMessage(int termId = 0) : base(termId) { }
+        public TermUpdatedMessage() : base(true) { }
     }
 }

@@ -34,6 +34,11 @@ namespace c971_project.ViewModels
             {
                 await LoadDataAsync(); // reload from DB so Home reflects persisted data
             });
+
+            WeakReferenceMessenger.Default.Register<TermUpdatedMessage>(this, async (r, m) =>
+            {
+                await LoadDataAsync(); // refresh terms from DB
+            });
         }
 
         public async Task LoadDataAsync()

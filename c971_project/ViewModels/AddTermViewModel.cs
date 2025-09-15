@@ -1,4 +1,7 @@
 ﻿using c971_project.Models;
+using c971_project.Helpers;
+using c971_project.Messages;
+
 using c971_project.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -39,35 +42,25 @@ namespace c971_project.ViewModels
             {
                 IsBusy = true;
 
-                // Validate all properties
-                NewTerm.ValidateTerm();
+                NewTerm.Validate();
 
                 if (NewTerm.HasErrors)
                 {
-                    // Collect all error messages
-                    var propertiesToCheck = new[] { nameof(NewTerm.Name), nameof(NewTerm.StartDate) };
-                    var allErrors = new List<string>();
+                    var errorMessage = ValidationHelper.GetErrors(
+                        NewTerm,
+                        nameof(Term.Name),
+                        nameof(Term.StartDate)
+                    );
 
-                    foreach (var prop in propertiesToCheck)
-                    {
-                        var errors = NewTerm.GetErrors(prop);
-                        if (errors != null)
-                        {
-                            foreach (var err in errors)
-                                allErrors.Add(err.ErrorMessage);
-                        }
-                    }
-
-                    var errorMessage = string.Join(Environment.NewLine + Environment.NewLine, allErrors);
-                    await App.Current.MainPage.DisplayAlert("Validation Errors", errorMessage, "OK");
+                    await Shell.Current.DisplayAlert("Validation Errors", errorMessage, "OK");
                     return;
                 }
 
                 // Save to database
                 await _databaseService.SaveTermAsync(NewTerm);
 
-                // Optional: send message if HomeViewModel should refresh
-                //WeakReferenceMessenger.Default.Send(new TermUpdatedMessage());
+                // Optional: notify other viewmodels
+                WeakReferenceMessenger.Default.Send(new TermUpdatedMessage());
 
                 await Shell.Current.DisplayAlert("Success", "Term saved successfully.", "OK");
                 await Shell.Current.GoToAsync("..");
@@ -82,5 +75,6 @@ namespace c971_project.ViewModels
                 IsBusy = false;
             }
         }
+
     }
 }

@@ -29,7 +29,6 @@ namespace c971_project.Models
         }
         private int _termNum;
 
-        [Required(ErrorMessage = "Start date is required")]
         public DateTime StartDate
         {
             get => _startDate;
@@ -44,11 +43,12 @@ namespace c971_project.Models
         }
         private DateTime _endDate = DateTime.Today.AddMonths(4); // default length
 
-        // Optional: helper to validate all properties
-        public bool ValidateTerm()
+        // Helper to validate all properties
+        public void Validate()
         {
             ValidateAllProperties();
-            return !HasErrors;
         }
+
+
     }
 }

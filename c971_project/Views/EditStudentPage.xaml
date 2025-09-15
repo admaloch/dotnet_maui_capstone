@@ -3,6 +3,7 @@
     x:Class="c971_project.Views.EditStudentPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:System="clr-namespace:System;assembly=mscorlib"
     xmlns:converters="clr-namespace:c971_project.Converters"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     Title="Edit Student"
@@ -15,18 +16,18 @@
     </ContentPage.Resources>
 
     <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="20">
+        <VerticalStackLayout Padding="20" Spacing="15">
 
             <!--  Header  -->
             <Label
                 Margin="0,20,0,0"
                 HorizontalOptions="Center"
                 Style="{StaticResource HeaderLabel}"
-                Text="Edit Student Information" />
+                Text="Add new Term" />
 
-            <!--  Student Info Form  -->
+            <!--  Form Bubble  -->
             <Border
-                Padding="20"
+                Padding="50"
                 BackgroundColor="{StaticResource White}"
                 Stroke="{StaticResource Charcoal}"
                 StrokeShape="RoundRectangle 12"
@@ -41,123 +42,40 @@
                         Offset="0,4" />
                 </Border.Shadow>
 
-                <VerticalStackLayout Spacing="1">
+                <VerticalStackLayout Spacing="15">
 
-                    <!--  Student ID  -->
-                    <VerticalStackLayout Spacing="1">
+                    <!--  Term Name  -->
+                    <VerticalStackLayout Spacing="5">
                         <Label
                             Style="{StaticResource FieldLabel}"
-                            Text="Student ID"
+                            Text="Term Name"
                             TextColor="{StaticResource DarkBlue}" />
                         <Entry
-                            Placeholder="Enter student ID"
-                            PlaceholderColor="{StaticResource LightBrown}"
-                            Text="{Binding Student.StudentId, Mode=TwoWay}"
+                            Placeholder="Enter term namez"
+                            Text="{Binding NewTerm.Name, Mode=TwoWay}"
                             TextColor="{StaticResource DarkBlue}" />
-                        <Label
-                            Margin="5,0,0,0"
-                            FontSize="12"
-                            IsVisible="{Binding Student.HasErrors}"
-                            Text="{Binding Student, Converter={StaticResource FirstErrorConverter}, ConverterParameter=StudentId}"
-                            TextColor="Red" />
                     </VerticalStackLayout>
 
-
-                    <!--  Full Name  -->
-                    <VerticalStackLayout Spacing="1">
+                    <!--  Start Date  -->
+                    <VerticalStackLayout Spacing="5">
                         <Label
                             Style="{StaticResource FieldLabel}"
-                            Text="Full Name"
+                            Text="Start Date"
                             TextColor="{StaticResource DarkBlue}" />
-                        <Entry
-                            Placeholder="Enter full name"
-                            PlaceholderColor="{StaticResource LightBrown}"
-                            Text="{Binding Student.Name, Mode=TwoWay}"
-                            TextColor="{StaticResource DarkBlue}" />
-                        <Label
-                            Margin="5,0,0,0"
-                            FontSize="12"
-                            IsVisible="{Binding Student.HasErrors}"
-                            Text="{Binding Student, Converter={StaticResource FirstErrorConverter}, ConverterParameter=Name}"
-                            TextColor="Red" />
-                    </VerticalStackLayout>
-
-                    <!--  Email  -->
-                    <VerticalStackLayout Spacing="1">
-                        <Label
-                            Style="{StaticResource FieldLabel}"
-                            Text="Email"
-                            TextColor="{StaticResource DarkBlue}" />
-                        <Entry
-                            Keyboard="Email"
-                            Placeholder="Enter email address"
-                            PlaceholderColor="{StaticResource LightBrown}"
-                            Text="{Binding Student.Email, Mode=TwoWay}"
-                            TextColor="{StaticResource DarkBlue}" />
-                        <Label
-                            Margin="5,0,0,0"
-                            FontSize="12"
-                            IsVisible="{Binding Student.HasErrors}"
-                            Text="{Binding Student, Converter={StaticResource FirstErrorConverter}, ConverterParameter=Email}"
-                            TextColor="Red" />
-                    </VerticalStackLayout>
-
-                    <!--  Status  -->
-                    <VerticalStackLayout Spacing="1">
-                        <Label
-                            Style="{StaticResource FieldLabel}"
-                            Text="Enrollment Status"
-                            TextColor="{StaticResource DarkBlue}" />
-
-                        <Picker
-                            Title="Select Status"
-                            ItemsSource="{Binding StatusOptions}"
-                            SelectedItem="{Binding Student.Status, Mode=TwoWay}" />
-
-                        <Label
-                            Margin="5,0,0,0"
-                            FontSize="12"
-                            IsVisible="{Binding Student.HasErrors}"
-                            Text="{Binding Student, Converter={StaticResource FirstErrorConverter}, ConverterParameter=Status}"
-                            TextColor="Red" />
-                    </VerticalStackLayout>
-
-
-                    <!--  Major  -->
-                    <VerticalStackLayout Spacing="1">
-                        <Label
-                            Style="{StaticResource FieldLabel}"
-                            Text="Major"
-                            TextColor="{StaticResource DarkBlue}" />
-                        <Entry
-                            Placeholder="Enter major"
-                            PlaceholderColor="{StaticResource LightBrown}"
-                            Text="{Binding Student.Major, Mode=TwoWay}"
-                            TextColor="{StaticResource DarkBlue}" />
-                        <Label
-                            Margin="5,0,0,0"
-                            FontSize="12"
-                            IsVisible="{Binding Student.HasErrors}"
-                            Text="{Binding Student, Converter={StaticResource FirstErrorConverter}, ConverterParameter=Major}"
-                            TextColor="Red" />
+                        <DatePicker Date="{Binding NewTerm.StartDate, Mode=TwoWay}" MinimumDate="{x:Static System:DateTime.Today}" />
                     </VerticalStackLayout>
 
                 </VerticalStackLayout>
             </Border>
 
-            <!--  Action Buttons  -->
-            <HorizontalStackLayout HorizontalOptions="Center" Spacing="15">
-                <Button
-                    Command="{Binding CancelCommand}"
-                    Style="{StaticResource SecondaryButton}"
-                    Text="Cancel" />
-                <Button
-                    Command="{Binding SaveStudentCommand}"
-                    Style="{StaticResource PrimaryButton}"
-                    Text="Save Changes" />
-            </HorizontalStackLayout>
+            <!--  Save Button  -->
+            <Button
+                Command="{Binding SaveTermCommand}"
+                HorizontalOptions="Center"
+                Text="Save Term" />
 
         </VerticalStackLayout>
     </ScrollView>
+
 
 </ContentPage>
