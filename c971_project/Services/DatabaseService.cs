@@ -27,6 +27,9 @@ namespace c971_project.Services
             _connection.CreateTableAsync<Assessment>().Wait();
             _connection.CreateTableAsync<Note>().Wait();
 
+
+            //DeleteDatabase();
+
             SeedDataAsync();
 
         }
@@ -34,10 +37,12 @@ namespace c971_project.Services
 
         private async void SeedDataAsync()
         {
+
+
             var existingStudent = await _connection.Table<Student>().FirstOrDefaultAsync();
             if (existingStudent != null)
             {
-                Debug.WriteLine("No students found. Seeding database...");
+                Debug.WriteLine("Students found!!");
                 return; // Already seeded
             }
 
@@ -147,19 +152,19 @@ namespace c971_project.Services
 
             Debug.WriteLine($"Inserted notes: {note1.NoteId} -- {note2.NoteId}");
         }
-        //private void DeleteDatabase()
-        //{
-        //    var dbPath = Path.Combine(FileSystem.AppDataDirectory, "app.db");
-        //    if (File.Exists(dbPath))
-        //    {
-        //        File.Delete(dbPath);
-        //        Debug.WriteLine("Database deleted.");
-        //    }
-        //    else
-        //    {
-        //        Debug.WriteLine("No database file found to delete.");
-        //    }
-        //}
+        private void DeleteDatabase()
+        {
+            var dbPath = Path.Combine(FileSystem.AppDataDirectory, "app.db");
+            if (File.Exists(dbPath))
+            {
+                File.Delete(dbPath);
+                Debug.WriteLine("Database deleted.");
+            }
+            else
+            {
+                Debug.WriteLine("No database file found to delete.");
+            }
+        }
         public async Task<Student> GetCurrentStudentAsync()
         {
             var students = await _connection.Table<Student>().ToListAsync();

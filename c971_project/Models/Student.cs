@@ -14,7 +14,10 @@ namespace c971_project.Models
         private string _status = "Currently Enrolled";
         private string _major = string.Empty;
 
+
         [PrimaryKey]
+        [Required(ErrorMessage = "Student ID is required")]
+        [RegularExpression(@"^\d+$", ErrorMessage = "Student ID must contain only numbers")]
         public string StudentId
         {
             get => _studentId;
@@ -59,16 +62,46 @@ namespace c971_project.Models
             return !HasErrors;
         }
 
-        // Optional: safe helper to get error for a property
-        public string? GetFirstError(string propertyName)
+        // helper to get error messages
+        public String GetStudentErrors(Student student)
         {
-            var errors = GetErrors(propertyName);
-            if (errors != null)
+            // Validate and use the returned bool
+            var valid = student.Validate(); // your helper calls ValidateAllProperties()
+            var errorMessage = "";
+
+            if (!valid)
             {
-                foreach (var err in errors)
-                    return err.ErrorMessage;
+                // Collect all error messages (explicit property list)
+                var propertiesToCheck = new[] { nameof(student.StudentId), nameof(student.Name), nameof(student.Email), nameof(student.Status), nameof(student.Major) };
+                var allErrors = new List<string>();
+
+                foreach (var prop in propertiesToCheck)
+                {
+                    var errors = student.GetErrors(prop);
+                    if (errors != null)
+                    {
+                        foreach (var err in errors)
+                            allErrors.Add(err.ErrorMessage);
+                    }
+                }
+
+                errorMessage = allErrors.Count > 0
+                    ? string.Join(Environment.NewLine + Environment.NewLine, allErrors)
+                    : "Please fix the validation errors.";
+
             }
-            return null;
+            return errorMessage; // <-- important: stop here, do not save
+        }
+        public Student Clone()
+        {
+            return new Student
+            {
+                StudentId = this.StudentId,
+                Name = this.Name,
+                Email = this.Email,
+                Status = this.Status,
+                Major = this.Major
+            };
         }
     }
 }

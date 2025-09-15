@@ -1,8 +1,11 @@
-﻿using c971_project.Models;
+﻿using c971_project.Messages;
+using c971_project.Models;
+using c971_project.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
+using CommunityToolkit.Mvvm.Messaging.Messages;
 using System.Diagnostics;
-using c971_project.Services;
 
 namespace c971_project.ViewModels
 {
@@ -34,12 +37,43 @@ namespace c971_project.ViewModels
         }
 
         [RelayCommand]
-        private async Task SaveAsync()
+        private async Task SaveStudentAsync()
         {
-            Debug.WriteLine($"[StudentViewModel] Saving student: {Student?.Name}");
+            if (IsBusy) return;
 
-            // TODO: save to database
-            await Shell.Current.GoToAsync("..");
+            try
+            {
+                IsBusy = true;
+
+                //validate and return error string
+                String ErrorMessage = Student.GetStudentErrors(Student);
+
+                if (!string.IsNullOrEmpty(ErrorMessage))
+                {
+                    await Shell.Current.DisplayAlert("Validation Errors", ErrorMessage, "OK");
+                    return;
+                }
+
+                // save if no errors
+                await _databaseService.SaveStudentAsync(Student);
+
+                // notify other viewmodels/pages if you use messaging
+                WeakReferenceMessenger.Default.Send(new StudentUpdatedMessage());
+
+                await Shell.Current.DisplayAlert("Success", "Student saved successfully.", "OK");
+                await Shell.Current.GoToAsync("..");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error saving student data: {ex.Message}");
+                await Shell.Current.DisplayAlert("Error", "Unable to save student data. Please try again.", "OK");
+            }
+            finally
+            {
+                IsBusy = false;
+            }
         }
+
+
     }
 }

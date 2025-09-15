@@ -41,12 +41,30 @@
                         Offset="0,4" />
                 </Border.Shadow>
 
-                <VerticalStackLayout Spacing="15">
+                <VerticalStackLayout Spacing="1">
 
+                    <!--  Student ID  -->
+                    <VerticalStackLayout Spacing="1">
+                        <Label
+                            Style="{StaticResource FieldLabel}"
+                            Text="Student ID"
+                            TextColor="{StaticResource DarkBlue}" />
+                        <Entry
+                            Placeholder="Enter student ID"
+                            PlaceholderColor="{StaticResource LightBrown}"
+                            Text="{Binding Student.StudentId, Mode=TwoWay}"
+                            TextColor="{StaticResource DarkBlue}" />
+                        <Label
+                            Margin="5,0,0,0"
+                            FontSize="12"
+                            IsVisible="{Binding Student.HasErrors}"
+                            Text="{Binding Student, Converter={StaticResource FirstErrorConverter}, ConverterParameter=StudentId}"
+                            TextColor="Red" />
+                    </VerticalStackLayout>
 
 
                     <!--  Full Name  -->
-                    <VerticalStackLayout Spacing="5">
+                    <VerticalStackLayout Spacing="1">
                         <Label
                             Style="{StaticResource FieldLabel}"
                             Text="Full Name"
@@ -65,7 +83,7 @@
                     </VerticalStackLayout>
 
                     <!--  Email  -->
-                    <VerticalStackLayout Spacing="5">
+                    <VerticalStackLayout Spacing="1">
                         <Label
                             Style="{StaticResource FieldLabel}"
                             Text="Email"
@@ -85,7 +103,7 @@
                     </VerticalStackLayout>
 
                     <!--  Status  -->
-                    <VerticalStackLayout Spacing="5">
+                    <VerticalStackLayout Spacing="1">
                         <Label
                             Style="{StaticResource FieldLabel}"
                             Text="Enrollment Status"
@@ -106,7 +124,7 @@
 
 
                     <!--  Major  -->
-                    <VerticalStackLayout Spacing="5">
+                    <VerticalStackLayout Spacing="1">
                         <Label
                             Style="{StaticResource FieldLabel}"
                             Text="Major"

@@ -7,6 +7,8 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using c971_project.ViewModels;
+using CommunityToolkit.Mvvm.Messaging;
+using c971_project.Messages;
 
 
 namespace c971_project.ViewModels
@@ -27,6 +29,11 @@ namespace c971_project.ViewModels
             Title = "Home";
 
             _ = LoadDataAsync();
+
+            WeakReferenceMessenger.Default.Register<StudentUpdatedMessage>(this, async (r, m) =>
+            {
+                await LoadDataAsync(); // reload from DB so Home reflects persisted data
+            });
         }
 
         public async Task LoadDataAsync()
@@ -71,9 +78,13 @@ namespace c971_project.ViewModels
             {
                 IsBusy = true;
                 await Shell.Current.GoToAsync(nameof(EditStudentPage),
-                    new Dictionary<string, object> { { "Student", CurrentStudent } });
+                    new Dictionary<string, object> { { "Student", CurrentStudent.Clone() } });
             }
             finally { IsBusy = false; }
         }
+
+
+
+
     }
 }
