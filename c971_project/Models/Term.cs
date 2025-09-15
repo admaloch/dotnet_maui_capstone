@@ -1,34 +1,54 @@
-using SQLite;
+using CommunityToolkit.Mvvm.ComponentModel;
 using System;
+using System.ComponentModel.DataAnnotations;
+using SQLite;
+using MaxLengthAttribute = System.ComponentModel.DataAnnotations.MaxLengthAttribute;
+using MinLengthAttribute = System.ComponentModel.DataAnnotations.MinLengthAttribute;
 
 namespace c971_project.Models
 {
-
-    using CommunityToolkit.Mvvm.ComponentModel;
-    using SQLite;
-    using System;
-
-    public partial class Term : ObservableObject
+    public partial class Term : ObservableValidator
     {
         [PrimaryKey, AutoIncrement]
         public int TermId { get; set; }
 
-        [Indexed]
-        public string StudentId { get; set; } = string.Empty;  // Foreign key to Student
-
-        [ObservableProperty]
+        [Required(ErrorMessage = "Term name is required")]
+        [MinLength(2, ErrorMessage = "Term name must be at least 2 characters")]
+        [MaxLength(50, ErrorMessage = "Term name cannot exceed 50 characters")]
+        public string Name
+        {
+            get => _name;
+            set => SetProperty(ref _name, value, true); // true enables validation
+        }
         private string _name = string.Empty;
 
-        [ObservableProperty]
-        private int _termNum = 1;
+        public int TermNum
+        {
+            get => _termNum;
+            set => SetProperty(ref _termNum, value);
+        }
+        private int _termNum;
 
-        [ObservableProperty]
-        private DateTime _startDate;
+        [Required(ErrorMessage = "Start date is required")]
+        public DateTime StartDate
+        {
+            get => _startDate;
+            set => SetProperty(ref _startDate, value, true);
+        }
+        private DateTime _startDate = DateTime.Today;
 
-        [ObservableProperty]
-        private DateTime _endDate;
+        public DateTime EndDate
+        {
+            get => _endDate;
+            set => SetProperty(ref _endDate, value);
+        }
+        private DateTime _endDate = DateTime.Today.AddMonths(4); // default length
+
+        // Optional: helper to validate all properties
+        public bool ValidateTerm()
+        {
+            ValidateAllProperties();
+            return !HasErrors;
+        }
     }
-
-
-
 }

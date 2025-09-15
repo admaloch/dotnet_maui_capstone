@@ -92,6 +92,7 @@ namespace c971_project.Models
             }
             return errorMessage; // <-- important: stop here, do not save
         }
+
         public Student Clone()
         {
             return new Student

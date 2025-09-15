@@ -64,7 +64,6 @@ namespace c971_project.Services
             // 2. Terms
             var term1 = new Term
             {
-                StudentId = student.StudentId,
                 Name = "Spring 2024",
                 TermNum = 1,
                 StartDate = DateTime.Now.AddMonths(-6),
@@ -178,6 +177,14 @@ namespace c971_project.Services
                 return await _connection.InsertAsync(student);
             else
                 return await _connection.UpdateAsync(student);
+        }
+
+        public async Task<int> SaveTermAsync(Term term)
+        {
+            if (term.TermId == 0)
+                return await _connection.InsertAsync(term);
+            else
+                return await _connection.UpdateAsync(term);
         }
 
 
