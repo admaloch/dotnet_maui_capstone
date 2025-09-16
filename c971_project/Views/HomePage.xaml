@@ -147,26 +147,36 @@
                                 StrokeShape="RoundRectangle 10"
                                 StrokeThickness="1">
 
-                                <Border.Shadow>
-                                    <Shadow
-                                        Brush="{StaticResource MediumGray}"
-                                        Opacity="0.3"
-                                        Radius="8"
-                                        Offset="2,2" />
-                                </Border.Shadow>
 
-                                <VerticalStackLayout Spacing="8">
-                                    <Label
-                                        FontAttributes="Bold"
-                                        Text="{Binding Name}"
-                                        TextColor="{StaticResource DarkBlue}" />
+                                <Grid>
+                                    <!--  Content  -->
+                                    <VerticalStackLayout Padding="0,0,40,0" Spacing="8">
+                                        <Label
+                                            FontAttributes="Bold"
+                                            Text="{Binding Name}"
+                                            TextColor="{StaticResource DarkBlue}" />
 
-                                    <Label Text="{Binding TermNum, StringFormat='Term {0}'}" TextColor="{StaticResource MediumGray}" />
+                                        <Label Text="{Binding TermNum, StringFormat='Term {0}'}" TextColor="{StaticResource MediumGray}" />
 
-                                    <Label Text="{Binding StartDate, StringFormat='Start: {0:MMM dd, yyyy}'}" TextColor="{StaticResource MediumGray}" />
+                                        <Label Text="{Binding StartDate, StringFormat='Start: {0:MMM dd, yyyy}'}" TextColor="{StaticResource MediumGray}" />
 
-                                    <Label Text="{Binding EndDate, StringFormat='End: {0:MMM dd, yyyy}'}" TextColor="{StaticResource MediumGray}" />
-                                </VerticalStackLayout>
+                                        <Label Text="{Binding EndDate, StringFormat='End: {0:MMM dd, yyyy}'}" TextColor="{StaticResource MediumGray}" />
+                                    </VerticalStackLayout>
+
+                                    <Image
+                                        HeightRequest="26"
+                                        HorizontalOptions="End"
+                                        Source="trash_icon.svg"
+                                        VerticalOptions="Start"
+                                        WidthRequest="26">
+                                        <Image.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeleteTermCommand}" CommandParameter="{Binding .}" />
+                                        </Image.GestureRecognizers>
+                                    </Image>
+
+
+                                </Grid>
+
                             </Border>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>

@@ -187,6 +187,11 @@ namespace c971_project.Services
                 return await _connection.UpdateAsync(term);
         }
 
+        public async Task<int> DeleteTermAsync(Term term)
+        {
+            return await _connection.DeleteAsync(term);
+        }
+
 
         // Example: Get all terms
         public async Task<List<Term>> GetTermsAsync()

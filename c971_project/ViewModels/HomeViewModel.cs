@@ -76,6 +76,33 @@ namespace c971_project.ViewModels
         }
 
         [RelayCommand]
+        private async Task OnDeleteTermAsync(Term term)
+        {
+            if (IsBusy || term == null) return;
+
+            bool confirm = await Shell.Current.DisplayAlert(
+                "Delete Term",
+                $"Are you sure you want to delete '{term.Name}'?",
+                "Delete",
+                "Cancel");
+
+            if (!confirm) return;
+
+            try
+            {
+                IsBusy = true;
+                await _databaseService.DeleteTermAsync(term);
+                Terms.Remove(term);
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Error", ex.Message, "OK");
+            }
+            finally { IsBusy = false; }
+
+        }
+
+        [RelayCommand]
         private async Task OnEditStudentAsync()
         {
             if (IsBusy) return;

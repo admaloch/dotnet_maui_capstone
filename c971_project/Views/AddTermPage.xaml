@@ -9,37 +9,78 @@
 
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="15">
+
             <!--  Header  -->
             <Label
                 Margin="0,20,0,0"
                 HorizontalOptions="Center"
                 Style="{StaticResource HeaderLabel}"
                 Text="Add new Term" />
-            <!--  Term Name  -->
-            <VerticalStackLayout Spacing="5">
-                <Label
-                    Style="{StaticResource FieldLabel}"
-                    Text="Term Name"
-                    TextColor="{StaticResource DarkBlue}" />
-                <Entry
-                    Placeholder="Enter term name"
-                    Text="{Binding NewTerm.Name, Mode=TwoWay}"
-                    TextColor="{StaticResource DarkBlue}" />
-            </VerticalStackLayout>
-            <!--  Start Date  -->
-            <VerticalStackLayout Spacing="5">
-                <Label
-                    Style="{StaticResource FieldLabel}"
-                    Text="Start Date"
-                    TextColor="{StaticResource DarkBlue}" />
-                <DatePicker Date="{Binding NewTerm.StartDate, Mode=TwoWay}" MinimumDate="{x:Static System:DateTime.Today}" />
-            </VerticalStackLayout>
-            <!--  Save Button  -->
-            <Button
-                Command="{Binding SaveTermCommand}"
-                HorizontalOptions="Center"
-                Text="Save Term" />
+
+            <!--  Card container  -->
+            <Border
+                Padding="20"
+                BackgroundColor="White"
+                Stroke="{StaticResource Charcoal}"
+                StrokeShape="RoundRectangle 12"
+                StrokeThickness="1">
+
+                <Border.Shadow>
+                    <Shadow
+                        Brush="{StaticResource DarkBlue}"
+                        Opacity="0.15"
+                        Radius="8"
+                        Offset="0,4" />
+                </Border.Shadow>
+
+                <VerticalStackLayout Spacing="15">
+
+                    <!--  Term Name  -->
+                    <VerticalStackLayout Spacing="5">
+                        <Label
+                            Style="{StaticResource FieldLabel}"
+                            Text="Term Name"
+                            TextColor="{StaticResource DarkBlue}" />
+                        <Border
+                            Padding="10"
+                            BackgroundColor="White"
+                            StrokeShape="RoundRectangle 8">
+                            <Entry
+                                BackgroundColor="Transparent"
+                                Placeholder="Enter term name"
+                                Text="{Binding NewTerm.Name, Mode=TwoWay}"
+                                TextColor="{StaticResource DarkBlue}" />
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <!--  Start Date  -->
+                    <VerticalStackLayout Spacing="5">
+                        <Label
+                            Style="{StaticResource FieldLabel}"
+                            Text="Start Date"
+                            TextColor="{StaticResource DarkBlue}" />
+                        <Border
+                            Padding="10"
+                            BackgroundColor="White"
+                            StrokeShape="RoundRectangle 8">
+                            <DatePicker
+                                BackgroundColor="Transparent"
+                                Date="{Binding NewTerm.StartDate, Mode=TwoWay}"
+                                MinimumDate="{x:Static System:DateTime.Today}" />
+                        </Border>
+                    </VerticalStackLayout>
+
+
+
+                    <!--  Save Button  -->
+                    <Button
+                        Command="{Binding SaveTermCommand}"
+                        HorizontalOptions="Center"
+                        Text="Save Term" />
+
+                </VerticalStackLayout>
+            </Border>
+
         </VerticalStackLayout>
     </ScrollView>
-
 </ContentPage>
