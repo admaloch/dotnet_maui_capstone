@@ -28,7 +28,8 @@ namespace c971_project
             builder.Services.AddTransient<StudentViewModel>();
             builder.Services.AddTransient<AddTermViewModel>();
             builder.Services.AddTransient<AddTermPage>();
-
+            builder.Services.AddTransient<TermPage>();
+            builder.Services.AddTransient<TermViewModel>();
 
 
 #if DEBUG

@@ -3,11 +3,132 @@
     x:Class="c971_project.Views.TermPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    Title="TermPage">
-    <VerticalStackLayout>
-        <Label
-            HorizontalOptions="Center"
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" />
-    </VerticalStackLayout>
+    Title="{Binding Term.Name}"
+    BackgroundColor="{StaticResource Cream}">
+
+    <Grid>
+        <!--  Main scrollable content  -->
+        <ScrollView>
+            <VerticalStackLayout Padding="20" Spacing="20">
+
+                <!--  Header  -->
+                <Label
+                    Margin="0,20,0,0"
+                    HorizontalOptions="Center"
+                    Style="{StaticResource HeaderLabel}"
+                    Text="Term Information" />
+
+                <!--  Term Info Card  -->
+                <Border
+                    Padding="15"
+                    BackgroundColor="{StaticResource White}"
+                    Stroke="{StaticResource LightBrown}"
+                    StrokeShape="RoundRectangle 12"
+                    StrokeThickness="1">
+
+                    <Border.Shadow>
+                        <Shadow
+                            Brush="{StaticResource MediumGray}"
+                            Opacity="0.3"
+                            Radius="8"
+                            Offset="2,2" />
+                    </Border.Shadow>
+
+                    <!--  Use AbsoluteLayout to position content + floating icon  -->
+
+
+                    <!--  Main content - REMOVE AbsoluteLayout properties  -->
+                    <VerticalStackLayout Spacing="12">
+                        <!--  name  -->
+                        <HorizontalStackLayout Spacing="10">
+                            <Label
+                                FontAttributes="Bold"
+                                Text="Term name:"
+                                TextColor="{StaticResource MediumGray}"
+                                WidthRequest="100" />
+                            <Label Text="{Binding Term.Name}" TextColor="{StaticResource DarkBlue}" />
+                        </HorizontalStackLayout>
+
+                        <!--  number  -->
+                        <HorizontalStackLayout Spacing="10">
+                            <Label
+                                FontAttributes="Bold"
+                                Text="Term name:"
+                                TextColor="{StaticResource MediumGray}"
+                                WidthRequest="100" />
+                            <Label Text="{Binding Term.TermNum}" TextColor="{StaticResource DarkBlue}" />
+                        </HorizontalStackLayout>
+
+                        <!--  start date  -->
+                        <HorizontalStackLayout Spacing="10">
+                            <Label
+                                FontAttributes="Bold"
+                                Text="Term name:"
+                                TextColor="{StaticResource MediumGray}"
+                                WidthRequest="100" />
+                            <Label Text="{Binding Term.StartDate}" TextColor="{StaticResource DarkBlue}" />
+                        </HorizontalStackLayout>
+
+                        <!--  start date  -->
+                        <HorizontalStackLayout Spacing="10">
+                            <Label
+                                FontAttributes="Bold"
+                                Text="Term name:"
+                                TextColor="{StaticResource MediumGray}"
+                                WidthRequest="100" />
+                            <Label Text="{Binding Term.EndDate}" TextColor="{StaticResource DarkBlue}" />
+                        </HorizontalStackLayout>
+
+                    </VerticalStackLayout>
+
+                </Border>
+
+                <!--  Courses Section Header  -->
+                <Label
+                    Margin="0,20,0,10"
+                    Style="{StaticResource HeaderLabel}"
+                    Text="Courses" />
+
+
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!--  Floating Add Term Button with Label  -->
+        <HorizontalStackLayout
+            Padding="16"
+            HorizontalOptions="End"
+            InputTransparent="False"
+            Spacing="12"
+            VerticalOptions="End">
+
+            <!--  Label  -->
+            <Label
+                FontAttributes="Bold"
+                FontSize="22"
+                Text="Add Course"
+                TextColor="{StaticResource DarkBlue}"
+                VerticalOptions="Center" />
+
+            <!--  Circular Button  -->
+            <Border
+                BackgroundColor="{StaticResource MediumGray}"
+                HeightRequest="56"
+                StrokeShape="Ellipse"
+                WidthRequest="56">
+
+                <Image
+                    HeightRequest="31"
+                    HorizontalOptions="Center"
+                    Source="add_icon.svg"
+                    VerticalOptions="Center"
+                    WidthRequest="31">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding AddCourseCommand}" />
+                    </Image.GestureRecognizers>
+                </Image>
+            </Border>
+        </HorizontalStackLayout>
+
+    </Grid>
 </ContentPage>

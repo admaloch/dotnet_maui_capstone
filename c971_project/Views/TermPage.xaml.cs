@@ -1,9 +1,13 @@
-namespace c971_project.Views;
+using c971_project.ViewModels;
 
-public partial class TermPage : ContentPage
+namespace c971_project.Views
 {
-	public TermPage()
-	{
-		InitializeComponent();
-	}
+    public partial class TermPage : ContentPage
+    {
+        public TermPage(TermViewModel viewModel)
+        {
+            InitializeComponent();
+            BindingContext = viewModel;
+        }
+    }
 }

@@ -199,6 +199,14 @@ namespace c971_project.Services
             return await _connection.Table<Term>().ToListAsync();
         }
 
+        public async Task<Term> GetTermByIdAsync(int termId)
+        {
+            if (_connection == null)
+                throw new InvalidOperationException("Database connection is not initialized.");
 
+            return await _connection.Table<Term>()
+                                    .Where(t => t.TermId == termId)
+                                    .FirstOrDefaultAsync();
+        }
     }
 }

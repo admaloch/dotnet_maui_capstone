@@ -115,7 +115,18 @@ namespace c971_project.ViewModels
             finally { IsBusy = false; }
         }
 
-
+        [RelayCommand]
+        private async Task OnTermPageAsync(Term term)
+        {
+            if (IsBusy) return;
+            try
+            {
+                IsBusy = true;
+                await Shell.Current.GoToAsync(nameof(TermPage),
+                    new Dictionary<string, object> { { "TermId", term.TermId } });
+            }
+            finally { IsBusy = false; }
+        }
 
 
     }

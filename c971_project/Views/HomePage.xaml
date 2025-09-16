@@ -151,6 +151,7 @@
                                 <Grid>
                                     <!--  Content  -->
                                     <VerticalStackLayout Padding="0,0,40,0" Spacing="8">
+
                                         <Label
                                             FontAttributes="Bold"
                                             Text="{Binding Name}"
@@ -163,17 +164,33 @@
                                         <Label Text="{Binding EndDate, StringFormat='End: {0:MMM dd, yyyy}'}" TextColor="{StaticResource MediumGray}" />
                                     </VerticalStackLayout>
 
-                                    <Image
-                                        HeightRequest="26"
+                                    <!--  Icons container  -->
+                                    <HorizontalStackLayout
                                         HorizontalOptions="End"
-                                        Source="trash_icon.svg"
-                                        VerticalOptions="Start"
-                                        WidthRequest="26">
-                                        <Image.GestureRecognizers>
-                                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeleteTermCommand}" CommandParameter="{Binding .}" />
-                                        </Image.GestureRecognizers>
-                                    </Image>
+                                        Spacing="10"
+                                        VerticalOptions="Start">
 
+                                        <!--  Delete icon  -->
+                                        <Image
+                                            HeightRequest="26"
+                                            Source="trash_icon.svg"
+                                            WidthRequest="26">
+                                            <Image.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeleteTermCommand}" CommandParameter="{Binding .}" />
+                                            </Image.GestureRecognizers>
+                                        </Image>
+
+                                        <!--  More / navigate icon  -->
+                                        <Image
+                                            HeightRequest="26"
+                                            Source="more_icon.svg"
+                                            WidthRequest="26">
+                                            <Image.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.TermPageCommand}" CommandParameter="{Binding .}" />
+                                            </Image.GestureRecognizers>
+                                        </Image>
+
+                                    </HorizontalStackLayout>
 
                                 </Grid>
 
