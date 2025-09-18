@@ -25,39 +25,99 @@ namespace c971_project.ViewModels
         [ObservableProperty]
         private Term term;
 
+        [ObservableProperty]
+        private ObservableCollection<Course> _courses = new();
+
         public TermViewModel(DatabaseService databaseService)
         {
             _databaseService = databaseService;
+
+            WeakReferenceMessenger.Default.Register<CourseUpdatedMessage>(this, async (r, m) =>
+            {
+                await LoadCoursesAsync(); // reload from DB on course add
+            });
+
         }
 
-        // Called automatically when TermId is set by Shell
         partial void OnTermIdChanged(int value)
         {
-            _ = LoadTermAsync(value);
+            _ = LoadDataAsync(value);
+
+        }
+
+        private async Task LoadDataAsync(int termId)
+        {
+            await LoadTermAsync(termId);
+            await LoadCoursesAsync();
         }
 
         private async Task LoadTermAsync(int id)
         {
+            if (IsBusy) return;
+
             try
             {
+                IsBusy = true;
                 Term = await _databaseService.GetTermByIdAsync(id);
             }
             catch (Exception ex)
             {
                 Debug.WriteLine($"Error loading Term: {ex.Message}");
             }
+            finally
+            {
+                IsBusy = false;
+            }
         }
+
+        public async Task LoadCoursesAsync()
+        {
+            if (IsBusy) return;
+
+            try
+            {
+                IsBusy = true;
+
+                if (TermId <= 0)
+                    return;
+
+                var courseList = await _databaseService.GetCoursesByTermIdAsync(TermId);
+
+                Courses.Clear();
+                foreach (var course in courseList)
+                    Courses.Add(course);
+
+                Debug.WriteLine($"Total courses in DB: {Courses.Count}");
+                foreach (var c in Courses)
+                    Debug.WriteLine($"Course: {c.CourseId}, {c.Name}, TermId={c.TermId}");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error loading course data: {ex.Message}");
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+
+
+
+
 
         [RelayCommand]
         private async Task OnAddCourseAsync()
         {
-            if (IsBusy) return;
-            try
             {
-                IsBusy = true;
-                await Shell.Current.DisplayAlert("Success", "Clicked to add course", "OK");
+                if (IsBusy) return;
+                try
+                {
+                    IsBusy = true;
+                    await Shell.Current.GoToAsync(nameof(AddCoursePage),
+                        new Dictionary<string, object> { { "TermId", Term.TermId } });
+                }
+                finally { IsBusy = false; }
             }
-            finally { IsBusy = false; }
         }
     }
 

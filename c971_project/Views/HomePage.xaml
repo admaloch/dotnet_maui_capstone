@@ -157,11 +157,8 @@
                                             Text="{Binding Name}"
                                             TextColor="{StaticResource DarkBlue}" />
 
-                                        <Label Text="{Binding TermNum, StringFormat='Term {0}'}" TextColor="{StaticResource MediumGray}" />
 
-                                        <Label Text="{Binding StartDate, StringFormat='Start: {0:MMM dd, yyyy}'}" TextColor="{StaticResource MediumGray}" />
 
-                                        <Label Text="{Binding EndDate, StringFormat='End: {0:MMM dd, yyyy}'}" TextColor="{StaticResource MediumGray}" />
                                     </VerticalStackLayout>
 
                                     <!--  Icons container  -->

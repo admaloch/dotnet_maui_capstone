@@ -22,14 +22,21 @@ namespace c971_project
 
             builder.Services.AddSingleton<AppShell>();
             builder.Services.AddSingleton<DatabaseService>();
-            builder.Services.AddTransient<HomeViewModel>();
+
             builder.Services.AddTransient<HomePage>();
+            builder.Services.AddTransient<HomeViewModel>();
+
             builder.Services.AddTransient<EditStudentPage>();
             builder.Services.AddTransient<StudentViewModel>();
-            builder.Services.AddTransient<AddTermViewModel>();
+
             builder.Services.AddTransient<AddTermPage>();
+            builder.Services.AddTransient<AddTermViewModel>();
+
             builder.Services.AddTransient<TermPage>();
             builder.Services.AddTransient<TermViewModel>();
+
+            builder.Services.AddTransient<AddCoursePage>();
+            builder.Services.AddTransient<AddCourseViewModel>();
 
 
 #if DEBUG

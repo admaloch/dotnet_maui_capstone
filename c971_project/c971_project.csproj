@@ -23,10 +23,26 @@
 		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
 	</PropertyGroup>
 
+	<!-- Explicit debug settings for Android -->
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-android|AnyCPU'">
+		<EmbedAssembliesIntoApk>False</EmbedAssembliesIntoApk>
+		<AndroidLinkMode>None</AndroidLinkMode>
+		<AndroidEnableProfiler>True</AndroidEnableProfiler>
+		<AndroidUseSharedRuntime>True</AndroidUseSharedRuntime>
+		<EnableDebugger>True</EnableDebugger>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-ios|AnyCPU'">
+		<MtouchDebug>True</MtouchDebug>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-ios|AnyCPU'">
+		<MtouchDebug>True</MtouchDebug>
+	</PropertyGroup>
+
 	<ItemGroup>
 		<!-- Add this line to include your HomePage -->
 		<MauiPage Include="Views\HomePage.xaml" />
-
 
 		<!-- App Icon -->
 		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
@@ -46,12 +62,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <AndroidResource Remove="NewFolder1\**" />
-	  <Compile Remove="NewFolder1\**" />
-	  <EmbeddedResource Remove="NewFolder1\**" />
-	  <MauiCss Remove="NewFolder1\**" />
-	  <MauiXaml Remove="NewFolder1\**" />
-	  <None Remove="NewFolder1\**" />
+		<AndroidResource Remove="NewFolder1\**" />
+		<Compile Remove="NewFolder1\**" />
+		<EmbeddedResource Remove="NewFolder1\**" />
+		<MauiCss Remove="NewFolder1\**" />
+		<MauiXaml Remove="NewFolder1\**" />
+		<None Remove="NewFolder1\**" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -59,20 +75,21 @@
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.5" />
 		<PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
-
-
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="Views\AddTermPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Views\EditStudentPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Views\TermPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
+		<MauiXaml Update="Views\AddCoursePage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\AddTermPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\EditStudentPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\TermPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
 	</ItemGroup>
 
 </Project>

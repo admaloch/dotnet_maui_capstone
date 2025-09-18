@@ -53,9 +53,9 @@
                         <HorizontalStackLayout Spacing="10">
                             <Label
                                 FontAttributes="Bold"
-                                Text="Term name:"
+                                Text="Term number:"
                                 TextColor="{StaticResource MediumGray}"
-                                WidthRequest="100" />
+                                WidthRequest="105" />
                             <Label Text="{Binding Term.TermNum}" TextColor="{StaticResource DarkBlue}" />
                         </HorizontalStackLayout>
 
@@ -63,17 +63,17 @@
                         <HorizontalStackLayout Spacing="10">
                             <Label
                                 FontAttributes="Bold"
-                                Text="Term name:"
+                                Text="Start date:"
                                 TextColor="{StaticResource MediumGray}"
                                 WidthRequest="100" />
                             <Label Text="{Binding Term.StartDate}" TextColor="{StaticResource DarkBlue}" />
                         </HorizontalStackLayout>
 
-                        <!--  start date  -->
+                        <!--  end date  -->
                         <HorizontalStackLayout Spacing="10">
                             <Label
                                 FontAttributes="Bold"
-                                Text="Term name:"
+                                Text="End name:"
                                 TextColor="{StaticResource MediumGray}"
                                 WidthRequest="100" />
                             <Label Text="{Binding Term.EndDate}" TextColor="{StaticResource DarkBlue}" />
@@ -89,6 +89,69 @@
                     Style="{StaticResource HeaderLabel}"
                     Text="Courses" />
 
+                <CollectionView
+                    EmptyView="No terms available yet. Add your first term to get started!"
+                    ItemsSource="{Binding Courses}"
+                    SelectionMode="Single">
+
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Border
+                                Margin="0,5"
+                                Padding="15"
+                                BackgroundColor="{StaticResource White}"
+                                Stroke="{StaticResource MediumGray}"
+                                StrokeShape="RoundRectangle 10"
+                                StrokeThickness="1">
+
+
+                                <Grid>
+                                    <!--  Content  -->
+                                    <VerticalStackLayout Padding="0,0,40,0" Spacing="8">
+
+                                        <Label
+                                            FontAttributes="Bold"
+                                            Text="{Binding Name}"
+                                            TextColor="{StaticResource DarkBlue}" />
+
+
+
+                                    </VerticalStackLayout>
+
+                                    <!--  Icons container  -->
+                                    <HorizontalStackLayout
+                                        HorizontalOptions="End"
+                                        Spacing="10"
+                                        VerticalOptions="Start">
+
+                                        <!--  Delete icon  -->
+                                        <Image
+                                            HeightRequest="26"
+                                            Source="trash_icon.svg"
+                                            WidthRequest="26">
+                                            <Image.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeleteTermCommand}" CommandParameter="{Binding .}" />
+                                            </Image.GestureRecognizers>
+                                        </Image>
+
+                                        <!--  More / navigate icon  -->
+                                        <Image
+                                            HeightRequest="26"
+                                            Source="more_icon.svg"
+                                            WidthRequest="26">
+                                            <Image.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.TermPageCommand}" CommandParameter="{Binding .}" />
+                                            </Image.GestureRecognizers>
+                                        </Image>
+
+                                    </HorizontalStackLayout>
+
+                                </Grid>
+
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
 
 
             </VerticalStackLayout>
