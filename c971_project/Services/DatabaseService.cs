@@ -30,7 +30,7 @@ namespace c971_project.Services
 
             //DeleteDatabase();
 
-            SeedDataAsync();
+            //SeedDataAsync();
 
         }
 
@@ -88,29 +88,20 @@ namespace c971_project.Services
                 Name = "Intro to Programming",
                 CourseNum = "CS101",
                 CuNum = 3,
-                InstructorId = instructor1.InstructorId
+                InstructorId = instructor1.InstructorId,
+                TermId = term1.TermId,
+                StartDate = term1.StartDate,
+                EndDate = term1.StartDate.AddMonths(2)
             };
             await _connection.InsertAsync(course1);
             Debug.WriteLine($"Inserted courses: {course1.CourseId}");
 
-            // 5. TermCourse associations
-            var termCourse1 = new TermCourse
-            {
-                TermId = term1.TermId,
-                CourseId = course1.CourseId,
-                Status = "Currently Enrolled",
-                StartDate = term1.StartDate,
-                EndDate = term1.StartDate.AddMonths(2)
-            };
-            await _connection.InsertAsync(termCourse1);
-            Debug.WriteLine($"Inserted term-course associations: {termCourse1.Id}");
+           
 
             // 6. Assessments
             var assess1 = new Assessment
             {
-                TermId = term1.TermId,
                 CourseId = course1.CourseId,
-                StudentId = student.StudentId,
                 Name = "Programming Exam 1",
                 Type = "Objective",
                 Status = "Preparing",
@@ -119,9 +110,7 @@ namespace c971_project.Services
             };
             var assess2 = new Assessment
             {
-                TermId = term1.TermId,
                 CourseId = course1.CourseId,
-                StudentId = student.StudentId,
                 Name = "Demonstrate Programming Fundamentals",
                 Type = "Practical",
                 Status = "Preparing",
@@ -136,13 +125,13 @@ namespace c971_project.Services
             // 7. Notes
             var note1 = new Note
             {
-                AssessmentId = assess1.AssessmentId,
+                CourseId = course1.CourseId,
                 Title = "Exam Tip",
                 Body = "Review chapters 1-3 thoroughly."
             };
             var note2 = new Note
             {
-                AssessmentId = assess2.AssessmentId,
+                CourseId = course1.CourseId,
                 Title = "Assessment Tip",
                 Body = "The assessment requires demonstrating core programming concepts: 1) Data types and variables 2) Operators and expressions 3) Control structures (conditionals and loops) 4) Basic input/output 5) Problem-solving approach. Prepare by writing small programs that showcase each concept. Example: a program that takes user input, processes it using loops and conditionals, and produces formatted output. Focus on clean code and proper syntax."
             };
@@ -223,6 +212,16 @@ namespace c971_project.Services
                       .FirstOrDefaultAsync();
         }
 
+        public async Task<Course> GetCourseByIdAsync(int courseId)
+        {
+            if (_connection == null)
+                throw new InvalidOperationException("Database connection is not initialized.");
+
+            return await _connection.Table<Course>()
+                                    .Where(t => t.CourseId == courseId)
+                                    .FirstOrDefaultAsync();
+        }
+
         public async Task<int> SaveCourseAsync(Course course)
         {
             if (course.CourseId == 0)
@@ -245,10 +244,29 @@ namespace c971_project.Services
                       .Where(i => i.Email == email)
                       .FirstOrDefaultAsync();
         }
+        public async Task<Instructor> GetInstructorByIdAsync(int instructorId)
+        {
+            return await _connection.Table<Instructor>()
+                                    .Where(t => t.InstructorId == instructorId)
+                                    .FirstOrDefaultAsync();
+        }
 
         public async Task<int> DeleteCourseAsync(Course course)
         {
             return await _connection.DeleteAsync(course);
+        }
+
+        public Task<List<Assessment>> GetAssessmentsByCourseIdAsync(int courseId)
+        {
+            return _connection.Table<Assessment>()
+                      .Where(c => c.CourseId == courseId)
+                      .ToListAsync();
+        }
+        public Task<List<Note>> GetNotesByCourseIdAsync(int courseId)
+        {
+            return _connection.Table<Note>()
+                      .Where(c => c.CourseId == courseId)
+                      .ToListAsync();
         }
 
     }

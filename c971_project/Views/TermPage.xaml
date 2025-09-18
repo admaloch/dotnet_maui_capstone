@@ -111,6 +111,8 @@
 
                                         <Label
                                             FontAttributes="Bold"
+                                            HorizontalOptions="Start"
+                                            MaximumWidthRequest="250"
                                             Text="{Binding Name}"
                                             TextColor="{StaticResource DarkBlue}" />
 

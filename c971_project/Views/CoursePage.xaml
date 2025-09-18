@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="c971_project.Views.CoursePage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="{Binding Course.Name}"
+    BackgroundColor="{StaticResource Cream}">
+
+    <Grid>
+        <!--  Main scrollable content  -->
+        <ScrollView>
+
+            <VerticalStackLayout Padding="20" Spacing="20">
+
+                <!--  course info Header  -->
+                <Label
+                    Margin="0,20,0,0"
+                    HorizontalOptions="Center"
+                    Style="{StaticResource HeaderLabel}"
+                    Text="Course Information" />
+
+                <!--  Course Info Card  -->
+                <Border
+                    Padding="15"
+                    BackgroundColor="{StaticResource White}"
+                    Stroke="{StaticResource LightBrown}"
+                    StrokeShape="RoundRectangle 12"
+                    StrokeThickness="1">
+
+                    <Border.Shadow>
+                        <Shadow
+                            Brush="{StaticResource MediumGray}"
+                            Opacity="0.3"
+                            Radius="8"
+                            Offset="2,2" />
+                    </Border.Shadow>
+
+                    <!--  Use AbsoluteLayout to position content + floating icon  -->
+                    <AbsoluteLayout>
+
+                        <!--  Main content - REMOVE AbsoluteLayout properties  -->
+                        <VerticalStackLayout Spacing="12">
+                            <!--  course name  -->
+                            <HorizontalStackLayout Spacing="10">
+                                <Label
+                                    FontAttributes="Bold"
+                                    Text="Course name:"
+                                    TextColor="{StaticResource MediumGray}"
+                                    WidthRequest="120" />
+                                <Label Text="{Binding Course.Name}" TextColor="{StaticResource DarkBlue}" />
+                            </HorizontalStackLayout>
+
+                            <!--  course number  -->
+                            <HorizontalStackLayout Spacing="10">
+                                <Label
+                                    FontAttributes="Bold"
+                                    Text="Course number:"
+                                    TextColor="{StaticResource MediumGray}"
+                                    WidthRequest="120" />
+                                <Label Text="{Binding Course.CourseNum}" TextColor="{StaticResource DarkBlue}" />
+                            </HorizontalStackLayout>
+
+                            <!--  course units  -->
+                            <HorizontalStackLayout Spacing="10">
+                                <Label
+                                    FontAttributes="Bold"
+                                    Text="Course number:"
+                                    TextColor="{StaticResource MediumGray}"
+                                    WidthRequest="120" />
+                                <Label Text="{Binding Course.CuNum}" TextColor="{StaticResource DarkBlue}" />
+                            </HorizontalStackLayout>
+
+                            <!--  start date  -->
+                            <HorizontalStackLayout Spacing="10">
+                                <Label
+                                    FontAttributes="Bold"
+                                    Text="Start date:"
+                                    TextColor="{StaticResource MediumGray}"
+                                    WidthRequest="120" />
+                                <Label Text="{Binding Course.StartDate}" TextColor="{StaticResource DarkBlue}" />
+                            </HorizontalStackLayout>
+
+                            <!--  end date  -->
+                            <HorizontalStackLayout Spacing="10">
+                                <Label
+                                    FontAttributes="Bold"
+                                    Text="End name:"
+                                    TextColor="{StaticResource MediumGray}"
+                                    WidthRequest="120" />
+                                <Label Text="{Binding Course.EndDate}" TextColor="{StaticResource DarkBlue}" />
+                            </HorizontalStackLayout>
+
+                            <!--  instructor name  -->
+                            <HorizontalStackLayout Spacing="10">
+                                <Label
+                                    FontAttributes="Bold"
+                                    Text="End name:"
+                                    TextColor="{StaticResource MediumGray}"
+                                    WidthRequest="120" />
+                                <Label Text="{Binding Instructor.Name}" TextColor="{StaticResource DarkBlue}" />
+                            </HorizontalStackLayout>
+
+                            <!--  Instructor Email  -->
+                            <HorizontalStackLayout Spacing="10">
+                                <Label
+                                    FontAttributes="Bold"
+                                    Text="Email:"
+                                    TextColor="{StaticResource MediumGray}"
+                                    WidthRequest="120" />
+                                <Label Text="{Binding Instructor.Email}" TextColor="{StaticResource DarkBlue}" />
+                            </HorizontalStackLayout>
+
+                            <!--  Instructor Phone  -->
+                            <HorizontalStackLayout Spacing="10">
+                                <Label
+                                    FontAttributes="Bold"
+                                    Text="Phone:"
+                                    TextColor="{StaticResource MediumGray}"
+                                    WidthRequest="120" />
+                                <Label Text="{Binding Instructor.Phone}" TextColor="{StaticResource DarkBlue}" />
+                            </HorizontalStackLayout>
+
+
+
+                        </VerticalStackLayout>
+                        <!--  Floating Edit Icon in bottom right corner  -->
+                        <Border
+                            Margin="5,5,5,5"
+                            AbsoluteLayout.LayoutBounds="1,0,36,36"
+                            AbsoluteLayout.LayoutFlags="PositionProportional"
+                            BackgroundColor="{StaticResource MediumGray}"
+                            HeightRequest="36"
+                            StrokeShape="Ellipse"
+                            WidthRequest="36">
+
+                            <Border.Shadow>
+                                <!--  More realistic shadow  -->
+                                <Shadow
+                                    Brush="#40000000"
+                                    Opacity="0.24"
+                                    Radius="8"
+                                    Offset="0,4" />
+                            </Border.Shadow>
+
+                            <Image
+                                HeightRequest="20"
+                                HorizontalOptions="Center"
+                                Source="edit_icon.svg"
+                                VerticalOptions="Center"
+                                WidthRequest="20">
+                                <Image.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding EditStudentCommand}" />
+                                </Image.GestureRecognizers>
+                            </Image>
+                        </Border>
+
+                    </AbsoluteLayout>
+                </Border>
+
+                <!--  Assessments Section Header  -->
+                <Label
+                    Margin="0,20,0,10"
+                    Style="{StaticResource HeaderLabel}"
+                    Text="Assessments" />
+
+                <CollectionView
+                    EmptyView="No terms available yet. Add your first term to get started!"
+                    ItemsSource="{Binding Assessments}"
+                    SelectionMode="Single">
+
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Border
+                                Margin="0,5"
+                                Padding="15"
+                                BackgroundColor="{StaticResource White}"
+                                Stroke="{StaticResource MediumGray}"
+                                StrokeShape="RoundRectangle 10"
+                                StrokeThickness="1">
+
+
+                                <Grid>
+                                    <!--  Content  -->
+                                    <VerticalStackLayout Spacing="8">
+                                        <!--  Assessment Name  -->
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontSize="16"
+                                            HorizontalOptions="Start"
+                                            MaximumWidthRequest="250"
+                                            Text="{Binding Name}"
+                                            TextColor="{StaticResource DarkBlue}" />
+
+                                        <!--  Assessment Type and Status  -->
+                                        <HorizontalStackLayout Spacing="20">
+                                            <Label
+                                                FontAttributes="Bold"
+                                                Text="Type:"
+                                                TextColor="{StaticResource MediumGray}" />
+                                            <Label Text="{Binding Type}" TextColor="{StaticResource DarkBlue}" />
+
+                                            <Label
+                                                FontAttributes="Bold"
+                                                Text="Status:"
+                                                TextColor="{StaticResource MediumGray}" />
+                                            <Label Text="{Binding Status}" TextColor="{StaticResource DarkBlue}" />
+                                        </HorizontalStackLayout>
+
+                                        <!--  Start and End Dates  -->
+                                        <HorizontalStackLayout Spacing="20">
+                                            <Label
+                                                FontAttributes="Bold"
+                                                Text="Start:"
+                                                TextColor="{StaticResource MediumGray}" />
+                                            <Label Text="{Binding StartDate, StringFormat='{0:MM/dd/yyyy}'}" TextColor="{StaticResource DarkBlue}" />
+
+                                            <Label
+                                                FontAttributes="Bold"
+                                                Text="End:"
+                                                TextColor="{StaticResource MediumGray}" />
+                                            <Label Text="{Binding EndDate, StringFormat='{0:MM/dd/yyyy}'}" TextColor="{StaticResource DarkBlue}" />
+                                        </HorizontalStackLayout>
+
+                                        <!--  Date Added  -->
+                                        <HorizontalStackLayout Spacing="20">
+                                            <Label
+                                                FontAttributes="Bold"
+                                                Text="Added:"
+                                                TextColor="{StaticResource MediumGray}" />
+                                            <Label Text="{Binding DateAdded, StringFormat='{0:MM/dd/yyyy}'}" TextColor="{StaticResource DarkBlue}" />
+                                        </HorizontalStackLayout>
+                                    </VerticalStackLayout>
+
+                                    <!--  Icons container  -->
+                                    <HorizontalStackLayout
+                                        HorizontalOptions="End"
+                                        Spacing="10"
+                                        VerticalOptions="Start">
+
+                                        <!--  Delete icon  -->
+                                        <Image
+                                            HeightRequest="26"
+                                            Source="trash_icon.svg"
+                                            WidthRequest="26">
+                                            <Image.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeleteAssessmentCommand}" CommandParameter="{Binding .}" />
+                                            </Image.GestureRecognizers>
+                                        </Image>
+
+                                        <!--  More / navigate icon  -->
+                                        <Image
+                                            HeightRequest="26"
+                                            Source="more_icon.svg"
+                                            WidthRequest="26">
+                                            <Image.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.AssessmentPageCommand}" CommandParameter="{Binding .}" />
+                                            </Image.GestureRecognizers>
+                                        </Image>
+
+                                    </HorizontalStackLayout>
+
+                                </Grid>
+
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <!--  Notes Section Header  -->
+                <Label
+                    Margin="0,20,0,10"
+                    Style="{StaticResource HeaderLabel}"
+                    Text="Notes" />
+
+                <CollectionView
+                    EmptyView="No terms available yet. Add your first term to get started!"
+                    ItemsSource="{Binding Notes}"
+                    SelectionMode="Single">
+
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Border
+                                Margin="0,5"
+                                Padding="15"
+                                BackgroundColor="{StaticResource White}"
+                                Stroke="{StaticResource MediumGray}"
+                                StrokeShape="RoundRectangle 10"
+                                StrokeThickness="1">
+
+
+                                <Grid>
+                                    <!--  Content  -->
+                                    <VerticalStackLayout Spacing="8">
+                                        <!--  Note Name  -->
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontSize="16"
+                                            HorizontalOptions="Start"
+                                            MaximumWidthRequest="250"
+                                            Text="{Binding Title}"
+                                            TextColor="{StaticResource DarkBlue}" />
+
+
+
+
+                                        <!--  Last updated  -->
+                                        <HorizontalStackLayout Spacing="20">
+                                            <Label
+                                                FontAttributes="Bold"
+                                                Text="Last updated:"
+                                                TextColor="{StaticResource MediumGray}" />
+                                            <Label Text="{Binding LastUpdated, StringFormat='{0:MM/dd/yyyy}'}" TextColor="{StaticResource DarkBlue}" />
+                                        </HorizontalStackLayout>
+                                    </VerticalStackLayout>
+
+                                    <!--  Icons container  -->
+                                    <HorizontalStackLayout
+                                        HorizontalOptions="End"
+                                        Spacing="10"
+                                        VerticalOptions="Start">
+
+                                        <!--  Delete icon  -->
+                                        <Image
+                                            HeightRequest="26"
+                                            Source="trash_icon.svg"
+                                            WidthRequest="26">
+                                            <Image.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeleteNoteCommand}" CommandParameter="{Binding .}" />
+                                            </Image.GestureRecognizers>
+                                        </Image>
+
+                                        <!--  More / navigate icon  -->
+                                        <Image
+                                            HeightRequest="26"
+                                            Source="more_icon.svg"
+                                            WidthRequest="26">
+                                            <Image.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.NotePageCommand}" CommandParameter="{Binding .}" />
+                                            </Image.GestureRecognizers>
+                                        </Image>
+
+                                    </HorizontalStackLayout>
+
+                                </Grid>
+
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+
+
+    </Grid>
+
+</ContentPage>
+

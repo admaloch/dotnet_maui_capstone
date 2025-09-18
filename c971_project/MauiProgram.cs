@@ -38,6 +38,9 @@ namespace c971_project
             builder.Services.AddTransient<AddCoursePage>();
             builder.Services.AddTransient<AddCourseViewModel>();
 
+            builder.Services.AddTransient<CoursePage>();
+            builder.Services.AddTransient<CourseViewModel>();
+
 
 #if DEBUG
             builder.Logging.AddDebug();

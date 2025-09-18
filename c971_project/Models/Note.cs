@@ -9,7 +9,7 @@ namespace c971_project.Models
     {
         [PrimaryKey, AutoIncrement]
         public int NoteId { get; set; }
-        public int AssessmentId { get; set; } // nullable for course-level notes
+        public int CourseId { get; set; } // nullable for course-level notes
         public string Title { get; set; } = string.Empty;
         public string Body { get; set; } = string.Empty;
         public DateTime DateAdded { get; set; } = DateTime.Now;

@@ -123,7 +123,7 @@ namespace c971_project.ViewModels
 
             bool confirm = await Shell.Current.DisplayAlert(
                 "Delete Course",
-                $"Are you sure you want to delete '{course.CuNum} - {course.Name}'?",
+                $"Are you sure you want to delete '{course.CourseNum} - {course.Name}'?",
                 "Delete",
                 "Cancel");
 
@@ -143,17 +143,17 @@ namespace c971_project.ViewModels
 
         }
 
-        //[RelayCommand]
-        //private async Task OnCoursePageAsync(Course course)
-        //{
-        //    if (IsBusy) return;
-        //    try
-        //    {
-        //        IsBusy = true;
-        //        await Shell.Current.GoToAsync(nameof(CoursePage),
-        //            new Dictionary<string, object> { { "CourseId", course.CourseId } });
-        //    }
-        //    finally { IsBusy = false; }
-        //}
+        [RelayCommand]
+        private async Task OnCoursePageAsync(Course course)
+        {
+            if (IsBusy) return;
+            try
+            {
+                IsBusy = true;
+                await Shell.Current.GoToAsync(nameof(CoursePage),
+                    new Dictionary<string, object> { { "CourseId", course.CourseId } });
+            }
+            finally { IsBusy = false; }
+        }
     }
  }
