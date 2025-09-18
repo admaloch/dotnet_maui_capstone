@@ -11,6 +11,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
+
 namespace c971_project.ViewModels
 {
 
@@ -150,6 +151,19 @@ namespace c971_project.ViewModels
             {
                 IsBusy = false;
             }
+        }
+
+        [RelayCommand]
+        private async Task OnEditCourseAsync()
+        {
+            if (IsBusy) return;
+            try
+            {
+                IsBusy = true;
+                await Shell.Current.GoToAsync(nameof(EditCoursePage),
+                    new Dictionary<string, object> { { "CourseId", Course.CourseId } });
+            }
+            finally { IsBusy = false; }
         }
 
         [RelayCommand]

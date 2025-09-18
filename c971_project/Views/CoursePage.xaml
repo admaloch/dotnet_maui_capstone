@@ -64,7 +64,7 @@
                             <HorizontalStackLayout Spacing="10">
                                 <Label
                                     FontAttributes="Bold"
-                                    Text="Course number:"
+                                    Text="Course units:"
                                     TextColor="{StaticResource MediumGray}"
                                     WidthRequest="120" />
                                 <Label Text="{Binding Course.CuNum}" TextColor="{StaticResource DarkBlue}" />
@@ -84,7 +84,7 @@
                             <HorizontalStackLayout Spacing="10">
                                 <Label
                                     FontAttributes="Bold"
-                                    Text="End name:"
+                                    Text="End date:"
                                     TextColor="{StaticResource MediumGray}"
                                     WidthRequest="120" />
                                 <Label Text="{Binding Course.EndDate}" TextColor="{StaticResource DarkBlue}" />
@@ -94,7 +94,7 @@
                             <HorizontalStackLayout Spacing="10">
                                 <Label
                                     FontAttributes="Bold"
-                                    Text="End name:"
+                                    Text="Instructor:"
                                     TextColor="{StaticResource MediumGray}"
                                     WidthRequest="120" />
                                 <Label Text="{Binding Instructor.Name}" TextColor="{StaticResource DarkBlue}" />

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="c971_project.Views.EditCoursePage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:System="clr-namespace:System;assembly=mscorlib"
+    xmlns:converters="clr-namespace:c971_project.Converters"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    Title="Edit course"
+    BackgroundColor="{StaticResource Cream}">
+
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+
+            <!--  Header  -->
+            <Label
+                Margin="0,20,0,0"
+                HorizontalOptions="Center"
+                Style="{StaticResource HeaderLabel}"
+                Text="Add new Term" />
+
+            <!--  Form Bubble  -->
+            <Border
+                Padding="50"
+                BackgroundColor="{StaticResource White}"
+                Stroke="{StaticResource Charcoal}"
+                StrokeShape="RoundRectangle 12"
+                StrokeThickness="2"
+                Style="{StaticResource CardFrame}">
+
+                <Border.Shadow>
+                    <Shadow
+                        Brush="{StaticResource DarkBlue}"
+                        Opacity="0.2"
+                        Radius="8"
+                        Offset="0,4" />
+                </Border.Shadow>
+
+                <VerticalStackLayout Spacing="15">
+
+                    <!--  Term Name  -->
+                    <VerticalStackLayout Spacing="5">
+                        <Label
+                            Style="{StaticResource FieldLabel}"
+                            Text="Term Name"
+                            TextColor="{StaticResource DarkBlue}" />
+                        <Entry
+                            Placeholder="Enter term namez"
+                            Text="{Binding NewTerm.Name, Mode=TwoWay}"
+                            TextColor="{StaticResource DarkBlue}" />
+                    </VerticalStackLayout>
+
+                    <!--  Start Date  -->
+                    <VerticalStackLayout Spacing="5">
+                        <Label
+                            Style="{StaticResource FieldLabel}"
+                            Text="Start Date"
+                            TextColor="{StaticResource DarkBlue}" />
+                        <DatePicker Date="{Binding NewTerm.StartDate, Mode=TwoWay}" MinimumDate="{x:Static System:DateTime.Today}" />
+                    </VerticalStackLayout>
+
+                </VerticalStackLayout>
+            </Border>
+
+            <!--  Save Button  -->
+            <Button
+                Command="{Binding SaveTermCommand}"
+                HorizontalOptions="Center"
+                Text="Save Term" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+
+</ContentPage>

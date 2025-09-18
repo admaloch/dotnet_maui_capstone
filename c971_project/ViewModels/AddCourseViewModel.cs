@@ -68,85 +68,23 @@ namespace c971_project.ViewModels
             {
                 IsBusy = true;
 
-                // Build error message incrementally
-                var errorBuilder = new StringBuilder();
-
-                // Validate data annotations
-                NewInstructor.Validate();
-                NewCourse.Validate();
-
-                // Add instructor errors
-                var instructorErrors = ValidationHelper.GetErrors(
-                    NewInstructor,
-                    nameof(Instructor.Name),
-                    nameof(Instructor.Phone),
-                    nameof(Instructor.Email)
-                );
-                if (!string.IsNullOrEmpty(instructorErrors))
-                {
-                    errorBuilder.AppendLine(instructorErrors);
-                }
-
-                // Add course errors
-                var courseErrors = ValidationHelper.GetErrors(
-                    NewCourse,
-                    nameof(Course.Name),
-                    nameof(Course.CourseNum),
-                    nameof(Course.CuNum),
-                    nameof(Course.StartDate),
-                    nameof(Course.EndDate)
-                );
-                if (!string.IsNullOrEmpty(courseErrors))
-                {
-                    errorBuilder.AppendLine(courseErrors);
-                }
-
-                // Add custom validations
-                if (NewCourse.EndDate < NewCourse.StartDate)
-                {
-                    errorBuilder.AppendLine("End date cannot be before start date.");
-                }
-
-                // Check course number uniqueness
-                var existingCourse = await _databaseService.GetCourseByCourseNumAsync(NewCourse.CourseNum);
-                if (existingCourse != null)
-                {
-                    errorBuilder.AppendLine("A course with this course number already exists.");
-                }
-
-                // Display all errors at once
-                if (errorBuilder.Length > 0)
+                // 1. Validate everything
+                var errors = await ValidateCourseAndInstructorAsync();
+                if (!string.IsNullOrWhiteSpace(errors))
                 {
                     await Shell.Current.DisplayAlert("Validation Errors",
-                        $"Please fix the following errors:\n\n{errorBuilder}", "OK");
+                        $"Please fix the following errors:\n\n{errors}", "OK");
                     return;
                 }
 
-                //check if instfuctor already exists
-                var searchInstructor = await _databaseService.GetInstructorByEmailAsync(NewInstructor.Email);
-                if (searchInstructor != null)
-                {
-                    Debug.WriteLine("New instructor created");
-                    //set the instructor to the existing one
-                    NewInstructor = searchInstructor;
-                }
-                else
-                {
-                    //save the new instructor
-                    Debug.WriteLine($"Instructor already found -- set to {searchInstructor.Name}");
+                // 2. Resolve instructor (existing or new)
+                await EnsureInstructorExistsAsync();
 
-                    await _databaseService.SaveInstructorAsync(NewInstructor);
-                }
+                // 3. Save course
+                await SaveCourseAsync();
 
-                NewCourse.TermId = TermId;
-                NewCourse.InstructorId = NewInstructor.InstructorId;
-
-
-                await _databaseService.SaveCourseAsync(NewCourse);
-
-                // Optional: notify other viewmodels
+                // 4. Notify & navigate
                 WeakReferenceMessenger.Default.Send(new CourseUpdatedMessage());
-
                 await Shell.Current.DisplayAlert("Success", "Course saved successfully.", "OK");
                 await Shell.Current.GoToAsync("..");
             }
@@ -160,6 +98,60 @@ namespace c971_project.ViewModels
                 IsBusy = false;
             }
         }
+
+
+        private async Task<string> ValidateCourseAndInstructorAsync()
+        {
+            var errorBuilder = new StringBuilder();
+
+            // Data annotation validation
+            NewInstructor.Validate();
+            NewCourse.Validate();
+
+            // Instructor errors
+            errorBuilder.AppendLine(ValidationHelper.GetErrors(
+                NewInstructor, nameof(Instructor.Name), nameof(Instructor.Phone), nameof(Instructor.Email)));
+
+            // Course errors
+            errorBuilder.AppendLine(ValidationHelper.GetErrors(
+                NewCourse, nameof(Course.Name), nameof(Course.CourseNum),
+                nameof(Course.CuNum), nameof(Course.StartDate), nameof(Course.EndDate)));
+
+            // Custom rules
+            if (NewCourse.EndDate < NewCourse.StartDate)
+                errorBuilder.AppendLine("End date cannot be before start date.");
+
+            // Check unique course number
+            var existingCourse = await _databaseService.GetCourseByCourseNumAsync(NewCourse.CourseNum);
+            if (existingCourse != null)
+                errorBuilder.AppendLine("A course with this course number already exists.");
+
+            return errorBuilder.ToString().Trim();
+        }
+
+        private async Task EnsureInstructorExistsAsync()
+        {
+            var searchInstructor = await _databaseService.GetInstructorByEmailAsync(NewInstructor.Email);
+
+            if (searchInstructor != null)
+            {
+                Debug.WriteLine($"Instructor already found -- set to {searchInstructor.Name}");
+                NewInstructor = searchInstructor;
+            }
+            else
+            {
+                Debug.WriteLine("New instructor created");
+                await _databaseService.SaveInstructorAsync(NewInstructor);
+            }
+        }
+
+        private async Task SaveCourseAsync()
+        {
+            NewCourse.TermId = TermId;
+            NewCourse.InstructorId = NewInstructor.InstructorId;
+            await _databaseService.SaveCourseAsync(NewCourse);
+        }
+
 
     }
 }
