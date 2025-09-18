@@ -11,61 +11,44 @@ namespace c971_project.Services
     {
         private readonly SQLiteAsyncConnection _connection;
 
-        private DatabaseService(SQLiteAsyncConnection connection)
-        {
-            _connection = connection;
-        }
-
-        // Async factory method
-        public static async Task<DatabaseService> CreateAsync()
+        public DatabaseService()
         {
             var dbPath = Path.Combine(FileSystem.AppDataDirectory, "app.db");
-            var connection = new SQLiteAsyncConnection(dbPath);
 
-            // Create tables asynchronously
-            await connection.CreateTableAsync<Student>();
-            await connection.CreateTableAsync<Term>();
-            await connection.CreateTableAsync<Instructor>();
-            await connection.CreateTableAsync<Course>();
-            await connection.CreateTableAsync<TermCourse>();
-            await connection.CreateTableAsync<Assessment>();
-            await connection.CreateTableAsync<Note>();
+            // Use async connection
+            _connection = new SQLiteAsyncConnection(dbPath);
 
-            // Seed the database
-            DeleteDatabase();
-            SeedData();
-            Debug.WriteLine("Database initialized and seeded (sync).");
+            // Create tables (async, but safe to Wait() here since it's in constructor)
+            _connection.CreateTableAsync<Student>().Wait();
+            _connection.CreateTableAsync<Term>().Wait();
+            _connection.CreateTableAsync<Instructor>().Wait();
+            _connection.CreateTableAsync<Course>().Wait();
+            _connection.CreateTableAsync<TermCourse>().Wait();
+            _connection.CreateTableAsync<Assessment>().Wait();
+            _connection.CreateTableAsync<Note>().Wait();
+
+
+            //DeleteDatabase();
+
+            SeedDataAsync();
+
         }
 
 
-
-
-        private void DeleteDatabase()
+        private async void SeedDataAsync()
         {
-            var dbPath = Path.Combine(FileSystem.AppDataDirectory, "app.db");
-            if (File.Exists(dbPath))
-            {
-                File.Delete(dbPath);
-                Debug.WriteLine("Database deleted.");
-            }
-            else
-            {
-                Debug.WriteLine("No database file found to delete.");
-            }
-        }
 
-        private void SeedData()
-        {
-            // Check if already seeded
-            var existingStudent = _connection.Table<Student>().FirstOrDefault();
+
+            var existingStudent = await _connection.Table<Student>().FirstOrDefaultAsync();
             if (existingStudent != null)
             {
                 Debug.WriteLine("Students found!!");
                 return; // Already seeded
             }
 
-            Debug.WriteLine("No students found. Seeding database...");
 
+            Debug.WriteLine("No students found. Seeding database...");
+            // 1. Student
             var student = new Student
             {
                 Name = "Brock Johnson",
@@ -74,9 +57,11 @@ namespace c971_project.Services
                 Status = "Currently Enrolled",
                 Major = "Computer Science"
             };
-            _connection.Insert(student);
-            Debug.WriteLine($"Inserted student: {student.Name}");
 
+            await _connection.InsertAsync(student);
+            Debug.WriteLine($"Inserted student: {student.Name}, ID: {student.StudentId}");
+
+            // 2. Terms
             var term1 = new Term
             {
                 Name = "Spring 2024",
@@ -84,29 +69,43 @@ namespace c971_project.Services
                 StartDate = DateTime.Now.AddMonths(-6),
                 EndDate = DateTime.Now
             };
-            _connection.Insert(term1);
+            await _connection.InsertAsync(term1);
+            Debug.WriteLine($"Inserted term: {term1.Name}");
 
+            // 3. Instructors
             var instructor1 = new Instructor
             {
                 Name = "Anika Patel",
                 Email = "anika.patel@strimeuniversity.edu",
-                Phone = "555-123-4567"
+                Phone = "555-123-4567"  // Note the format: 555-123-4567
             };
-            _connection.Insert(instructor1);
+            await _connection.InsertAsync(instructor1);
+            Debug.WriteLine($"Inserted instructor: {instructor1.Name}");
 
+            // 4. Courses
             var course1 = new Course
             {
                 Name = "Intro to Programming",
                 CourseNum = "CS101",
                 CuNum = 3,
-                InstructorId = instructor1.InstructorId,
-                TermId = term1.TermId,
-                StartDate = term1.StartDate,
-                EndDate = term1.StartDate.AddMonths(2),
-                DateAdded = DateTime.Now
+                InstructorId = instructor1.InstructorId
             };
-            _connection.Insert(course1);
+            await _connection.InsertAsync(course1);
+            Debug.WriteLine($"Inserted courses: {course1.CourseId}");
 
+            // 5. TermCourse associations
+            var termCourse1 = new TermCourse
+            {
+                TermId = term1.TermId,
+                CourseId = course1.CourseId,
+                Status = "Currently Enrolled",
+                StartDate = term1.StartDate,
+                EndDate = term1.StartDate.AddMonths(2)
+            };
+            await _connection.InsertAsync(termCourse1);
+            Debug.WriteLine($"Inserted term-course associations: {termCourse1.Id}");
+
+            // 6. Assessments
             var assess1 = new Assessment
             {
                 TermId = term1.TermId,
@@ -129,9 +128,12 @@ namespace c971_project.Services
                 StartDate = term1.StartDate,
                 EndDate = term1.StartDate.AddDays(30)
             };
-            _connection.Insert(assess1);
-            _connection.Insert(assess2);
+            await _connection.InsertAsync(assess1);
+            await _connection.InsertAsync(assess2);
 
+            Debug.WriteLine($"Inserted assessments: {assess1.AssessmentId} -- {assess2.AssessmentId}");
+
+            // 7. Notes
             var note1 = new Note
             {
                 AssessmentId = assess1.AssessmentId,
@@ -142,12 +144,25 @@ namespace c971_project.Services
             {
                 AssessmentId = assess2.AssessmentId,
                 Title = "Assessment Tip",
-                Body = "The assessment requires demonstrating core programming concepts..."
+                Body = "The assessment requires demonstrating core programming concepts: 1) Data types and variables 2) Operators and expressions 3) Control structures (conditionals and loops) 4) Basic input/output 5) Problem-solving approach. Prepare by writing small programs that showcase each concept. Example: a program that takes user input, processes it using loops and conditionals, and produces formatted output. Focus on clean code and proper syntax."
             };
-            _connection.Insert(note1);
-            _connection.Insert(note2);
+            await _connection.InsertAsync(note1);
+            await _connection.InsertAsync(note2);
 
-            Debug.WriteLine("Database seeding complete (sync).");
+            Debug.WriteLine($"Inserted notes: {note1.NoteId} -- {note2.NoteId}");
+        }
+        private void DeleteDatabase()
+        {
+            var dbPath = Path.Combine(FileSystem.AppDataDirectory, "app.db");
+            if (File.Exists(dbPath))
+            {
+                File.Delete(dbPath);
+                Debug.WriteLine("Database deleted.");
+            }
+            else
+            {
+                Debug.WriteLine("No database file found to delete.");
+            }
         }
         public async Task<Student> GetCurrentStudentAsync()
         {
@@ -229,6 +244,11 @@ namespace c971_project.Services
             return _connection.Table<Instructor>()
                       .Where(i => i.Email == email)
                       .FirstOrDefaultAsync();
+        }
+
+        public async Task<int> DeleteCourseAsync(Course course)
+        {
+            return await _connection.DeleteAsync(course);
         }
 
     }

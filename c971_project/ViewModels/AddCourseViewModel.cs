@@ -118,7 +118,7 @@ namespace c971_project.ViewModels
                 if (errorBuilder.Length > 0)
                 {
                     await Shell.Current.DisplayAlert("Validation Errors",
-                        $"Please fix the following errors:\n{errorBuilder}", "OK");
+                        $"Please fix the following errors:\n\n{errorBuilder}", "OK");
                     return;
                 }
 
@@ -126,12 +126,15 @@ namespace c971_project.ViewModels
                 var searchInstructor = await _databaseService.GetInstructorByEmailAsync(NewInstructor.Email);
                 if (searchInstructor != null)
                 {
+                    Debug.WriteLine("New instructor created");
                     //set the instructor to the existing one
                     NewInstructor = searchInstructor;
                 }
                 else
                 {
                     //save the new instructor
+                    Debug.WriteLine($"Instructor already found -- set to {searchInstructor.Name}");
+
                     await _databaseService.SaveInstructorAsync(NewInstructor);
                 }
 
