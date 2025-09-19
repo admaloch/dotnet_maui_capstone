@@ -24,19 +24,41 @@ namespace c971_project.ViewModels
         [ObservableProperty]
         private Note _newNote;
 
+        public List<string> TypeOptions { get; } = new()
+        {
+            "Objective", "Performance"
+        };
+
+        public List<string> StatusOptions { get; } = new()
+        {
+           "Not started", "In progress", "Completed"
+        };
+
         public AddNoteViewModel(DatabaseService databaseService)
         {
             _databaseService = databaseService;
+        }
 
-            // Initialize the new note
-            NewNote = new Note
+        // This runs when CourseId is assigned by Shell after navigation
+        partial void OnCourseIdChanged(int value)
+        {
+            Debug.WriteLine($"CourseId set via query: {value}");
+
+            if (NewNote == null)
             {
-                Title = string.Empty,
-                Body = string.Empty,
-                CourseId = courseId,
-                DateAdded = DateTime.Today,
-                LastUpdated = DateTime.Today
-            };
+                NewNote = new Note
+                {
+                    Title = string.Empty,
+                    Body = string.Empty,
+                    CourseId = value,
+                    DateAdded = DateTime.Today,
+                    LastUpdated = DateTime.Today
+                };
+            }
+            else
+            {
+                NewNote.CourseId = value;
+            }
         }
 
         [RelayCommand]
@@ -83,6 +105,7 @@ namespace c971_project.ViewModels
                     NewNote,
                     nameof(Note.Title),
                     nameof(Note.Body)
+
                 );
 
                 await Shell.Current.DisplayAlert("Validation Errors", errorMessage, "OK");

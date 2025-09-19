@@ -46,7 +46,7 @@ namespace c971_project.ViewModels
 
             WeakReferenceMessenger.Default.Register<NoteUpdatedMessage>(this, async (r, m) =>
             {
-                await LoadAssessmentsAsync(); // reload from DB on assessment add
+                await LoadNotesAsync(); // reload from DB on assessment add
             });
 
         }
@@ -193,7 +193,6 @@ namespace c971_project.ViewModels
         [RelayCommand]
         private async Task OnDeleteAssessmentAsync(Assessment assessment)
         {
-            await Shell.Current.DisplayAlert("Delete Assessment", "Delete assessment clicked", "OK");
             if (IsBusy || assessment == null) return;
 
             bool confirm = await Shell.Current.DisplayAlert(
@@ -245,20 +244,21 @@ namespace c971_project.ViewModels
             finally { IsBusy = false; }
         }
 
-        //[RelayCommand]
-        //private async Task OnAddNoteAsync()
-        //{
-        //    {
-        //        if (IsBusy) return;
-        //        try
-        //        {
-        //            IsBusy = true;
-        //            await Shell.Current.GoToAsync(nameof(AddNotePage),
-        //                new Dictionary<string, object> { { "TermId", Term.TermId } });
-        //        }
-        //        finally { IsBusy = false; }
-        //    }
-        //}
+        [RelayCommand]
+        private async Task OnAddNoteAsync()
+        {
+            {
+                if (IsBusy) return;
+                try
+                {
+                    IsBusy = true;
+                    await Shell.Current.GoToAsync(nameof(AddNotePage),
+                        new Dictionary<string, object> { { "CourseId", CourseId } });
+
+                }
+                finally { IsBusy = false; }
+            }
+        }
 
         //[RelayCommand]
         //private async Task OnAssessmentPageAsync(Assessment assessment)
