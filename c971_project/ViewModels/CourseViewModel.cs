@@ -46,7 +46,12 @@ namespace c971_project.ViewModels
 
             WeakReferenceMessenger.Default.Register<NoteUpdatedMessage>(this, async (r, m) =>
             {
-                await LoadNotesAsync(); // reload from DB on assessment add
+                await LoadNotesAsync(); // reload from DB on note add
+            });
+
+            WeakReferenceMessenger.Default.Register<CourseUpdatedMessage>(this, async (r, m) =>
+            {
+                await LoadCourseAsync(CourseId); // reload from DB on Course edit
             });
 
         }
@@ -167,11 +172,10 @@ namespace c971_project.ViewModels
             {
                 IsBusy = true;
                 await Shell.Current.GoToAsync(nameof(EditCoursePage),
-                    new Dictionary<string, object> { { "CourseId", Course.CourseId } });
+                    new Dictionary<string, object> { { "CourseId", CourseId } });
             }
             finally { IsBusy = false; }
         }
-
 
         //assessment methods
         [RelayCommand]

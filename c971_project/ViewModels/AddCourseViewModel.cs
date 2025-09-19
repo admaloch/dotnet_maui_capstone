@@ -29,6 +29,9 @@ namespace c971_project.ViewModels
         [ObservableProperty]
         private Instructor _newInstructor;
 
+        private bool isEdit = false;
+
+
         public List<int> CreditUnitOptions { get; } = new()
         {
             1, 2, 3, 4
@@ -38,7 +41,6 @@ namespace c971_project.ViewModels
         {
             _databaseService = databaseService;
             _courseValidator = courseValidator;
-
         }
 
         partial void OnTermIdChanged(int value)
@@ -76,7 +78,7 @@ namespace c971_project.ViewModels
                 IsBusy = true;
 
                 // 1. Validate everything
-                var errors = await _courseValidator.ValidateCourseFormAsync(TermId, NewCourse, NewInstructor);
+                var errors = await _courseValidator.ValidateCourseFormAsync(TermId, NewCourse, NewInstructor, isEdit);
 
                 // 2. print errors if any and return
                 if (!string.IsNullOrWhiteSpace(errors))

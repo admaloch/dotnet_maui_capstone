@@ -104,6 +104,13 @@ namespace c971_project.ViewModels
             return true;
         }
 
+        [RelayCommand]
+        private async Task CancelAsync()
+        {
+            // Go back one page
+            await Shell.Current.GoToAsync("..");
+        }
+
 
     }
 }

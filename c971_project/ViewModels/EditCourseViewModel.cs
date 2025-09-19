@@ -14,17 +14,31 @@ namespace c971_project.ViewModels
     public partial class EditCourseViewModel : BaseViewModel
     {
 
+        private readonly DatabaseService _databaseService;
+
+        private readonly CourseValidator _courseValidator;
+
         [ObservableProperty]
         private int courseId;
 
         [ObservableProperty]
         private Course _course;
 
-        private readonly DatabaseService _databaseService;
+        [ObservableProperty]
+        private Instructor _instructor;
 
-        public EditCourseViewModel(DatabaseService databaseService)
+        private bool isEdit = true;
+
+        public List<int> CreditUnitOptions { get; } = new()
+        {
+            1, 2, 3, 4
+        };
+
+
+        public EditCourseViewModel(DatabaseService databaseService, CourseValidator courseValidator)
         {
             _databaseService = databaseService;
+            _courseValidator = courseValidator;
         }
 
         partial void OnCourseIdChanged(int value)
@@ -35,9 +49,50 @@ namespace c971_project.ViewModels
         private async Task LoadCourseAsync(int courseId)
         {
             Course = await _databaseService.GetCourseByIdAsync(courseId);
+            Instructor = await _databaseService.GetInstructorByIdAsync(Course.InstructorId);
         }
 
+        [RelayCommand]
+        private async Task SaveCourseAsync()
+        {
+            if (IsBusy) return;
 
+            try
+            {
+                IsBusy = true;
+
+                // 1. Validate everything
+                var errors = await _courseValidator.ValidateCourseFormAsync(Course.TermId, Course, Instructor, isEdit);
+
+                // 2. print errors if any and return
+                if (!string.IsNullOrWhiteSpace(errors))
+                {
+                    await Shell.Current.DisplayAlert("Validation Errors", errors, "OK");
+                    return;
+                }
+
+                // 3. Resolve instructor - if new create new db item - else grab current item
+                await _courseValidator.EnsureInstructorExistsAsync(Instructor);
+
+                // 4. Save course
+                await _courseValidator.SaveCourseAsync(Course.TermId, Course, Instructor);
+
+                // 5. Notify & navigate
+                WeakReferenceMessenger.Default.Send(new CourseUpdatedMessage());
+
+                await Shell.Current.DisplayAlert("Success", "Course saved successfully.", "OK");
+                await Shell.Current.GoToAsync("..");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error saving Course: {ex.Message}");
+                await Shell.Current.DisplayAlert("Error", "Unable to save Course. Please try again.", "OK");
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
 
 
 

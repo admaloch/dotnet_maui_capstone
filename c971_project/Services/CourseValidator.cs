@@ -24,7 +24,7 @@ namespace c971_project.Services
         }
 
         //handle validation for toolkit, custom, instructor, unique course etc.. 
-        public async Task<string> ValidateCourseFormAsync(int TermId, Course NewCourse, Instructor NewInstructor)
+        public async Task<string> ValidateCourseFormAsync(int TermId, Course NewCourse, Instructor NewInstructor, bool isEdit)
         {
             var errorBuilder = new StringBuilder();
 
@@ -46,7 +46,7 @@ namespace c971_project.Services
                 NewInstructor, nameof(Instructor.Name), nameof(Instructor.Phone), nameof(Instructor.Email)));
 
             // Check unique course number
-            var error = await ValidateUniqueCourseNumAsync(NewCourse, isEdit: false);
+            var error = await ValidateUniqueCourseNumAsync(NewCourse, isEdit);
             if (!string.IsNullOrEmpty(error))
                 errorBuilder.AppendLine(error);
 

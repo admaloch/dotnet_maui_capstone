@@ -149,7 +149,7 @@
                                 VerticalOptions="Center"
                                 WidthRequest="20">
                                 <Image.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding EditStudentCommand}" />
+                                    <TapGestureRecognizer Command="{Binding EditCourseCommand}" />
                                 </Image.GestureRecognizers>
                             </Image>
                         </Border>
