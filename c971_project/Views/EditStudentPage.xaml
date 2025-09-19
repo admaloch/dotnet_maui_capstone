@@ -3,31 +3,22 @@
     x:Class="c971_project.Views.EditStudentPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:System="clr-namespace:System;assembly=mscorlib"
-    xmlns:converters="clr-namespace:c971_project.Converters"
-    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     Title="Edit Student"
     BackgroundColor="{StaticResource Cream}">
 
-    <ContentPage.Resources>
-        <ResourceDictionary>
-            <converters:FirstErrorConverter x:Key="FirstErrorConverter" />
-        </ResourceDictionary>
-    </ContentPage.Resources>
-
     <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="15">
+        <VerticalStackLayout Padding="20" Spacing="20">
 
             <!--  Header  -->
             <Label
                 Margin="0,20,0,0"
                 HorizontalOptions="Center"
                 Style="{StaticResource HeaderLabel}"
-                Text="Add new Term" />
+                Text="Edit Student Information" />
 
-            <!--  Form Bubble  -->
+            <!--  Student Info Form  -->
             <Border
-                Padding="50"
+                Padding="20"
                 BackgroundColor="{StaticResource White}"
                 Stroke="{StaticResource Charcoal}"
                 StrokeShape="RoundRectangle 12"
@@ -42,40 +33,89 @@
                         Offset="0,4" />
                 </Border.Shadow>
 
-                <VerticalStackLayout Spacing="15">
+                <VerticalStackLayout Spacing="10">
 
-                    <!--  Term Name  -->
+                    <!--  Student ID  -->
                     <VerticalStackLayout Spacing="5">
                         <Label
                             Style="{StaticResource FieldLabel}"
-                            Text="Term Name"
+                            Text="Student ID"
                             TextColor="{StaticResource DarkBlue}" />
                         <Entry
-                            Placeholder="Enter term namez"
-                            Text="{Binding NewTerm.Name, Mode=TwoWay}"
+                            Placeholder="Enter student ID"
+                            PlaceholderColor="{StaticResource LightBrown}"
+                            Text="{Binding Student.StudentId, Mode=TwoWay}"
                             TextColor="{StaticResource DarkBlue}" />
                     </VerticalStackLayout>
 
-                    <!--  Start Date  -->
+                    <!--  Full Name  -->
                     <VerticalStackLayout Spacing="5">
                         <Label
                             Style="{StaticResource FieldLabel}"
-                            Text="Start Date"
+                            Text="Full Name"
                             TextColor="{StaticResource DarkBlue}" />
-                        <DatePicker Date="{Binding NewTerm.StartDate, Mode=TwoWay}" MinimumDate="{x:Static System:DateTime.Today}" />
+                        <Entry
+                            Placeholder="Enter full name"
+                            PlaceholderColor="{StaticResource LightBrown}"
+                            Text="{Binding Student.Name, Mode=TwoWay}"
+                            TextColor="{StaticResource DarkBlue}" />
+                    </VerticalStackLayout>
+
+                    <!--  Email  -->
+                    <VerticalStackLayout Spacing="5">
+                        <Label
+                            Style="{StaticResource FieldLabel}"
+                            Text="Email"
+                            TextColor="{StaticResource DarkBlue}" />
+                        <Entry
+                            Keyboard="Email"
+                            Placeholder="Enter email address"
+                            PlaceholderColor="{StaticResource LightBrown}"
+                            Text="{Binding Student.Email, Mode=TwoWay}"
+                            TextColor="{StaticResource DarkBlue}" />
+                    </VerticalStackLayout>
+
+                    <!--  Status  -->
+                    <VerticalStackLayout Spacing="5">
+                        <Label
+                            Style="{StaticResource FieldLabel}"
+                            Text="Enrollment Status"
+                            TextColor="{StaticResource DarkBlue}" />
+                        <Picker
+                            Title="Select Status"
+                            ItemsSource="{Binding StatusOptions}"
+                            SelectedItem="{Binding Student.Status, Mode=TwoWay}" />
+                    </VerticalStackLayout>
+
+                    <!--  Major  -->
+                    <VerticalStackLayout Spacing="5">
+                        <Label
+                            Style="{StaticResource FieldLabel}"
+                            Text="Major"
+                            TextColor="{StaticResource DarkBlue}" />
+                        <Entry
+                            Placeholder="Enter major"
+                            PlaceholderColor="{StaticResource LightBrown}"
+                            Text="{Binding Student.Major, Mode=TwoWay}"
+                            TextColor="{StaticResource DarkBlue}" />
                     </VerticalStackLayout>
 
                 </VerticalStackLayout>
             </Border>
 
-            <!--  Save Button  -->
-            <Button
-                Command="{Binding SaveTermCommand}"
-                HorizontalOptions="Center"
-                Text="Save Term" />
+            <!--  Action Buttons  -->
+            <HorizontalStackLayout HorizontalOptions="Center" Spacing="15">
+                <Button
+                    Command="{Binding CancelCommand}"
+                    Style="{StaticResource SecondaryButton}"
+                    Text="Cancel" />
+                <Button
+                    Command="{Binding SaveStudentCommand}"
+                    Style="{StaticResource PrimaryButton}"
+                    Text="Save Changes" />
+            </HorizontalStackLayout>
 
         </VerticalStackLayout>
     </ScrollView>
-
 
 </ContentPage>

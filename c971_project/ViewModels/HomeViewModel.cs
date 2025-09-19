@@ -26,7 +26,6 @@ namespace c971_project.ViewModels
         public HomeViewModel(DatabaseService databaseService)
         {
             _databaseService = databaseService;
-            Title = "Home";
 
             _ = LoadDataAsync();
 
@@ -110,7 +109,8 @@ namespace c971_project.ViewModels
             {
                 IsBusy = true;
                 await Shell.Current.GoToAsync(nameof(EditStudentPage),
-                    new Dictionary<string, object> { { "Student", CurrentStudent.Clone() } });
+                    new Dictionary<string, object> { { "StudentId", CurrentStudent.StudentId } });
+
             }
             finally { IsBusy = false; }
         }

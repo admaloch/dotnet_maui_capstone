@@ -22,7 +22,7 @@
         <Setter Property="FontSize" Value="16" />
     </Style>
 
-    <!-- Field Label (above inputs) -->
+    <!--  Field Label (above inputs)  -->
     <Style x:Key="FieldLabel" TargetType="Label">
         <Setter Property="FontSize" Value="14" />
         <Setter Property="FontAttributes" Value="Bold" />
@@ -30,7 +30,7 @@
         <Setter Property="TextColor" Value="{StaticResource DarkBlue}" />
     </Style>
 
-    <!-- Field Border (around inputs) -->
+    <!--  Field Border (around inputs)  -->
     <Style x:Key="FieldBorder" TargetType="Border">
         <Setter Property="StrokeShape" Value="RoundRectangle 8" />
         <Setter Property="BackgroundColor" Value="{StaticResource White}" />
@@ -38,7 +38,7 @@
         <Setter Property="Margin" Value="0,0,0,10" />
     </Style>
 
-    <!-- Field Entry (single-line text) -->
+    <!--  Field Entry (single-line text)  -->
     <Style x:Key="FieldEntry" TargetType="Entry">
         <Setter Property="BackgroundColor" Value="Transparent" />
         <Setter Property="TextColor" Value="{StaticResource DarkBlue}" />
@@ -46,7 +46,7 @@
         <Setter Property="FontSize" Value="16" />
     </Style>
 
-    <!-- Field Editor (multi-line text) -->
+    <!--  Field Editor (multi-line text)  -->
     <Style x:Key="FieldEditor" TargetType="Editor">
         <Setter Property="BackgroundColor" Value="Transparent" />
         <Setter Property="TextColor" Value="{StaticResource DarkBlue}" />

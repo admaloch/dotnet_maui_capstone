@@ -41,9 +41,5 @@ namespace c971_project.Models
         {
             ValidateAllProperties();
         }
-        public Course Clone()
-        {
-            return (Course)this.MemberwiseClone();
-        }
     }
 }

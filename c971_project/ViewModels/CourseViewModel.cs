@@ -220,7 +220,6 @@ namespace c971_project.ViewModels
         [RelayCommand]
         private async Task OnDeleteNoteAsync(Note note)
         {
-            await Shell.Current.DisplayAlert("Delete Note", "Delete note clicked", "OK");
             if (IsBusy || note == null) return;
 
             bool confirm = await Shell.Current.DisplayAlert(

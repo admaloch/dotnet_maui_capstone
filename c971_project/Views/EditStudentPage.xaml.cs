@@ -4,7 +4,7 @@ namespace c971_project.Views
 {
     public partial class EditStudentPage : ContentPage
     {
-        public EditStudentPage(StudentViewModel viewModel)
+        public EditStudentPage(EditStudentViewModel viewModel)
         {
             InitializeComponent();
             BindingContext = viewModel;
