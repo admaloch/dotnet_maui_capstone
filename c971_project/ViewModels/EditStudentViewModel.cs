@@ -2,7 +2,6 @@
 using c971_project.Models;
 using c971_project.Services;
 using c971_project.Helpers;
-
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
@@ -39,26 +38,16 @@ namespace c971_project.ViewModels
         // This runs when student id changes
         partial void OnStudentIdChanged(string value)
         {
-            Debug.WriteLine($"CourseId set via query: {value}");
-
-            if (Student == null)
-            {
-                Student = new Student
-                {
-                    StudentId = value,
-                    Name = string.Empty,
-                    Email = string.Empty,
-                    Status = "Not Enrolled Yet",
-                    Major = string.Empty,
-                    DateAdded = DateTime.Today,
-                };
-            }
-            else
-            {
-                // If student id exists already, just update the id
-                Student.StudentId = value;
-            }
+            LoadStudentDataAsync(value);
         }
+
+        private async Task LoadStudentDataAsync(string studentId)
+        {
+            Student = await _databaseService.GetStudentByIdAsync(StudentId);
+        }
+
+
+
 
 
         [RelayCommand]
@@ -107,7 +96,6 @@ namespace c971_project.ViewModels
                     nameof(Student.Name),
                     nameof(Student.Email),
                     nameof(Student.Major)
-
                 );
 
                 await Shell.Current.DisplayAlert("Validation Errors", errorMessage, "OK");

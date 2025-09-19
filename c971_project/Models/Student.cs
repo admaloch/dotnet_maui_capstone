@@ -9,7 +9,7 @@ namespace c971_project.Models
     {
         [PrimaryKey]
         [Required(ErrorMessage = "Student Id is required.")]
-        public string StudentId { get; set; } = string.Empty; // Cha ged to string! 
+        public string StudentId { get; set; } = string.Empty; 
 
         [Required(ErrorMessage = "Name is required.")]
         public string Name { get; set; } = string.Empty;

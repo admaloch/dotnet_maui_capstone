@@ -9,29 +9,34 @@ using System.Diagnostics;
 
 namespace c971_project.ViewModels
 {
-    //[QueryProperty(nameof(CourseId), "CourseId")]
+    [QueryProperty(nameof(CourseId), "CourseId")]
 
     public partial class EditCourseViewModel : BaseViewModel
     {
 
+        [ObservableProperty]
+        private int courseId;
 
         [ObservableProperty]
-        private Course course;
+        private Course _course;
 
         private readonly DatabaseService _databaseService;
 
         public EditCourseViewModel(DatabaseService databaseService)
         {
             _databaseService = databaseService;
-
-           
         }
 
-        [RelayCommand]
-        private async Task CancelAsync()
+        partial void OnCourseIdChanged(int value)
         {
-            await Shell.Current.GoToAsync(".."); // navigate back
+            LoadCourseAsync(value); // call async fire-and-forget
         }
+
+        private async Task LoadCourseAsync(int courseId)
+        {
+            Course = await _databaseService.GetCourseByIdAsync(courseId);
+        }
+
 
 
 

@@ -159,6 +159,14 @@ namespace c971_project.Services
             return students.FirstOrDefault(); // Returns null if no student
         }
 
+        public async Task<Student> GetStudentByIdAsync(string studentId)
+        {
+
+            return await _connection.Table<Student>()
+                                    .Where(t => t.StudentId == studentId)
+                                    .FirstOrDefaultAsync();
+        }
+
         // Save or update student
         public async Task<int> SaveStudentAsync(Student student)
         {
@@ -190,8 +198,6 @@ namespace c971_project.Services
 
         public async Task<Term> GetTermByIdAsync(int termId)
         {
-            if (_connection == null)
-                throw new InvalidOperationException("Database connection is not initialized.");
 
             return await _connection.Table<Term>()
                                     .Where(t => t.TermId == termId)
@@ -214,9 +220,6 @@ namespace c971_project.Services
 
         public async Task<Course> GetCourseByIdAsync(int courseId)
         {
-            if (_connection == null)
-                throw new InvalidOperationException("Database connection is not initialized.");
-
             return await _connection.Table<Course>()
                                     .Where(t => t.CourseId == courseId)
                                     .FirstOrDefaultAsync();

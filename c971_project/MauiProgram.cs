@@ -22,6 +22,8 @@ namespace c971_project
 
             builder.Services.AddSingleton<AppShell>();
             builder.Services.AddSingleton<DatabaseService>();
+            builder.Services.AddSingleton<CourseValidator>();
+
 
             builder.Services.AddTransient<HomePage>();
             builder.Services.AddTransient<HomeViewModel>();

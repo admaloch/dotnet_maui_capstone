@@ -18,6 +18,8 @@ namespace c971_project.ViewModels
     {
         private readonly DatabaseService _databaseService;
 
+        private readonly CourseValidator _courseValidator;
+
         [ObservableProperty]
         private int termId;
 
@@ -32,12 +34,15 @@ namespace c971_project.ViewModels
             1, 2, 3, 4
         };
 
-
-
-        public AddCourseViewModel(DatabaseService databaseService)
+        public AddCourseViewModel(DatabaseService databaseService, CourseValidator courseValidator)
         {
             _databaseService = databaseService;
+            _courseValidator = courseValidator;
 
+        }
+
+        partial void OnTermIdChanged(int value)
+        {
             // Initialize the new course
             NewCourse = new Course
             {
@@ -48,7 +53,7 @@ namespace c971_project.ViewModels
                 EndDate = DateTime.Today.AddMonths(2), // default course length
                 DateAdded = DateTime.Now,
                 InstructorId = 0,   // will be selected later
-                TermId = termId     // links this course to the current Term
+                TermId = value     // links this course to the current Term
             };
 
             // Initialize the new course
@@ -58,11 +63,11 @@ namespace c971_project.ViewModels
                 Email = string.Empty,
                 Phone = string.Empty
             };
-
         }
 
+
         [RelayCommand]
-        private async Task OnSaveCourseAsync()
+        private async Task SaveCourseAsync()
         {
             if (IsBusy) return;
 
@@ -71,22 +76,24 @@ namespace c971_project.ViewModels
                 IsBusy = true;
 
                 // 1. Validate everything
-                var errors = await ValidateCourseAndInstructorAsync();
+                var errors = await _courseValidator.ValidateCourseFormAsync(TermId, NewCourse, NewInstructor);
+
+                // 2. print errors if any and return
                 if (!string.IsNullOrWhiteSpace(errors))
                 {
-                    await Shell.Current.DisplayAlert("Validation Errors",
-                        $"Please fix the following errors:\n\n{errors}", "OK");
+                    await Shell.Current.DisplayAlert("Validation Errors",errors, "OK");
                     return;
                 }
 
-                // 2. Resolve instructor (existing or new)
-                await EnsureInstructorExistsAsync();
+                // 3. Resolve instructor - if new create new db item - else grab current item
+                await _courseValidator.EnsureInstructorExistsAsync(NewInstructor);
 
-                // 3. Save course
-                await SaveCourseAsync();
+                // 4. Save course
+                await _courseValidator.SaveCourseAsync(TermId, NewCourse, NewInstructor);
 
-                // 4. Notify & navigate
+                // 5. Notify & navigate
                 WeakReferenceMessenger.Default.Send(new CourseUpdatedMessage());
+
                 await Shell.Current.DisplayAlert("Success", "Course saved successfully.", "OK");
                 await Shell.Current.GoToAsync("..");
             }
@@ -101,58 +108,7 @@ namespace c971_project.ViewModels
             }
         }
 
-
-        private async Task<string> ValidateCourseAndInstructorAsync()
-        {
-            var errorBuilder = new StringBuilder();
-
-            // Data annotation validation
-            NewInstructor.Validate();
-            NewCourse.Validate();
-
-            // Instructor errors
-            errorBuilder.AppendLine(ValidationHelper.GetErrors(
-                NewInstructor, nameof(Instructor.Name), nameof(Instructor.Phone), nameof(Instructor.Email)));
-
-            // Course errors
-            errorBuilder.AppendLine(ValidationHelper.GetErrors(
-                NewCourse, nameof(Course.Name), nameof(Course.CourseNum),
-                nameof(Course.CuNum), nameof(Course.StartDate), nameof(Course.EndDate)));
-
-            // Custom rules
-            if (NewCourse.EndDate < NewCourse.StartDate)
-                errorBuilder.AppendLine("End date cannot be before start date.");
-
-            // Check unique course number
-            var existingCourse = await _databaseService.GetCourseByCourseNumAsync(NewCourse.CourseNum);
-            if (existingCourse != null)
-                errorBuilder.AppendLine("A course with this course number already exists.");
-
-            return errorBuilder.ToString().Trim();
-        }
-
-        private async Task EnsureInstructorExistsAsync()
-        {
-            var searchInstructor = await _databaseService.GetInstructorByEmailAsync(NewInstructor.Email);
-
-            if (searchInstructor != null)
-            {
-                Debug.WriteLine($"Instructor already found -- set to {searchInstructor.Name}");
-                NewInstructor = searchInstructor;
-            }
-            else
-            {
-                Debug.WriteLine("New instructor created");
-                await _databaseService.SaveInstructorAsync(NewInstructor);
-            }
-        }
-
-        private async Task SaveCourseAsync()
-        {
-            NewCourse.TermId = TermId;
-            NewCourse.InstructorId = NewInstructor.InstructorId;
-            await _databaseService.SaveCourseAsync(NewCourse);
-        }
+       
 
 
     }
