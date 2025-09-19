@@ -39,10 +39,15 @@ namespace c971_project.ViewModels
         {
             _databaseService = databaseService;
 
-            //WeakReferenceMessenger.Default.Register<AssessmentUpdatedMessage>(this, async (r, m) =>
-            //{
-            //    await LoadAssessmentsAsync(); // reload from DB on assessment add
-            //});
+            WeakReferenceMessenger.Default.Register<AssessmentUpdatedMessage>(this, async (r, m) =>
+            {
+                await LoadAssessmentsAsync(); // reload from DB on assessment add
+            });
+
+            WeakReferenceMessenger.Default.Register<NoteUpdatedMessage>(this, async (r, m) =>
+            {
+                await LoadAssessmentsAsync(); // reload from DB on assessment add
+            });
 
         }
 
@@ -60,7 +65,7 @@ namespace c971_project.ViewModels
             await LoadNotesAsync();
 
         }
-
+        //load data
         private async Task LoadCourseAsync(int id)
         {
             if (IsBusy) return;
@@ -153,6 +158,7 @@ namespace c971_project.ViewModels
             }
         }
 
+        //edit course content
         [RelayCommand]
         private async Task OnEditCourseAsync()
         {
@@ -166,6 +172,8 @@ namespace c971_project.ViewModels
             finally { IsBusy = false; }
         }
 
+
+        //assessment methods
         [RelayCommand]
         private async Task OnAddAssessmentAsync()
         {
@@ -174,10 +182,8 @@ namespace c971_project.ViewModels
                 try
                 {
                     IsBusy = true;
-                    //await Shell.Current.GoToAsync(nameof(AddAssessmentPage),
-                    //    new Dictionary<string, object> { { "CourseId", Course.CourseId } });
-                    await Shell.Current.DisplayAlert("Add Assessment", "Add assessment clicked", "OK");
-
+                    await Shell.Current.GoToAsync(nameof(AddAssessmentPage),
+                        new Dictionary<string, object> { { "CourseId", CourseId } });
 
                 }
                 finally { IsBusy = false; }
@@ -188,29 +194,71 @@ namespace c971_project.ViewModels
         private async Task OnDeleteAssessmentAsync(Assessment assessment)
         {
             await Shell.Current.DisplayAlert("Delete Assessment", "Delete assessment clicked", "OK");
-            //if (IsBusy || assessment == null) return;
+            if (IsBusy || assessment == null) return;
 
-            //bool confirm = await Shell.Current.DisplayAlert(
-            //    "Delete Assessment",
-            //    $"Are you sure you want to delete '{assessment.AssessmentNum} - {assessment.Name}'?",
-            //    "Delete",
-            //    "Cancel");
+            bool confirm = await Shell.Current.DisplayAlert(
+                "Delete Assessment",
+                $"Are you sure you want to delete '{assessment.Name}'?",
+                "Delete",
+                "Cancel");
 
-            //if (!confirm) return;
+            if (!confirm) return;
 
-            //try
-            //{
-            //    IsBusy = true;
-            //    await _databaseService.DeleteAssessmentAsync(assessment);
-            //    Assessments.Remove(assessment);
-            //}
-            //catch (Exception ex)
-            //{
-            //    await Shell.Current.DisplayAlert("Error", ex.Message, "OK");
-            //}
-            //finally { IsBusy = false; }
-
+            try
+            {
+                IsBusy = true;
+                await _databaseService.DeleteAssessmentAsync(assessment);
+                Assessments.Remove(assessment);
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Error", ex.Message, "OK");
+            }
+            finally { IsBusy = false; }
         }
+
+        //notes methods
+        [RelayCommand]
+        private async Task OnDeleteNoteAsync(Note note)
+        {
+            await Shell.Current.DisplayAlert("Delete Note", "Delete note clicked", "OK");
+            if (IsBusy || note == null) return;
+
+            bool confirm = await Shell.Current.DisplayAlert(
+                "Delete Note",
+                $"Are you sure you want to delete '{note.Title}'?",
+                "Delete",
+                "Cancel");
+
+            if (!confirm) return;
+
+            try
+            {
+                IsBusy = true;
+                await _databaseService.DeleteNoteAsync(note);
+                Notes.Remove(note);
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Error", ex.Message, "OK");
+            }
+            finally { IsBusy = false; }
+        }
+
+        //[RelayCommand]
+        //private async Task OnAddNoteAsync()
+        //{
+        //    {
+        //        if (IsBusy) return;
+        //        try
+        //        {
+        //            IsBusy = true;
+        //            await Shell.Current.GoToAsync(nameof(AddNotePage),
+        //                new Dictionary<string, object> { { "TermId", Term.TermId } });
+        //        }
+        //        finally { IsBusy = false; }
+        //    }
+        //}
 
         //[RelayCommand]
         //private async Task OnAssessmentPageAsync(Assessment assessment)
@@ -224,5 +272,7 @@ namespace c971_project.ViewModels
         //    }
         //    finally { IsBusy = false; }
         //}
+
+
     }
 }

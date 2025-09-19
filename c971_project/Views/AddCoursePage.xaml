@@ -39,6 +39,7 @@
                         FontSize="18"
                         Text="Course Information"
                         TextColor="{StaticResource DarkBlue}" />
+
                     <!--  Course Name  -->
                     <VerticalStackLayout Spacing="1">
                         <Label

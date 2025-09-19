@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="c971_project.Views.AddNotePage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:System="clr-namespace:System;assembly=mscorlib"
+    Title="Add Note"
+    BackgroundColor="{StaticResource Cream}">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+
+            <!--  Header  -->
+            <Label
+                Margin="0,20,0,0"
+                HorizontalOptions="Center"
+                Style="{StaticResource HeaderLabel}"
+                Text="Add new Note" />
+
+            <!--  Card container  -->
+            <Border
+                Padding="20"
+                BackgroundColor="White"
+                Stroke="{StaticResource Charcoal}"
+                StrokeShape="RoundRectangle 12"
+                StrokeThickness="1">
+
+                <Border.Shadow>
+                    <Shadow
+                        Brush="{StaticResource DarkBlue}"
+                        Opacity="0.15"
+                        Radius="8"
+                        Offset="0,4" />
+                </Border.Shadow>
+
+                <VerticalStackLayout Spacing="15">
+
+                    <!--  Note Name  -->
+                    <VerticalStackLayout Spacing="5">
+                        <Label
+                            Style="{StaticResource FieldLabel}"
+                            Text="Note Name"
+                            TextColor="{StaticResource DarkBlue}" />
+                        <Border
+                            Padding="10"
+                            BackgroundColor="White"
+                            StrokeShape="RoundRectangle 8">
+                            <Entry
+                                BackgroundColor="Transparent"
+                                Placeholder="Enter note name"
+                                Text="{Binding NewNote.Name, Mode=TwoWay}"
+                                TextColor="{StaticResource DarkBlue}" />
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <!--  Note Type  -->
+                    <VerticalStackLayout Spacing="5">
+                        <Label
+                            Style="{StaticResource FieldLabel}"
+                            Text="Note Type"
+                            TextColor="{StaticResource DarkBlue}" />
+                        <Picker
+                            Title="Select type"
+                            ItemsSource="{Binding NoteTypes}"
+                            SelectedItem="{Binding NewNote.Type, Mode=TwoWay}" />
+                    </VerticalStackLayout>
+
+                    <!--  Note Status  -->
+                    <VerticalStackLayout Spacing="5">
+                        <Label
+                            Style="{StaticResource FieldLabel}"
+                            Text="Status"
+                            TextColor="{StaticResource DarkBlue}" />
+                        <Picker
+                            Title="Select status"
+                            ItemsSource="{Binding NoteStatuses}"
+                            SelectedItem="{Binding NewNote.Status, Mode=TwoWay}" />
+                    </VerticalStackLayout>
+
+                    <!--  Start Date  -->
+                    <VerticalStackLayout Spacing="5">
+                        <Label
+                            Style="{StaticResource FieldLabel}"
+                            Text="Start Date"
+                            TextColor="{StaticResource DarkBlue}" />
+                        <DatePicker Date="{Binding NewNote.StartDate, Mode=TwoWay}" />
+                    </VerticalStackLayout>
+
+                    <!--  End Date  -->
+                    <VerticalStackLayout Spacing="5">
+                        <Label
+                            Style="{StaticResource FieldLabel}"
+                            Text="End Date"
+                            TextColor="{StaticResource DarkBlue}" />
+                        <DatePicker Date="{Binding NewNote.EndDate, Mode=TwoWay}" />
+                    </VerticalStackLayout>
+
+
+
+                    <!--  Save Button  -->
+                    <Button
+                        Command="{Binding SaveNoteCommand}"
+                        HorizontalOptions="Center"
+                        Text="Save Note" />
+
+                </VerticalStackLayout>
+            </Border>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

@@ -159,7 +159,7 @@
 
                 <!--  Assessments Section Header  -->
                 <Label
-                    Margin="0,20,0,10"
+                    Margin="0,20,0,0"
                     Style="{StaticResource HeaderLabel}"
                     Text="Assessments" />
 
@@ -266,9 +266,52 @@
                     </CollectionView.ItemTemplate>
                 </CollectionView>
 
+                <!--  Floating Add Assessment Button with Label  -->
+                <HorizontalStackLayout
+                    Padding="0,16"
+                    HorizontalOptions="End"
+                    InputTransparent="False"
+                    Spacing="12"
+                    VerticalOptions="End">
+
+                    <!--  Label  -->
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="22"
+                        Text="Add Assessment"
+                        TextColor="{StaticResource DarkBlue}"
+                        VerticalOptions="Center" />
+
+                    <!--  Circular Button  -->
+                    <Border
+                        BackgroundColor="{StaticResource MediumGray}"
+                        HeightRequest="56"
+                        StrokeShape="Ellipse"
+                        WidthRequest="56">
+                        <Border.Shadow>
+                            <Shadow
+                                Brush="{StaticResource MediumGray}"
+                                Opacity="0.3"
+                                Radius="8"
+                                Offset="2,2" />
+                        </Border.Shadow>
+
+                        <Image
+                            HeightRequest="31"
+                            HorizontalOptions="Center"
+                            Source="add_icon.svg"
+                            VerticalOptions="Center"
+                            WidthRequest="31">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding AddAssessmentCommand}" />
+                            </Image.GestureRecognizers>
+                        </Image>
+                    </Border>
+                </HorizontalStackLayout>
+
                 <!--  Notes Section Header  -->
                 <Label
-                    Margin="0,20,0,10"
+                    Margin="0,0,0,0"
                     Style="{StaticResource HeaderLabel}"
                     Text="Notes" />
 
@@ -299,8 +342,6 @@
                                             MaximumWidthRequest="250"
                                             Text="{Binding Title}"
                                             TextColor="{StaticResource DarkBlue}" />
-
-
 
 
                                         <!--  Last updated  -->
@@ -348,6 +389,49 @@
                     </CollectionView.ItemTemplate>
                 </CollectionView>
 
+                <!--  Floating Add Note Button with Label  -->
+                <HorizontalStackLayout
+                    Padding="0,16"
+                    HorizontalOptions="End"
+                    InputTransparent="False"
+                    Spacing="12"
+                    VerticalOptions="End">
+
+                    <!--  Label  -->
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="22"
+                        Text="Add Note"
+                        TextColor="{StaticResource DarkBlue}"
+                        VerticalOptions="Center" />
+
+                    <!--  Circular Button  -->
+                    <Border
+                        BackgroundColor="{StaticResource MediumGray}"
+                        HeightRequest="56"
+                        StrokeShape="Ellipse"
+                        WidthRequest="56">
+
+                        <Border.Shadow>
+                            <Shadow
+                                Brush="{StaticResource MediumGray}"
+                                Opacity="0.3"
+                                Radius="8"
+                                Offset="2,2" />
+                        </Border.Shadow>
+
+                        <Image
+                            HeightRequest="31"
+                            HorizontalOptions="Center"
+                            Source="add_icon.svg"
+                            VerticalOptions="Center"
+                            WidthRequest="31">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding AddNoteCommand}" />
+                            </Image.GestureRecognizers>
+                        </Image>
+                    </Border>
+                </HorizontalStackLayout>
 
 
             </VerticalStackLayout>

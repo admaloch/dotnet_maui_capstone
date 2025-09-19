@@ -78,8 +78,14 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<MauiXaml Update="Views\AddAssessmentPage.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
 		<MauiXaml Update="Views\AddCoursePage.xaml">
 			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\AddNotePage.xaml">
+		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="Views\AddTermPage.xaml">
 			<Generator>MSBuild:Compile</Generator>

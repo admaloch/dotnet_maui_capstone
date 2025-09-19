@@ -32,6 +32,8 @@ namespace c971_project.ViewModels
             1, 2, 3, 4
         };
 
+
+
         public AddCourseViewModel(DatabaseService databaseService)
         {
             _databaseService = databaseService;

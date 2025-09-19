@@ -45,6 +45,12 @@ namespace c971_project
             builder.Services.AddTransient<EditCoursePage>();
             builder.Services.AddTransient<EditCourseViewModel>();
 
+            builder.Services.AddTransient<AddAssessmentPage>();
+            builder.Services.AddTransient<AddAssessmentViewModel>();
+
+            builder.Services.AddTransient<AddNotePage>();
+            builder.Services.AddTransient<AddNoteViewModel>();
+
 
 #if DEBUG
             builder.Logging.AddDebug();

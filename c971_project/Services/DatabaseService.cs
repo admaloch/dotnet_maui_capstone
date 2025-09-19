@@ -269,5 +269,30 @@ namespace c971_project.Services
                       .ToListAsync();
         }
 
+        public async Task<int> DeleteAssessmentAsync(Assessment assessment)
+        {
+            return await _connection.DeleteAsync(assessment);
+        }
+
+        public async Task<int> DeleteNoteAsync(Note Note)
+        {
+            return await _connection.DeleteAsync(Note);
+        }
+        public async Task<int> SaveAssessmentAsync(Assessment assessment)
+        {
+            if (assessment.AssessmentId == 0)
+                return await _connection.InsertAsync(assessment);
+            else
+                return await _connection.UpdateAsync(assessment);
+        }
+
+        public async Task<int> SaveNoteAsync(Note note)
+        {
+            if (note.NoteId == 0)
+                return await _connection.InsertAsync(note);
+            else
+                return await _connection.UpdateAsync(note);
+        }
+
     }
 }
