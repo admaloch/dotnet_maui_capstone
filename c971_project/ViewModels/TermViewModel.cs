@@ -36,13 +36,16 @@ namespace c971_project.ViewModels
             {
                 await LoadCoursesAsync(); // reload from DB on course add
             });
+            WeakReferenceMessenger.Default.Register<TermUpdatedMessage>(this, async (r, m) =>
+            {
+                await LoadTermAsync(TermId); // reload from DB on term add
+            });
 
         }
 
         partial void OnTermIdChanged(int value)
         {
             _ = LoadDataAsync(value);
-
         }
 
         private async Task LoadDataAsync(int termId)
@@ -99,6 +102,20 @@ namespace c971_project.ViewModels
             {
                 IsBusy = false;
             }
+        }
+
+        [RelayCommand]
+        private async Task OnEditTermAsync()
+        {
+            if (IsBusy) return;
+            try
+            {
+                IsBusy = true;
+                await Shell.Current.GoToAsync(nameof(EditTermPage),
+                    new Dictionary<string, object> { { "TermId", TermId } });
+
+            }
+            finally { IsBusy = false; }
         }
 
         [RelayCommand]

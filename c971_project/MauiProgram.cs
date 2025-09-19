@@ -37,6 +37,9 @@ namespace c971_project
             builder.Services.AddTransient<TermPage>();
             builder.Services.AddTransient<TermViewModel>();
 
+            builder.Services.AddTransient<EditTermPage>();
+            builder.Services.AddTransient<EditTermViewModel>();
+
             builder.Services.AddTransient<AddCoursePage>();
             builder.Services.AddTransient<AddCourseViewModel>();
 

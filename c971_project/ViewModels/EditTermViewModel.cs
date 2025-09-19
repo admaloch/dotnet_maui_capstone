@@ -13,24 +13,31 @@ using System.Threading.Tasks;
 
 namespace c971_project.ViewModels
 {
-    public partial class AddTermViewModel : BaseViewModel
+    [QueryProperty(nameof(TermId), "TermId")]
+    public partial class EditTermViewModel : BaseViewModel
     {
         private readonly DatabaseService _databaseService;
 
         [ObservableProperty]
-        private Term _newTerm;
+        private int termId;
 
-        public AddTermViewModel(DatabaseService databaseService)
+        [ObservableProperty]
+        private Term _term;
+
+        public EditTermViewModel(DatabaseService databaseService)
         {
             _databaseService = databaseService;
+        }
 
-            // Initialize the new term
-            NewTerm = new Term
-            {
-                Name = string.Empty,
-                StartDate = DateTime.Today,
-                EndDate = DateTime.Today.AddMonths(4) // default length
-            };
+        // This runs when term id changes
+        partial void OnTermIdChanged(int value)
+        {
+            LoadTermDataAsync(value);
+        }
+
+        private async Task LoadTermDataAsync(int termId)
+        {
+            Term = await _databaseService.GetTermByIdAsync(TermId);
         }
 
         [RelayCommand]
@@ -42,27 +49,26 @@ namespace c971_project.ViewModels
             {
                 IsBusy = true;
 
+                var errorBuilder = new StringBuilder();
+
                 // Add 6 months
-                var endDate = NewTerm.StartDate.AddMonths(6);
+                var endDate = Term.StartDate.AddMonths(6);
 
                 // Move back one day and set time to 23:59:59
-                NewTerm.EndDate = new DateTime(
+                Term.EndDate = new DateTime(
                     endDate.Year,
                     endDate.Month,
                     endDate.Day,
                     23, 59, 59
                 ).AddDays(-1);
+                Term.Validate();
 
-                NewTerm.Validate();
-
-                var errorBuilder = new StringBuilder();
-
-                // NewTerm errors
+                // Term errors
                 errorBuilder.AppendLine(ValidationHelper.GetErrors(
-                    NewTerm, nameof(NewTerm.Name)));
+                    Term, nameof(Term.Name)));
 
                 // Custom rules
-                if (NewTerm.EndDate < NewTerm.StartDate)
+                if (Term.EndDate < Term.StartDate)
                     errorBuilder.AppendLine("End date cannot be before start date.");
 
                 var errors = errorBuilder.ToString().Trim();
@@ -75,7 +81,7 @@ namespace c971_project.ViewModels
                 }
 
                 // Save to database
-                await _databaseService.SaveTermAsync(NewTerm);
+                await _databaseService.SaveTermAsync(Term);
 
                 // Optional: notify other viewmodels
                 WeakReferenceMessenger.Default.Send(new TermUpdatedMessage());
