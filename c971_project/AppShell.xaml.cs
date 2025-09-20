@@ -20,6 +20,7 @@ namespace c971_project
             Routing.RegisterRoute(nameof(EditCoursePage), typeof(EditCoursePage));
 
             Routing.RegisterRoute(nameof(AddAssessmentPage), typeof(AddAssessmentPage));
+            Routing.RegisterRoute(nameof(EditAssessmentPage), typeof(EditAssessmentPage));
 
             Routing.RegisterRoute(nameof(AddNotePage), typeof(AddNotePage));
 

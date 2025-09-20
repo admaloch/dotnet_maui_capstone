@@ -93,6 +93,9 @@
 		<MauiXaml Update="Views\CoursePage.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
+		<MauiXaml Update="Views\EditAssessmentPage.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
 		<MauiXaml Update="Views\EditCoursePage.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>

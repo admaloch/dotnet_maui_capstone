@@ -46,12 +46,14 @@ namespace c971_project
             builder.Services.AddTransient<CoursePage>();
             builder.Services.AddTransient<CourseViewModel>();
 
-
             builder.Services.AddTransient<EditCoursePage>();
             builder.Services.AddTransient<EditCourseViewModel>();
 
             builder.Services.AddTransient<AddAssessmentPage>();
             builder.Services.AddTransient<AddAssessmentViewModel>();
+
+            builder.Services.AddTransient<EditAssessmentPage>();
+            builder.Services.AddTransient<EditAssessmentViewModel>();
 
             builder.Services.AddTransient<AddNotePage>();
             builder.Services.AddTransient<AddNoteViewModel>();

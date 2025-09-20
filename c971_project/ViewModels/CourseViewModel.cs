@@ -195,6 +195,19 @@ namespace c971_project.ViewModels
         }
 
         [RelayCommand]
+        private async Task OnEditAssessmentAsync(Assessment assessment)
+        {
+            if (IsBusy) return;
+            try
+            {
+                IsBusy = true;
+                await Shell.Current.GoToAsync(nameof(EditAssessmentPage),
+                    new Dictionary<string, object> { { "AssessmentId", assessment.AssessmentId } });
+            }
+            finally { IsBusy = false; }
+        }
+
+        [RelayCommand]
         private async Task OnDeleteAssessmentAsync(Assessment assessment)
         {
             if (IsBusy || assessment == null) return;
@@ -263,18 +276,7 @@ namespace c971_project.ViewModels
             }
         }
 
-        //[RelayCommand]
-        //private async Task OnAssessmentPageAsync(Assessment assessment)
-        //{
-        //    if (IsBusy) return;
-        //    try
-        //    {
-        //        IsBusy = true;
-        //        await Shell.Current.GoToAsync(nameof(AssessmentPage),
-        //            new Dictionary<string, object> { { "AssessmentId", assessment.AssessmentId } })
-        //    }
-        //    finally { IsBusy = false; }
-        //}
+       
 
 
     }

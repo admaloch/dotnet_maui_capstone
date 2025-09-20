@@ -250,10 +250,10 @@
                                         <!--  More / navigate icon  -->
                                         <Image
                                             HeightRequest="26"
-                                            Source="more_icon.svg"
+                                            Source="edit2_icon.svg"
                                             WidthRequest="26">
                                             <Image.GestureRecognizers>
-                                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.AssessmentPageCommand}" CommandParameter="{Binding .}" />
+                                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.EditAssessmentCommand}" CommandParameter="{Binding .}" />
                                             </Image.GestureRecognizers>
                                         </Image>
 

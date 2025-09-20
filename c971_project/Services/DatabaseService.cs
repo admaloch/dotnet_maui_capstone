@@ -265,6 +265,13 @@ namespace c971_project.Services
                       .Where(c => c.CourseId == courseId)
                       .ToListAsync();
         }
+        public async Task<Assessment> GetAssessmentByIdAsync(int assessmentId)
+        {
+            return await _connection.Table<Assessment>()
+                                    .Where(t => t.AssessmentId == assessmentId)
+                                    .FirstOrDefaultAsync();
+        }
+
         public Task<List<Note>> GetNotesByCourseIdAsync(int courseId)
         {
             return _connection.Table<Note>()
@@ -280,6 +287,12 @@ namespace c971_project.Services
         public async Task<int> DeleteNoteAsync(Note Note)
         {
             return await _connection.DeleteAsync(Note);
+        }
+        public async Task<Note> GetNoteByIdAsync(int noteId)
+        {
+            return await _connection.Table<Note>()
+                                    .Where(t => t.NoteId == noteId)
+                                    .FirstOrDefaultAsync();
         }
         public async Task<int> SaveAssessmentAsync(Assessment assessment)
         {
