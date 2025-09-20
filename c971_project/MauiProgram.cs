@@ -58,6 +58,12 @@ namespace c971_project
             builder.Services.AddTransient<AddNotePage>();
             builder.Services.AddTransient<AddNoteViewModel>();
 
+            builder.Services.AddTransient<NotePage>();
+            builder.Services.AddTransient<NoteViewModel>();
+
+            builder.Services.AddTransient<EditNotePage>();
+            builder.Services.AddTransient<EditNoteViewModel>();
+
 
 #if DEBUG
             builder.Logging.AddDebug();

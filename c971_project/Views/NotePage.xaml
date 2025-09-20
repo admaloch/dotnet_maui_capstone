@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="c971_project.Views.NotePage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Note"
+    BackgroundColor="{StaticResource Cream}">
+
+    <Grid>
+        <!--  Main scrollable content  -->
+        <ScrollView>
+            <VerticalStackLayout Padding="20" Spacing="20">
+
+                <!--  Header  -->
+                <Label
+                    Margin="0,20,0,0"
+                    HorizontalOptions="Center"
+                    Style="{StaticResource HeaderLabel}"
+                    Text="{Binding Note.Title}" />
+
+                <!--  Note Info Card  -->
+                <Border
+                    Padding="15"
+                    BackgroundColor="{StaticResource White}"
+                    Stroke="{StaticResource LightBrown}"
+                    StrokeShape="RoundRectangle 12"
+                    StrokeThickness="1">
+
+                    <Border.Shadow>
+                        <Shadow
+                            Brush="{StaticResource MediumGray}"
+                            Opacity="0.3"
+                            Radius="8"
+                            Offset="2,2" />
+                    </Border.Shadow>
+
+
+
+                    <!--  Main content - REMOVE AbsoluteLayout properties  -->
+                    <VerticalStackLayout Spacing="12">
+
+
+                        <!--  body  -->
+                        <VerticalStackLayout Padding="0,10,0,10" VerticalOptions="FillAndExpand">
+                            <Label
+                                HorizontalOptions="FillAndExpand"
+                                LineBreakMode="WordWrap"
+                                Text="{Binding Note.Body}"
+                                TextColor="{StaticResource DarkBlue}"
+                                VerticalOptions="FillAndExpand" />
+                        </VerticalStackLayout>
+
+
+
+                    </VerticalStackLayout>
+
+
+                </Border>
+            </VerticalStackLayout>
+        </ScrollView>
+        <!--  Floating Add Assessment Button with Label  -->
+        <HorizontalStackLayout
+            Padding="15"
+            HorizontalOptions="End"
+            InputTransparent="False"
+            Spacing="12"
+            VerticalOptions="End">
+
+            <!--  Label  -->
+            <Label
+                FontAttributes="Bold"
+                FontSize="22"
+                Text="Edit note"
+                TextColor="{StaticResource DarkBlue}"
+                VerticalOptions="Center" />
+
+            <!--  Circular Button  -->
+            <Border
+                BackgroundColor="{StaticResource MediumGray}"
+                HeightRequest="56"
+                StrokeShape="Ellipse"
+                WidthRequest="56">
+                <Border.Shadow>
+                    <Shadow
+                        Brush="{StaticResource MediumGray}"
+                        Opacity="0.3"
+                        Radius="8"
+                        Offset="2,2" />
+                </Border.Shadow>
+
+                <Image
+                    HeightRequest="31"
+                    HorizontalOptions="Center"
+                    Source="add_icon.svg"
+                    VerticalOptions="Center"
+                    WidthRequest="31">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding EditNoteCommand}" />
+                    </Image.GestureRecognizers>
+                </Image>
+            </Border>
+        </HorizontalStackLayout>
+    </Grid>
+</ContentPage>

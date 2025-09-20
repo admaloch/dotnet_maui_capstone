@@ -22,7 +22,10 @@ namespace c971_project
             Routing.RegisterRoute(nameof(AddAssessmentPage), typeof(AddAssessmentPage));
             Routing.RegisterRoute(nameof(EditAssessmentPage), typeof(EditAssessmentPage));
 
+            Routing.RegisterRoute(nameof(NotePage), typeof(NotePage));
             Routing.RegisterRoute(nameof(AddNotePage), typeof(AddNotePage));
+            Routing.RegisterRoute(nameof(EditNotePage), typeof(EditNotePage));
+
 
         }
     }

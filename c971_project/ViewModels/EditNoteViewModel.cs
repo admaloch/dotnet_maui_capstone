@@ -13,41 +13,48 @@ using System.Threading.Tasks;
 
 namespace c971_project.ViewModels
 {
-    [QueryProperty(nameof(CourseId), "CourseId")]
-    public partial class AddNoteViewModel : BaseViewModel
+    [QueryProperty(nameof(NoteId), "NoteId")]
+    public partial class EditNoteViewModel : BaseViewModel
     {
         private readonly DatabaseService _databaseService;
 
         [ObservableProperty]
-        private int courseId;
+        private int noteId;
 
         [ObservableProperty]
-        private Note _newNote;
+        private Note _note;
 
-        public AddNoteViewModel(DatabaseService databaseService)
+        public EditNoteViewModel(DatabaseService databaseService)
         {
             _databaseService = databaseService;
         }
 
-        // This runs when CourseId is assigned by Shell after navigation
-        partial void OnCourseIdChanged(int value)
+        partial void OnNoteIdChanged(int value)
         {
-            Debug.WriteLine($"CourseId set via query: {value}");
+            _ = LoadDataAsync(value);
+        }
 
-            if (NewNote == null)
+        private async Task LoadDataAsync(int noteId)
+        {
+            await LoadNoteAsync(noteId);
+        }
+
+        //load data
+        private async Task LoadNoteAsync(int id)
+        {
+            if (IsBusy) return;
+            try
             {
-                NewNote = new Note
-                {
-                    Title = string.Empty,
-                    Body = string.Empty,
-                    CourseId = value,
-                    DateAdded = DateTime.Today,
-                    LastUpdated = DateTime.Today
-                };
+                IsBusy = true;
+                Note = await _databaseService.GetNoteByIdAsync(id);
             }
-            else
+            catch (Exception ex)
             {
-                NewNote.CourseId = value;
+                Debug.WriteLine($"Error loading Note: {ex.Message}");
+            }
+            finally
+            {
+                IsBusy = false;
             }
         }
 
@@ -60,13 +67,15 @@ namespace c971_project.ViewModels
             {
                 IsBusy = true;
 
+                Note.LastUpdated = DateTime.Now;
+
                 var isTaskValid = await ValidateNoteAsync();
 
                 if (!isTaskValid)
                     return;
 
                 // Save to database
-                await _databaseService.SaveNoteAsync(NewNote);
+                await _databaseService.SaveNoteAsync(Note);
 
                 // Optional: notify other viewmodels
                 WeakReferenceMessenger.Default.Send(new NoteUpdatedMessage());
@@ -87,12 +96,12 @@ namespace c971_project.ViewModels
 
         private async Task<bool> ValidateNoteAsync()
         {
-            NewNote.Validate();
+            Note.Validate();
 
-            if (NewNote.HasErrors)
+            if (Note.HasErrors)
             {
                 var errorMessage = ValidationHelper.GetErrors(
-                    NewNote,
+                    Note,
                     nameof(Note.Title),
                     nameof(Note.Body)
 

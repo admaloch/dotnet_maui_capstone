@@ -177,6 +177,8 @@ namespace c971_project.ViewModels
             finally { IsBusy = false; }
         }
 
+
+
         //assessment methods
         [RelayCommand]
         private async Task OnAddAssessmentAsync()
@@ -233,6 +235,7 @@ namespace c971_project.ViewModels
             finally { IsBusy = false; }
         }
 
+
         //notes methods
         [RelayCommand]
         private async Task OnDeleteNoteAsync(Note note)
@@ -276,7 +279,18 @@ namespace c971_project.ViewModels
             }
         }
 
-       
+        [RelayCommand]
+        private async Task OnNotePageAsync(Note note)
+        {
+            if (IsBusy) return;
+            try
+            {
+                IsBusy = true;
+                await Shell.Current.GoToAsync(nameof(NotePage),
+                    new Dictionary<string, object> { { "NoteId", note.NoteId } });
+            }
+            finally { IsBusy = false; }
+        }
 
 
     }
