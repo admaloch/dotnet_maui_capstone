@@ -90,6 +90,14 @@ namespace c971_project.ViewModels
             try
             {
                 IsBusy = true;
+                //also delete courses - notes - assessments
+                var courses = await _databaseService.GetCoursesByTermIdAsync(term.TermId);
+                foreach (var course in courses)
+                {
+                    await _databaseService.DeleteAssessmentsByCourseIdAsync(course.CourseId);
+                    await _databaseService.DeleteNotesByCourseIdAsync(course.CourseId);
+                    await _databaseService.DeleteCourseAsync(course);
+                }
                 await _databaseService.DeleteTermAsync(term);
                 Terms.Remove(term);
             }

@@ -6,182 +6,224 @@
     xmlns:system="clr-namespace:System;assembly=netstandard"
     Title="Add Course"
     BackgroundColor="{StaticResource Cream}">
-    <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="15">
+    <Grid>
+        <ScrollView>
+            <VerticalStackLayout Padding="20" Spacing="15">
 
-            <!--  Header  -->
+                <!--  Header  -->
+                <Label
+                    Margin="0,20,0,0"
+                    HorizontalOptions="Center"
+                    Style="{StaticResource HeaderLabel}"
+                    Text="New Course" />
+
+                <!--  Card container  -->
+                <Border
+                    Margin="0,0,0,100"
+                    Padding="20"
+                    BackgroundColor="White"
+                    Stroke="{StaticResource Charcoal}"
+                    StrokeShape="RoundRectangle 12"
+                    StrokeThickness="3">
+
+                    <Border.Shadow>
+                        <Shadow
+                            Brush="{StaticResource DarkBlue}"
+                            Opacity="0.15"
+                            Radius="8"
+                            Offset="0,4" />
+                    </Border.Shadow>
+
+                    <VerticalStackLayout>
+                        <Label
+                            Margin="0,20,0,10"
+                            FontAttributes="Bold"
+                            FontSize="18"
+                            Text="Course Information"
+                            TextColor="{StaticResource DarkBlue}" />
+
+                        <!--  Course Name  -->
+                        <VerticalStackLayout Spacing="1">
+                            <Label
+                                Style="{StaticResource FieldLabel}"
+                                Text="Name *"
+                                TextColor="{StaticResource DarkBlue}" />
+                            <Border BackgroundColor="White" StrokeShape="RoundRectangle 8">
+                                <Entry
+                                    BackgroundColor="Transparent"
+                                    Placeholder="Enter course name"
+                                    Text="{Binding NewCourse.Name, Mode=TwoWay}"
+                                    TextColor="{StaticResource DarkBlue}" />
+                            </Border>
+                        </VerticalStackLayout>
+
+                        <!--  Course Number  -->
+                        <VerticalStackLayout Spacing="1">
+                            <Label
+                                Style="{StaticResource FieldLabel}"
+                                Text="Number *"
+                                TextColor="{StaticResource DarkBlue}" />
+                            <Border BackgroundColor="White" StrokeShape="RoundRectangle 8">
+                                <Entry
+                                    BackgroundColor="Transparent"
+                                    Placeholder="e.g., MATH101"
+                                    Text="{Binding NewCourse.CourseNum, Mode=TwoWay}"
+                                    TextColor="{StaticResource DarkBlue}" />
+                            </Border>
+                        </VerticalStackLayout>
+
+                        <!--  Credit Units  -->
+                        <VerticalStackLayout Spacing="1">
+                            <Label
+                                Style="{StaticResource FieldLabel}"
+                                Text="Credit Units *"
+                                TextColor="{StaticResource DarkBlue}" />
+                            <Border BackgroundColor="White" StrokeShape="RoundRectangle 8">
+                                <Picker
+                                    Title="Select credit units"
+                                    ItemsSource="{Binding CreditUnitOptions}"
+                                    SelectedItem="{Binding NewCourse.CuNum, Mode=TwoWay}">
+                                    <Picker.ItemDisplayBinding>
+                                        <Binding Path="." />
+                                    </Picker.ItemDisplayBinding>
+                                </Picker>
+                            </Border>
+                        </VerticalStackLayout>
+
+                        <!--  Start Date  -->
+                        <VerticalStackLayout Spacing="1">
+                            <Label
+                                Style="{StaticResource FieldLabel}"
+                                Text="Start Date *"
+                                TextColor="{StaticResource DarkBlue}" />
+                            <Border BackgroundColor="White" StrokeShape="RoundRectangle 8">
+                                <DatePicker
+                                    BackgroundColor="Transparent"
+                                    Date="{Binding NewCourse.StartDate, Mode=TwoWay}"
+                                    MinimumDate="{x:Static system:DateTime.Today}" />
+                            </Border>
+                        </VerticalStackLayout>
+
+                        <!--  End Date  -->
+                        <VerticalStackLayout Spacing="1">
+                            <Label
+                                Style="{StaticResource FieldLabel}"
+                                Text="End Date *"
+                                TextColor="{StaticResource DarkBlue}" />
+                            <Border BackgroundColor="White" StrokeShape="RoundRectangle 8">
+                                <DatePicker
+                                    BackgroundColor="Transparent"
+                                    Date="{Binding NewCourse.EndDate, Mode=TwoWay}"
+                                    MinimumDate="{Binding NewCourse.StartDate}" />
+                            </Border>
+                        </VerticalStackLayout>
+
+                        <!--  INSTRUCTOR INFORMATION SECTION  -->
+                        <Label
+                            Margin="0,40,0,10"
+                            FontAttributes="Bold"
+                            FontSize="18"
+                            Text="Instructor Information"
+                            TextColor="{StaticResource DarkBlue}" />
+
+                        <!--  Instructor Name  -->
+                        <VerticalStackLayout Spacing="1">
+                            <Label
+                                Style="{StaticResource FieldLabel}"
+                                Text="Name *"
+                                TextColor="{StaticResource DarkBlue}" />
+                            <Border BackgroundColor="White" StrokeShape="RoundRectangle 8">
+                                <Entry
+                                    BackgroundColor="Transparent"
+                                    Placeholder="Enter instructor name"
+                                    Text="{Binding NewInstructor.Name, Mode=TwoWay}"
+                                    TextColor="{StaticResource DarkBlue}" />
+                            </Border>
+                        </VerticalStackLayout>
+
+                        <!--  Instructor Email  -->
+                        <VerticalStackLayout Spacing="1">
+                            <Label
+                                Style="{StaticResource FieldLabel}"
+                                Text="Email *"
+                                TextColor="{StaticResource DarkBlue}" />
+                            <Border BackgroundColor="White" StrokeShape="RoundRectangle 8">
+                                <Entry
+                                    BackgroundColor="Transparent"
+                                    Keyboard="Email"
+                                    Placeholder="instructor@school.edu"
+                                    Text="{Binding NewInstructor.Email, Mode=TwoWay}"
+                                    TextColor="{StaticResource DarkBlue}" />
+                            </Border>
+                        </VerticalStackLayout>
+
+                        <!--  Instructor Phone  -->
+                        <VerticalStackLayout Spacing="1">
+                            <Label
+                                Style="{StaticResource FieldLabel}"
+                                Text="Phone *"
+                                TextColor="{StaticResource DarkBlue}" />
+                            <Border BackgroundColor="White" StrokeShape="RoundRectangle 8">
+                                <Entry
+                                    BackgroundColor="Transparent"
+                                    Keyboard="Telephone"
+                                    Placeholder="(555) 123-4567"
+                                    Text="{Binding NewInstructor.Phone, Mode=TwoWay}"
+                                    TextColor="{StaticResource DarkBlue}" />
+                            </Border>
+                        </VerticalStackLayout>
+
+
+
+
+                    </VerticalStackLayout>
+                </Border>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!--  Floating Save Button  -->
+        <HorizontalStackLayout
+            Padding="16"
+            HorizontalOptions="End"
+            InputTransparent="False"
+            Spacing="12"
+            VerticalOptions="End">
+
+            <!--  Label  -->
             <Label
-                Margin="0,20,0,0"
-                HorizontalOptions="Center"
-                Style="{StaticResource HeaderLabel}"
-                Text="Add new Course" />
+                FontAttributes="Bold"
+                FontSize="22"
+                Text="Save Course"
+                TextColor="{StaticResource DarkBlue}"
+                VerticalOptions="Center" />
 
-            <!--  Card container  -->
+            <!--  Circular Button  -->
             <Border
-                Padding="20"
-                BackgroundColor="White"
-                Stroke="{StaticResource Charcoal}"
-                StrokeShape="RoundRectangle 12"
-                StrokeThickness="1">
-
+                BackgroundColor="{StaticResource DarkBlue}"
+                HeightRequest="55"
+                StrokeShape="Ellipse"
+                WidthRequest="55">
                 <Border.Shadow>
                     <Shadow
                         Brush="{StaticResource DarkBlue}"
-                        Opacity="0.15"
+                        Opacity="0.5"
                         Radius="8"
                         Offset="0,4" />
                 </Border.Shadow>
 
-                <VerticalStackLayout>
-                    <Label
-                        Margin="0,20,0,10"
-                        FontAttributes="Bold"
-                        FontSize="18"
-                        Text="Course Information"
-                        TextColor="{StaticResource DarkBlue}" />
-
-                    <!--  Course Name  -->
-                    <VerticalStackLayout Spacing="1">
-                        <Label
-                            Style="{StaticResource FieldLabel}"
-                            Text="Name *"
-                            TextColor="{StaticResource DarkBlue}" />
-                        <Border BackgroundColor="White" StrokeShape="RoundRectangle 8">
-                            <Entry
-                                BackgroundColor="Transparent"
-                                Placeholder="Enter course name"
-                                Text="{Binding NewCourse.Name, Mode=TwoWay}"
-                                TextColor="{StaticResource DarkBlue}" />
-                        </Border>
-                    </VerticalStackLayout>
-
-                    <!--  Course Number  -->
-                    <VerticalStackLayout Spacing="1">
-                        <Label
-                            Style="{StaticResource FieldLabel}"
-                            Text="Number *"
-                            TextColor="{StaticResource DarkBlue}" />
-                        <Border BackgroundColor="White" StrokeShape="RoundRectangle 8">
-                            <Entry
-                                BackgroundColor="Transparent"
-                                Placeholder="e.g., MATH101"
-                                Text="{Binding NewCourse.CourseNum, Mode=TwoWay}"
-                                TextColor="{StaticResource DarkBlue}" />
-                        </Border>
-                    </VerticalStackLayout>
-
-                    <!--  Credit Units  -->
-                    <VerticalStackLayout Spacing="1">
-                        <Label
-                            Style="{StaticResource FieldLabel}"
-                            Text="Credit Units *"
-                            TextColor="{StaticResource DarkBlue}" />
-                        <Border BackgroundColor="White" StrokeShape="RoundRectangle 8">
-                            <Picker
-                                Title="Select credit units"
-                                ItemsSource="{Binding CreditUnitOptions}"
-                                SelectedItem="{Binding NewCourse.CuNum, Mode=TwoWay}">
-                                <Picker.ItemDisplayBinding>
-                                    <Binding Path="." />
-                                </Picker.ItemDisplayBinding>
-                            </Picker>
-                        </Border>
-                    </VerticalStackLayout>
-
-                    <!--  Start Date  -->
-                    <VerticalStackLayout Spacing="1">
-                        <Label
-                            Style="{StaticResource FieldLabel}"
-                            Text="Start Date *"
-                            TextColor="{StaticResource DarkBlue}" />
-                        <Border BackgroundColor="White" StrokeShape="RoundRectangle 8">
-                            <DatePicker
-                                BackgroundColor="Transparent"
-                                Date="{Binding NewCourse.StartDate, Mode=TwoWay}"
-                                MinimumDate="{x:Static system:DateTime.Today}" />
-                        </Border>
-                    </VerticalStackLayout>
-
-                    <!--  End Date  -->
-                    <VerticalStackLayout Spacing="1">
-                        <Label
-                            Style="{StaticResource FieldLabel}"
-                            Text="End Date *"
-                            TextColor="{StaticResource DarkBlue}" />
-                        <Border BackgroundColor="White" StrokeShape="RoundRectangle 8">
-                            <DatePicker
-                                BackgroundColor="Transparent"
-                                Date="{Binding NewCourse.EndDate, Mode=TwoWay}"
-                                MinimumDate="{Binding NewCourse.StartDate}" />
-                        </Border>
-                    </VerticalStackLayout>
-
-                    <!--  INSTRUCTOR INFORMATION SECTION  -->
-                    <Label
-                        Margin="0,40,0,10"
-                        FontAttributes="Bold"
-                        FontSize="18"
-                        Text="Instructor Information"
-                        TextColor="{StaticResource DarkBlue}" />
-
-                    <!--  Instructor Name  -->
-                    <VerticalStackLayout Spacing="1">
-                        <Label
-                            Style="{StaticResource FieldLabel}"
-                            Text="Name *"
-                            TextColor="{StaticResource DarkBlue}" />
-                        <Border BackgroundColor="White" StrokeShape="RoundRectangle 8">
-                            <Entry
-                                BackgroundColor="Transparent"
-                                Placeholder="Enter instructor name"
-                                Text="{Binding NewInstructor.Name, Mode=TwoWay}"
-                                TextColor="{StaticResource DarkBlue}" />
-                        </Border>
-                    </VerticalStackLayout>
-
-                    <!--  Instructor Email  -->
-                    <VerticalStackLayout Spacing="1">
-                        <Label
-                            Style="{StaticResource FieldLabel}"
-                            Text="Email *"
-                            TextColor="{StaticResource DarkBlue}" />
-                        <Border BackgroundColor="White" StrokeShape="RoundRectangle 8">
-                            <Entry
-                                BackgroundColor="Transparent"
-                                Keyboard="Email"
-                                Placeholder="instructor@school.edu"
-                                Text="{Binding NewInstructor.Email, Mode=TwoWay}"
-                                TextColor="{StaticResource DarkBlue}" />
-                        </Border>
-                    </VerticalStackLayout>
-
-                    <!--  Instructor Phone  -->
-                    <VerticalStackLayout Spacing="1">
-                        <Label
-                            Style="{StaticResource FieldLabel}"
-                            Text="Phone *"
-                            TextColor="{StaticResource DarkBlue}" />
-                        <Border BackgroundColor="White" StrokeShape="RoundRectangle 8">
-                            <Entry
-                                BackgroundColor="Transparent"
-                                Keyboard="Telephone"
-                                Placeholder="(555) 123-4567"
-                                Text="{Binding NewInstructor.Phone, Mode=TwoWay}"
-                                TextColor="{StaticResource DarkBlue}" />
-                        </Border>
-                    </VerticalStackLayout>
-
-
-
-                    <!--  Save Button  -->
-                    <Button
-                        Command="{Binding SaveCourseCommand}"
-                        HorizontalOptions="Center"
-                        Text="Save Course" />
-
-                </VerticalStackLayout>
+                <Image
+                    HeightRequest="45"
+                    HorizontalOptions="Center"
+                    Source="check_icon.svg"
+                    VerticalOptions="Center"
+                    WidthRequest="45">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding SaveCourseCommand}" />
+                    </Image.GestureRecognizers>
+                </Image>
             </Border>
 
-        </VerticalStackLayout>
-    </ScrollView>
+        </HorizontalStackLayout>
+    </Grid>
 </ContentPage>

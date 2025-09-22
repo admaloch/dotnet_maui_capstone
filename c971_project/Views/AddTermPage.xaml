@@ -6,81 +6,119 @@
     xmlns:System="clr-namespace:System;assembly=mscorlib"
     Title="Add Term"
     BackgroundColor="{StaticResource Cream}">
+    <Grid>
+        <ScrollView>
+            <VerticalStackLayout Padding="20" Spacing="15">
 
-    <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="15">
+                <!--  Header  -->
+                <Label
+                    Margin="0,20,0,0"
+                    HorizontalOptions="Center"
+                    Style="{StaticResource HeaderLabel}"
+                    Text="New Term" />
 
-            <!--  Header  -->
+                <!--  Card container  -->
+                <Border
+                    Padding="20"
+                    BackgroundColor="White"
+                    HeightRequest="300"
+                    Stroke="{StaticResource Charcoal}"
+                    StrokeShape="RoundRectangle 12"
+                    StrokeThickness="3">
+
+                    <Border.Shadow>
+                        <Shadow
+                            Brush="{StaticResource DarkBlue}"
+                            Opacity="0.15"
+                            Radius="8"
+                            Offset="0,4" />
+                    </Border.Shadow>
+
+                    <VerticalStackLayout Spacing="15">
+
+                        <!--  Term Name  -->
+                        <VerticalStackLayout Spacing="5">
+                            <Label
+                                Style="{StaticResource FieldLabel}"
+                                Text="Term Name"
+                                TextColor="{StaticResource DarkBlue}" />
+                            <Border
+                                Padding="0"
+                                BackgroundColor="White"
+                                StrokeShape="RoundRectangle 8">
+                                <Entry
+                                    BackgroundColor="Transparent"
+                                    Placeholder="Enter term name"
+                                    Text="{Binding NewTerm.Name, Mode=TwoWay}"
+                                    TextColor="{StaticResource DarkBlue}" />
+                            </Border>
+                        </VerticalStackLayout>
+
+                        <!--  Start Date  -->
+                        <VerticalStackLayout Spacing="5">
+                            <Label
+                                Style="{StaticResource FieldLabel}"
+                                Text="Start Date"
+                                TextColor="{StaticResource DarkBlue}" />
+                            <Border
+                                Padding="10"
+                                BackgroundColor="White"
+                                StrokeShape="RoundRectangle 8">
+                                <DatePicker
+                                    BackgroundColor="Transparent"
+                                    Date="{Binding NewTerm.StartDate, Mode=TwoWay}"
+                                    MinimumDate="{x:Static System:DateTime.Today}" />
+                            </Border>
+                        </VerticalStackLayout>
+
+                    </VerticalStackLayout>
+                </Border>
+
+            </VerticalStackLayout>
+
+        </ScrollView>
+        <!--  Floating Save Button  -->
+        <HorizontalStackLayout
+            Padding="16"
+            HorizontalOptions="End"
+            InputTransparent="False"
+            Spacing="12"
+            VerticalOptions="End">
+
+            <!--  Label  -->
             <Label
-                Margin="0,20,0,0"
-                HorizontalOptions="Center"
-                Style="{StaticResource HeaderLabel}"
-                Text="Add new Term" />
+                FontAttributes="Bold"
+                FontSize="22"
+                Text="Save Term"
+                TextColor="{StaticResource DarkBlue}"
+                VerticalOptions="Center" />
 
-            <!--  Card container  -->
+            <!--  Circular Button  -->
             <Border
-                Padding="20"
-                BackgroundColor="White"
-                Stroke="{StaticResource Charcoal}"
-                StrokeShape="RoundRectangle 12"
-                StrokeThickness="1">
-
+                BackgroundColor="{StaticResource DarkBlue}"
+                HeightRequest="55"
+                StrokeShape="Ellipse"
+                WidthRequest="55">
                 <Border.Shadow>
                     <Shadow
                         Brush="{StaticResource DarkBlue}"
-                        Opacity="0.15"
+                        Opacity="0.5"
                         Radius="8"
                         Offset="0,4" />
                 </Border.Shadow>
 
-                <VerticalStackLayout Spacing="15">
-
-                    <!--  Term Name  -->
-                    <VerticalStackLayout Spacing="5">
-                        <Label
-                            Style="{StaticResource FieldLabel}"
-                            Text="Term Name"
-                            TextColor="{StaticResource DarkBlue}" />
-                        <Border
-                            Padding="10"
-                            BackgroundColor="White"
-                            StrokeShape="RoundRectangle 8">
-                            <Entry
-                                BackgroundColor="Transparent"
-                                Placeholder="Enter term name"
-                                Text="{Binding NewTerm.Name, Mode=TwoWay}"
-                                TextColor="{StaticResource DarkBlue}" />
-                        </Border>
-                    </VerticalStackLayout>
-
-                    <!--  Start Date  -->
-                    <VerticalStackLayout Spacing="5">
-                        <Label
-                            Style="{StaticResource FieldLabel}"
-                            Text="Start Date"
-                            TextColor="{StaticResource DarkBlue}" />
-                        <Border
-                            Padding="10"
-                            BackgroundColor="White"
-                            StrokeShape="RoundRectangle 8">
-                            <DatePicker
-                                BackgroundColor="Transparent"
-                                Date="{Binding NewTerm.StartDate, Mode=TwoWay}"
-                                MinimumDate="{x:Static System:DateTime.Today}" />
-                        </Border>
-                    </VerticalStackLayout>
-
-
-
-                    <!--  Save Button  -->
-                    <Button
-                        Command="{Binding SaveTermCommand}"
-                        HorizontalOptions="Center"
-                        Text="Save Term" />
-
-                </VerticalStackLayout>
+                <Image
+                    HeightRequest="45"
+                    HorizontalOptions="Center"
+                    Source="check_icon.svg"
+                    VerticalOptions="Center"
+                    WidthRequest="45">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding SaveTermCommand}" />
+                    </Image.GestureRecognizers>
+                </Image>
             </Border>
 
-        </VerticalStackLayout>
-    </ScrollView>
+        </HorizontalStackLayout>
+    </Grid>
 </ContentPage>

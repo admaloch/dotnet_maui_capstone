@@ -6,116 +6,149 @@
     Title="Edit Student"
     BackgroundColor="{StaticResource Cream}">
 
-    <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="20">
+    <Grid>
+        <!--  Main scrollable content  -->
+        <ScrollView>
+            <VerticalStackLayout Padding="20" Spacing="20">
 
-            <!--  Header  -->
+                <!--  Header  -->
+                <Label
+                    Margin="0,20,0,0"
+                    HorizontalOptions="Center"
+                    Style="{StaticResource HeaderLabel}"
+                    Text="{Binding Student.Name}" />
+
+                <!--  Student Info Form  -->
+                <Border
+                    Padding="20"
+                    BackgroundColor="{StaticResource White}"
+                    Stroke="{StaticResource Charcoal}"
+                    StrokeShape="RoundRectangle 12"
+                    StrokeThickness="3"
+                    Style="{StaticResource CardFrame}">
+
+                    <Border.Shadow>
+                        <Shadow
+                            Brush="{StaticResource DarkBlue}"
+                            Opacity="0.2"
+                            Radius="8"
+                            Offset="0,4" />
+                    </Border.Shadow>
+
+                    <VerticalStackLayout Spacing="10">
+
+                        <!--  Student ID  -->
+                        <VerticalStackLayout Spacing="5">
+                            <Label
+                                Style="{StaticResource FieldLabel}"
+                                Text="Student ID"
+                                TextColor="{StaticResource DarkBlue}" />
+                            <Entry
+                                Placeholder="Enter student ID"
+                                PlaceholderColor="{StaticResource LightBrown}"
+                                Text="{Binding Student.StudentId, Mode=TwoWay}"
+                                TextColor="{StaticResource DarkBlue}" />
+                        </VerticalStackLayout>
+
+                        <!--  Full Name  -->
+                        <VerticalStackLayout Spacing="5">
+                            <Label
+                                Style="{StaticResource FieldLabel}"
+                                Text="Full Name"
+                                TextColor="{StaticResource DarkBlue}" />
+                            <Entry
+                                Placeholder="Enter full name"
+                                PlaceholderColor="{StaticResource LightBrown}"
+                                Text="{Binding Student.Name, Mode=TwoWay}"
+                                TextColor="{StaticResource DarkBlue}" />
+                        </VerticalStackLayout>
+
+                        <!--  Email  -->
+                        <VerticalStackLayout Spacing="5">
+                            <Label
+                                Style="{StaticResource FieldLabel}"
+                                Text="Email"
+                                TextColor="{StaticResource DarkBlue}" />
+                            <Entry
+                                Keyboard="Email"
+                                Placeholder="Enter email address"
+                                PlaceholderColor="{StaticResource LightBrown}"
+                                Text="{Binding Student.Email, Mode=TwoWay}"
+                                TextColor="{StaticResource DarkBlue}" />
+                        </VerticalStackLayout>
+
+                        <!--  Status  -->
+                        <VerticalStackLayout Spacing="5">
+                            <Label
+                                Style="{StaticResource FieldLabel}"
+                                Text="Enrollment Status"
+                                TextColor="{StaticResource DarkBlue}" />
+                            <Picker
+                                Title="Select Status"
+                                ItemsSource="{Binding StatusOptions}"
+                                SelectedItem="{Binding Student.Status, Mode=TwoWay}" />
+                        </VerticalStackLayout>
+
+                        <!--  Major  -->
+                        <VerticalStackLayout Spacing="5">
+                            <Label
+                                Style="{StaticResource FieldLabel}"
+                                Text="Major"
+                                TextColor="{StaticResource DarkBlue}" />
+                            <Entry
+                                Placeholder="Enter major"
+                                PlaceholderColor="{StaticResource LightBrown}"
+                                Text="{Binding Student.Major, Mode=TwoWay}"
+                                TextColor="{StaticResource DarkBlue}" />
+                        </VerticalStackLayout>
+
+                    </VerticalStackLayout>
+                </Border>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!--  Floating Save Button  -->
+        <HorizontalStackLayout
+            Padding="16"
+            HorizontalOptions="End"
+            InputTransparent="False"
+            Spacing="12"
+            VerticalOptions="End">
+
+            <!--  Label  -->
             <Label
-                Margin="0,20,0,0"
-                HorizontalOptions="Center"
-                Style="{StaticResource HeaderLabel}"
-                Text="Edit Student Information" />
+                FontAttributes="Bold"
+                FontSize="22"
+                Text="Save Student"
+                TextColor="{StaticResource DarkBlue}"
+                VerticalOptions="Center" />
 
-            <!--  Student Info Form  -->
+            <!--  Circular Button  -->
             <Border
-                Padding="20"
-                BackgroundColor="{StaticResource White}"
-                Stroke="{StaticResource Charcoal}"
-                StrokeShape="RoundRectangle 12"
-                StrokeThickness="2"
-                Style="{StaticResource CardFrame}">
-
+                BackgroundColor="{StaticResource DarkBlue}"
+                HeightRequest="55"
+                StrokeShape="Ellipse"
+                WidthRequest="55">
                 <Border.Shadow>
                     <Shadow
                         Brush="{StaticResource DarkBlue}"
-                        Opacity="0.2"
+                        Opacity="0.5"
                         Radius="8"
                         Offset="0,4" />
                 </Border.Shadow>
 
-                <VerticalStackLayout Spacing="10">
-
-                    <!--  Student ID  -->
-                    <VerticalStackLayout Spacing="5">
-                        <Label
-                            Style="{StaticResource FieldLabel}"
-                            Text="Student ID"
-                            TextColor="{StaticResource DarkBlue}" />
-                        <Entry
-                            Placeholder="Enter student ID"
-                            PlaceholderColor="{StaticResource LightBrown}"
-                            Text="{Binding Student.StudentId, Mode=TwoWay}"
-                            TextColor="{StaticResource DarkBlue}" />
-                    </VerticalStackLayout>
-
-                    <!--  Full Name  -->
-                    <VerticalStackLayout Spacing="5">
-                        <Label
-                            Style="{StaticResource FieldLabel}"
-                            Text="Full Name"
-                            TextColor="{StaticResource DarkBlue}" />
-                        <Entry
-                            Placeholder="Enter full name"
-                            PlaceholderColor="{StaticResource LightBrown}"
-                            Text="{Binding Student.Name, Mode=TwoWay}"
-                            TextColor="{StaticResource DarkBlue}" />
-                    </VerticalStackLayout>
-
-                    <!--  Email  -->
-                    <VerticalStackLayout Spacing="5">
-                        <Label
-                            Style="{StaticResource FieldLabel}"
-                            Text="Email"
-                            TextColor="{StaticResource DarkBlue}" />
-                        <Entry
-                            Keyboard="Email"
-                            Placeholder="Enter email address"
-                            PlaceholderColor="{StaticResource LightBrown}"
-                            Text="{Binding Student.Email, Mode=TwoWay}"
-                            TextColor="{StaticResource DarkBlue}" />
-                    </VerticalStackLayout>
-
-                    <!--  Status  -->
-                    <VerticalStackLayout Spacing="5">
-                        <Label
-                            Style="{StaticResource FieldLabel}"
-                            Text="Enrollment Status"
-                            TextColor="{StaticResource DarkBlue}" />
-                        <Picker
-                            Title="Select Status"
-                            ItemsSource="{Binding StatusOptions}"
-                            SelectedItem="{Binding Student.Status, Mode=TwoWay}" />
-                    </VerticalStackLayout>
-
-                    <!--  Major  -->
-                    <VerticalStackLayout Spacing="5">
-                        <Label
-                            Style="{StaticResource FieldLabel}"
-                            Text="Major"
-                            TextColor="{StaticResource DarkBlue}" />
-                        <Entry
-                            Placeholder="Enter major"
-                            PlaceholderColor="{StaticResource LightBrown}"
-                            Text="{Binding Student.Major, Mode=TwoWay}"
-                            TextColor="{StaticResource DarkBlue}" />
-                    </VerticalStackLayout>
-
-                </VerticalStackLayout>
+                <Image
+                    HeightRequest="45"
+                    HorizontalOptions="Center"
+                    Source="check_icon.svg"
+                    VerticalOptions="Center"
+                    WidthRequest="45">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding SaveStudentCommand}" />
+                    </Image.GestureRecognizers>
+                </Image>
             </Border>
 
-            <!--  Action Buttons  -->
-            <HorizontalStackLayout HorizontalOptions="Center" Spacing="15">
-                <Button
-                    Command="{Binding CancelCommand}"
-                    Style="{StaticResource SecondaryButton}"
-                    Text="Cancel" />
-                <Button
-                    Command="{Binding SaveStudentCommand}"
-                    Style="{StaticResource PrimaryButton}"
-                    Text="Save Changes" />
-            </HorizontalStackLayout>
-
-        </VerticalStackLayout>
-    </ScrollView>
-
+        </HorizontalStackLayout>
+    </Grid>
 </ContentPage>

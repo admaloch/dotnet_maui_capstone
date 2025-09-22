@@ -4,106 +4,142 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:System="clr-namespace:System;assembly=mscorlib"
-    Title="Add Assessment"
+    Title="Edit Assessment"
     BackgroundColor="{StaticResource Cream}">
+    <Grid>
+        <ScrollView>
+            <VerticalStackLayout Padding="20" Spacing="15">
 
-    <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="15">
+                <!--  Header  -->
+                <Label
+                    Margin="0,20,0,0"
+                    HorizontalOptions="Center"
+                    Style="{StaticResource HeaderLabel}"
+                    Text="{Binding Assessment.Name}" />
 
-            <!--  Header  -->
+                <!--  Card container  -->
+                <Border
+                    Padding="20"
+                    BackgroundColor="White"
+                    Stroke="{StaticResource Charcoal}"
+                    StrokeShape="RoundRectangle 12"
+                    StrokeThickness="3">
+
+                    <Border.Shadow>
+                        <Shadow
+                            Brush="{StaticResource DarkBlue}"
+                            Opacity="0.15"
+                            Radius="8"
+                            Offset="0,4" />
+                    </Border.Shadow>
+
+                    <VerticalStackLayout Spacing="15">
+
+                        <!--  Assessment Name  -->
+                        <VerticalStackLayout Spacing="1">
+                            <Label
+                                Style="{StaticResource FieldLabel}"
+                                Text="Name *"
+                                TextColor="{StaticResource DarkBlue}" />
+                            <Border BackgroundColor="White" StrokeShape="RoundRectangle 8">
+                                <Entry
+                                    BackgroundColor="Transparent"
+                                    Placeholder="Enter assessment name"
+                                    Text="{Binding Assessment.Name, Mode=TwoWay}"
+                                    TextColor="{StaticResource DarkBlue}" />
+                            </Border>
+                        </VerticalStackLayout>
+
+
+                        <!--  Assessment Type  -->
+                        <VerticalStackLayout Spacing="5">
+                            <Label
+                                Style="{StaticResource FieldLabel}"
+                                Text="Assessment Type"
+                                TextColor="{StaticResource DarkBlue}" />
+                            <Picker
+                                Title="Select type"
+                                ItemsSource="{Binding TypeOptions}"
+                                SelectedItem="{Binding Assessment.Type, Mode=TwoWay}" />
+                        </VerticalStackLayout>
+
+                        <!--  Assessment Status  -->
+                        <VerticalStackLayout Spacing="5">
+                            <Label
+                                Style="{StaticResource FieldLabel}"
+                                Text="Status"
+                                TextColor="{StaticResource DarkBlue}" />
+                            <Picker
+                                Title="Select status"
+                                ItemsSource="{Binding StatusOptions}"
+                                SelectedItem="{Binding Assessment.Status, Mode=TwoWay}" />
+                        </VerticalStackLayout>
+
+                        <!--  Start Date  -->
+                        <VerticalStackLayout Spacing="5">
+                            <Label
+                                Style="{StaticResource FieldLabel}"
+                                Text="Start Date"
+                                TextColor="{StaticResource DarkBlue}" />
+                            <DatePicker Date="{Binding Assessment.StartDate, Mode=TwoWay}" />
+                        </VerticalStackLayout>
+
+                        <!--  End Date  -->
+                        <VerticalStackLayout Spacing="5">
+                            <Label
+                                Style="{StaticResource FieldLabel}"
+                                Text="End Date"
+                                TextColor="{StaticResource DarkBlue}" />
+                            <DatePicker Date="{Binding Assessment.EndDate, Mode=TwoWay}" />
+                        </VerticalStackLayout>
+
+                    </VerticalStackLayout>
+                </Border>
+
+            </VerticalStackLayout>
+        </ScrollView>
+        <!--  Floating Save Button  -->
+        <HorizontalStackLayout
+            Padding="16"
+            HorizontalOptions="End"
+            InputTransparent="False"
+            Spacing="12"
+            VerticalOptions="End">
+
+            <!--  Label  -->
             <Label
-                Margin="0,20,0,0"
-                HorizontalOptions="Center"
-                Style="{StaticResource HeaderLabel}"
-                Text="Add new Assessment" />
+                FontAttributes="Bold"
+                FontSize="22"
+                Text="Save Assessment"
+                TextColor="{StaticResource DarkBlue}"
+                VerticalOptions="Center" />
 
-            <!--  Card container  -->
+            <!--  Circular Button  -->
             <Border
-                Padding="20"
-                BackgroundColor="White"
-                Stroke="{StaticResource Charcoal}"
-                StrokeShape="RoundRectangle 12"
-                StrokeThickness="1">
-
+                BackgroundColor="{StaticResource DarkBlue}"
+                HeightRequest="55"
+                StrokeShape="Ellipse"
+                WidthRequest="55">
                 <Border.Shadow>
                     <Shadow
                         Brush="{StaticResource DarkBlue}"
-                        Opacity="0.15"
+                        Opacity="0.5"
                         Radius="8"
                         Offset="0,4" />
                 </Border.Shadow>
 
-                <VerticalStackLayout Spacing="15">
-
-                    <!--  Assessment Name  -->
-                    <VerticalStackLayout Spacing="1">
-                        <Label
-                            Style="{StaticResource FieldLabel}"
-                            Text="Name *"
-                            TextColor="{StaticResource DarkBlue}" />
-                        <Border BackgroundColor="White" StrokeShape="RoundRectangle 8">
-                            <Entry
-                                BackgroundColor="Transparent"
-                                Placeholder="Enter assessment name"
-                                Text="{Binding Assessment.Name, Mode=TwoWay}"
-                                TextColor="{StaticResource DarkBlue}" />
-                        </Border>
-                    </VerticalStackLayout>
-
-
-                    <!--  Assessment Type  -->
-                    <VerticalStackLayout Spacing="5">
-                        <Label
-                            Style="{StaticResource FieldLabel}"
-                            Text="Assessment Type"
-                            TextColor="{StaticResource DarkBlue}" />
-                        <Picker
-                            Title="Select type"
-                            ItemsSource="{Binding TypeOptions}"
-                            SelectedItem="{Binding Assessment.Type, Mode=TwoWay}" />
-                    </VerticalStackLayout>
-
-                    <!--  Assessment Status  -->
-                    <VerticalStackLayout Spacing="5">
-                        <Label
-                            Style="{StaticResource FieldLabel}"
-                            Text="Status"
-                            TextColor="{StaticResource DarkBlue}" />
-                        <Picker
-                            Title="Select status"
-                            ItemsSource="{Binding StatusOptions}"
-                            SelectedItem="{Binding Assessment.Status, Mode=TwoWay}" />
-                    </VerticalStackLayout>
-
-                    <!--  Start Date  -->
-                    <VerticalStackLayout Spacing="5">
-                        <Label
-                            Style="{StaticResource FieldLabel}"
-                            Text="Start Date"
-                            TextColor="{StaticResource DarkBlue}" />
-                        <DatePicker Date="{Binding Assessment.StartDate, Mode=TwoWay}" />
-                    </VerticalStackLayout>
-
-                    <!--  End Date  -->
-                    <VerticalStackLayout Spacing="5">
-                        <Label
-                            Style="{StaticResource FieldLabel}"
-                            Text="End Date"
-                            TextColor="{StaticResource DarkBlue}" />
-                        <DatePicker Date="{Binding Assessment.EndDate, Mode=TwoWay}" />
-                    </VerticalStackLayout>
-
-
-
-                    <!--  Save Button  -->
-                    <Button
-                        Command="{Binding SaveAssessmentCommand}"
-                        HorizontalOptions="Center"
-                        Text="Save Assessment" />
-
-                </VerticalStackLayout>
+                <Image
+                    HeightRequest="45"
+                    HorizontalOptions="Center"
+                    Source="check_icon.svg"
+                    VerticalOptions="Center"
+                    WidthRequest="45">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding SaveAssessmentCommand}" />
+                    </Image.GestureRecognizers>
+                </Image>
             </Border>
 
-        </VerticalStackLayout>
-    </ScrollView>
+        </HorizontalStackLayout>
+    </Grid>
 </ContentPage>

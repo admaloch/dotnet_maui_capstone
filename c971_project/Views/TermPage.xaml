@@ -3,7 +3,7 @@
     x:Class="c971_project.Views.TermPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    Title="{Binding Term.Name}"
+    Title="Term Information"
     BackgroundColor="{StaticResource Cream}">
 
     <Grid>
@@ -16,15 +16,17 @@
                     Margin="0,20,0,0"
                     HorizontalOptions="Center"
                     Style="{StaticResource HeaderLabel}"
-                    Text="Term Information" />
+                    Text="{Binding Term.Name}"
+                    
+                    />
 
                 <!--  Term Info Card  -->
                 <Border
                     Padding="15"
                     BackgroundColor="{StaticResource White}"
-                    Stroke="{StaticResource LightBrown}"
+                    Stroke="{StaticResource Charcoal}"
                     StrokeShape="RoundRectangle 12"
-                    StrokeThickness="1">
+                    StrokeThickness="3">
 
                     <Border.Shadow>
                         <Shadow
@@ -84,12 +86,12 @@
                         <!--  Floating Edit Icon in bottom right corner  -->
                         <Border
                             Margin="5,5,5,5"
-                            AbsoluteLayout.LayoutBounds="1,0,36,36"
+                            AbsoluteLayout.LayoutBounds="1,0,40,40"
                             AbsoluteLayout.LayoutFlags="PositionProportional"
                             BackgroundColor="{StaticResource MediumGray}"
-                            HeightRequest="36"
+                            HeightRequest="40"
                             StrokeShape="Ellipse"
-                            WidthRequest="36">
+                            WidthRequest="40">
 
                             <Border.Shadow>
                                 <!--  More realistic shadow  -->
@@ -101,11 +103,11 @@
                             </Border.Shadow>
 
                             <Image
-                                HeightRequest="20"
+                                HeightRequest="25"
                                 HorizontalOptions="Center"
                                 Source="edit_icon.svg"
                                 VerticalOptions="Center"
-                                WidthRequest="20">
+                                WidthRequest="25">
                                 <Image.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding EditTermCommand}" />
                                 </Image.GestureRecognizers>
@@ -130,11 +132,11 @@
                         <DataTemplate>
                             <Border
                                 Margin="0,5"
-                                Padding="15"
+                                Padding="25, 15"
                                 BackgroundColor="{StaticResource White}"
-                                Stroke="{StaticResource MediumGray}"
+                                Stroke="{StaticResource Charcoal}"
                                 StrokeShape="RoundRectangle 10"
-                                StrokeThickness="1">
+                                StrokeThickness="3">
 
 
                                 <Grid>
@@ -209,17 +211,24 @@
 
             <!--  Circular Button  -->
             <Border
-                BackgroundColor="{StaticResource MediumGray}"
+                BackgroundColor="{StaticResource DarkBlue}"
                 HeightRequest="56"
                 StrokeShape="Ellipse"
                 WidthRequest="56">
+                <Border.Shadow>
+                    <Shadow
+                        Brush="{StaticResource DarkBlue}"
+                        Opacity="0.5"
+                        Radius="8"
+                        Offset="2,2" />
+                </Border.Shadow>
 
                 <Image
-                    HeightRequest="31"
+                    HeightRequest="35"
                     HorizontalOptions="Center"
                     Source="add_icon.svg"
                     VerticalOptions="Center"
-                    WidthRequest="31">
+                    WidthRequest="35">
                     <Image.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding AddCourseCommand}" />
                     </Image.GestureRecognizers>

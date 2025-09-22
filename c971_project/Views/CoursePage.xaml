@@ -3,7 +3,7 @@
     x:Class="c971_project.Views.CoursePage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    Title="{Binding Course.Name}"
+    Title="Course Information"
     BackgroundColor="{StaticResource Cream}">
 
     <Grid>
@@ -17,15 +17,15 @@
                     Margin="0,20,0,0"
                     HorizontalOptions="Center"
                     Style="{StaticResource HeaderLabel}"
-                    Text="Course Information" />
+                    Text="{Binding Course.Name}" />
 
                 <!--  Course Info Card  -->
                 <Border
                     Padding="15"
                     BackgroundColor="{StaticResource White}"
-                    Stroke="{StaticResource LightBrown}"
+                    Stroke="{StaticResource Charcoal}"
                     StrokeShape="RoundRectangle 12"
-                    StrokeThickness="1">
+                    StrokeThickness="3">
 
                     <Border.Shadow>
                         <Shadow
@@ -174,9 +174,9 @@
                                 Margin="0,5"
                                 Padding="15"
                                 BackgroundColor="{StaticResource White}"
-                                Stroke="{StaticResource MediumGray}"
+                                Stroke="{StaticResource Charcoal}"
                                 StrokeShape="RoundRectangle 10"
-                                StrokeThickness="1">
+                                StrokeThickness="3">
 
 
                                 <Grid>
@@ -221,14 +221,7 @@
                                             <Label Text="{Binding EndDate, StringFormat='{0:MM/dd/yyyy}'}" TextColor="{StaticResource DarkBlue}" />
                                         </HorizontalStackLayout>
 
-                                        <!--  Date Added  -->
-                                        <HorizontalStackLayout Spacing="20">
-                                            <Label
-                                                FontAttributes="Bold"
-                                                Text="Added:"
-                                                TextColor="{StaticResource MediumGray}" />
-                                            <Label Text="{Binding DateAdded, StringFormat='{0:MM/dd/yyyy}'}" TextColor="{StaticResource DarkBlue}" />
-                                        </HorizontalStackLayout>
+
                                     </VerticalStackLayout>
 
                                     <!--  Icons container  -->
@@ -267,8 +260,9 @@
                 </CollectionView>
 
                 <!--  Floating Add Assessment Button with Label  -->
+                <!--  Floating Add Term Button with Label  -->
                 <HorizontalStackLayout
-                    Padding="0,16"
+                    Padding="16"
                     HorizontalOptions="End"
                     InputTransparent="False"
                     Spacing="12"
@@ -284,24 +278,24 @@
 
                     <!--  Circular Button  -->
                     <Border
-                        BackgroundColor="{StaticResource MediumGray}"
+                        BackgroundColor="{StaticResource DarkBlue}"
                         HeightRequest="56"
                         StrokeShape="Ellipse"
                         WidthRequest="56">
                         <Border.Shadow>
                             <Shadow
-                                Brush="{StaticResource MediumGray}"
-                                Opacity="0.3"
+                                Brush="{StaticResource DarkBlue}"
+                                Opacity="0.5"
                                 Radius="8"
                                 Offset="2,2" />
                         </Border.Shadow>
 
                         <Image
-                            HeightRequest="31"
+                            HeightRequest="35"
                             HorizontalOptions="Center"
                             Source="add_icon.svg"
                             VerticalOptions="Center"
-                            WidthRequest="31">
+                            WidthRequest="35">
                             <Image.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding AddAssessmentCommand}" />
                             </Image.GestureRecognizers>
@@ -326,9 +320,9 @@
                                 Margin="0,5"
                                 Padding="15"
                                 BackgroundColor="{StaticResource White}"
-                                Stroke="{StaticResource MediumGray}"
+                                Stroke="{StaticResource Charcoal+}"
                                 StrokeShape="RoundRectangle 10"
-                                StrokeThickness="1">
+                                StrokeThickness="3">
 
 
                                 <Grid>
@@ -389,9 +383,9 @@
                     </CollectionView.ItemTemplate>
                 </CollectionView>
 
-                <!--  Floating Add Note Button with Label  -->
+                <!--  Floating Add note Button with Label  -->
                 <HorizontalStackLayout
-                    Padding="0,16"
+                    Padding="16"
                     HorizontalOptions="End"
                     InputTransparent="False"
                     Spacing="12"
@@ -407,25 +401,24 @@
 
                     <!--  Circular Button  -->
                     <Border
-                        BackgroundColor="{StaticResource MediumGray}"
+                        BackgroundColor="{StaticResource DarkBlue}"
                         HeightRequest="56"
                         StrokeShape="Ellipse"
                         WidthRequest="56">
-
                         <Border.Shadow>
                             <Shadow
-                                Brush="{StaticResource MediumGray}"
-                                Opacity="0.3"
+                                Brush="{StaticResource DarkBlue}"
+                                Opacity="0.5"
                                 Radius="8"
                                 Offset="2,2" />
                         </Border.Shadow>
 
                         <Image
-                            HeightRequest="31"
+                            HeightRequest="35"
                             HorizontalOptions="Center"
                             Source="add_icon.svg"
                             VerticalOptions="Center"
-                            WidthRequest="31">
+                            WidthRequest="35">
                             <Image.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding AddNoteCommand}" />
                             </Image.GestureRecognizers>

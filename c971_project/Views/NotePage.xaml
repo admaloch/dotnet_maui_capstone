@@ -22,9 +22,10 @@
                 <Border
                     Padding="15"
                     BackgroundColor="{StaticResource White}"
-                    Stroke="{StaticResource LightBrown}"
+                    HeightRequest="550"
+                    Stroke="{StaticResource Charcoal}"
                     StrokeShape="RoundRectangle 12"
-                    StrokeThickness="1">
+                    StrokeThickness="3">
 
                     <Border.Shadow>
                         <Shadow
@@ -58,9 +59,9 @@
                 </Border>
             </VerticalStackLayout>
         </ScrollView>
-        <!--  Floating Add Assessment Button with Label  -->
+        <!--  Floating Add note Button with Label  -->
         <HorizontalStackLayout
-            Padding="15"
+            Padding="16"
             HorizontalOptions="End"
             InputTransparent="False"
             Spacing="12"
@@ -70,35 +71,36 @@
             <Label
                 FontAttributes="Bold"
                 FontSize="22"
-                Text="Edit note"
+                Text="Edit Note"
                 TextColor="{StaticResource DarkBlue}"
                 VerticalOptions="Center" />
 
             <!--  Circular Button  -->
             <Border
-                BackgroundColor="{StaticResource MediumGray}"
+                BackgroundColor="{StaticResource DarkBlue}"
                 HeightRequest="56"
                 StrokeShape="Ellipse"
                 WidthRequest="56">
                 <Border.Shadow>
                     <Shadow
-                        Brush="{StaticResource MediumGray}"
-                        Opacity="0.3"
+                        Brush="{StaticResource DarkBlue}"
+                        Opacity="0.5"
                         Radius="8"
                         Offset="2,2" />
                 </Border.Shadow>
 
                 <Image
-                    HeightRequest="31"
+                    HeightRequest="35"
                     HorizontalOptions="Center"
                     Source="add_icon.svg"
                     VerticalOptions="Center"
-                    WidthRequest="31">
+                    WidthRequest="35">
                     <Image.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding EditNoteCommand}" />
                     </Image.GestureRecognizers>
                 </Image>
             </Border>
         </HorizontalStackLayout>
+
     </Grid>
 </ContentPage>

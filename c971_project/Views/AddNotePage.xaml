@@ -6,73 +6,114 @@
     xmlns:System="clr-namespace:System;assembly=mscorlib"
     Title="Add Note"
     BackgroundColor="{StaticResource Cream}">
+    <Grid>
+        <ScrollView>
+            <VerticalStackLayout Padding="20" Spacing="15">
 
-    <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="15">
+                <!--  Header  -->
+                <Label
+                    Margin="0,20,0,0"
+                    HorizontalOptions="Center"
+                    Style="{StaticResource HeaderLabel}"
+                    Text="Note" />
 
-            <!--  Header  -->
+                <!--  Card container  -->
+                <Border
+                    Padding="20"
+                    BackgroundColor="White"
+                    HeightRequest="500"
+                    Stroke="{StaticResource Charcoal}"
+                    StrokeShape="RoundRectangle 12"
+                    StrokeThickness="3">
+
+                    <Border.Shadow>
+                        <Shadow
+                            Brush="{StaticResource DarkBlue}"
+                            Opacity="0.15"
+                            Radius="8"
+                            Offset="0,4" />
+                    </Border.Shadow>
+
+                    <VerticalStackLayout>
+
+                        <!--  Note Title  -->
+                        <VerticalStackLayout>
+                            <Label Style="{StaticResource FieldLabel}" Text="Title" />
+
+                            <Border Style="{StaticResource FieldBorder}">
+                                <Entry
+                                    Placeholder="Enter note title"
+                                    Style="{StaticResource FieldEntry}"
+                                    Text="{Binding NewNote.Title, Mode=TwoWay}" />
+                            </Border>
+                        </VerticalStackLayout>
+
+                        <!--  Note Body  -->
+                        <VerticalStackLayout Spacing="5">
+                            <Label Style="{StaticResource FieldLabel}" Text="Body" />
+
+                            <Border Style="{StaticResource FieldBorder}">
+                                <Editor
+                                    HeightRequest="200"
+                                    MaxLength="1000"
+                                    Placeholder="Enter note body"
+                                    Style="{StaticResource FieldEditor}"
+                                    Text="{Binding NewNote.Body, Mode=TwoWay}" />
+                            </Border>
+                        </VerticalStackLayout>
+
+
+
+
+
+
+                    </VerticalStackLayout>
+                </Border>
+
+            </VerticalStackLayout>
+        </ScrollView>
+        <!--  Floating Save Button  -->
+        <HorizontalStackLayout
+            Padding="16"
+            HorizontalOptions="End"
+            InputTransparent="False"
+            Spacing="12"
+            VerticalOptions="End">
+
+            <!--  Label  -->
             <Label
-                Margin="0,20,0,0"
-                HorizontalOptions="Center"
-                Style="{StaticResource HeaderLabel}"
-                Text="Add new Notes" />
+                FontAttributes="Bold"
+                FontSize="22"
+                Text="Save Note"
+                TextColor="{StaticResource DarkBlue}"
+                VerticalOptions="Center" />
 
-            <!--  Card container  -->
+            <!--  Circular Button  -->
             <Border
-                Padding="20"
-                BackgroundColor="White"
-                Stroke="{StaticResource Charcoal}"
-                StrokeShape="RoundRectangle 12"
-                StrokeThickness="1">
-
+                BackgroundColor="{StaticResource DarkBlue}"
+                HeightRequest="55"
+                StrokeShape="Ellipse"
+                WidthRequest="55">
                 <Border.Shadow>
                     <Shadow
                         Brush="{StaticResource DarkBlue}"
-                        Opacity="0.15"
+                        Opacity="0.5"
                         Radius="8"
                         Offset="0,4" />
                 </Border.Shadow>
 
-                <VerticalStackLayout Spacing="15">
-
-                    <!--  Note Title  -->
-                    <VerticalStackLayout Spacing="5">
-                        <Label Style="{StaticResource FieldLabel}" Text="Title" />
-
-                        <Border Style="{StaticResource FieldBorder}">
-                            <Entry
-                                Placeholder="Enter note title"
-                                Style="{StaticResource FieldEntry}"
-                                Text="{Binding NewNote.Title, Mode=TwoWay}" />
-                        </Border>
-                    </VerticalStackLayout>
-
-                    <!--  Note Body  -->
-                    <VerticalStackLayout Spacing="5">
-                        <Label Style="{StaticResource FieldLabel}" Text="Body" />
-
-                        <Border Style="{StaticResource FieldBorder}">
-                            <Editor
-                                HeightRequest="200"
-                                MaxLength="1000"
-                                Placeholder="Enter note body"
-                                Style="{StaticResource FieldEditor}"
-                                Text="{Binding NewNote.Body, Mode=TwoWay}" />
-                        </Border>
-                    </VerticalStackLayout>
-
-
-
-
-                    <!--  Save Button  -->
-                    <Button
-                        Command="{Binding SaveNoteCommand}"
-                        HorizontalOptions="Center"
-                        Text="Save Note" />
-
-                </VerticalStackLayout>
+                <Image
+                    HeightRequest="45"
+                    HorizontalOptions="Center"
+                    Source="check_icon.svg"
+                    VerticalOptions="Center"
+                    WidthRequest="45">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding SaveNoteCommand}" />
+                    </Image.GestureRecognizers>
+                </Image>
             </Border>
 
-        </VerticalStackLayout>
-    </ScrollView>
+        </HorizontalStackLayout>
+    </Grid>
 </ContentPage>
