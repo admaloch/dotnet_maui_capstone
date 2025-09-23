@@ -16,9 +16,7 @@
                     Margin="0,20,0,0"
                     HorizontalOptions="Center"
                     Style="{StaticResource HeaderLabel}"
-                    Text="{Binding Term.Name}"
-                    
-                    />
+                    Text="{Binding Term.Name}" />
 
                 <!--  Term Info Card  -->
                 <Border
@@ -123,16 +121,12 @@
                     Style="{StaticResource HeaderLabel}"
                     Text="Courses" />
 
-                <CollectionView
-                    EmptyView="No terms available yet. Add your first term to get started!"
-                    ItemsSource="{Binding Courses}"
-                    SelectionMode="Single">
-
+                <CollectionView HeightRequest="300" ItemsSource="{Binding Courses}">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <Border
                                 Margin="0,5"
-                                Padding="25, 15"
+                                Padding="25,15"
                                 BackgroundColor="{StaticResource White}"
                                 Stroke="{StaticResource Charcoal}"
                                 StrokeShape="RoundRectangle 10"
@@ -187,6 +181,40 @@
                             </Border>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
+                    <CollectionView.EmptyView>
+                        <Border
+                            Padding="30"
+                            BackgroundColor="{StaticResource White}"
+                            HorizontalOptions="Fill"
+                            Stroke="{StaticResource Charcoal}"
+                            StrokeShape="RoundRectangle 15"
+                            StrokeThickness="3"
+                            VerticalOptions="Center">
+
+                            <VerticalStackLayout HorizontalOptions="Center" Spacing="15">
+                                <Image
+                                    HeightRequest="44"
+                                    HorizontalOptions="Center"
+                                    Source="search_icon.svg"
+                                    WidthRequest="44" />
+
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="18"
+                                    HorizontalOptions="Center"
+                                    HorizontalTextAlignment="Center"
+                                    Text="No Courses Yet"
+                                    TextColor="{StaticResource DarkBlue}" />
+
+                                <Label
+                                    FontSize="14"
+                                    HorizontalOptions="Center"
+                                    HorizontalTextAlignment="Center"
+                                    Text="Add your first course to get started!"
+                                    TextColor="{StaticResource Charcoal}" />
+                            </VerticalStackLayout>
+                        </Border>
+                    </CollectionView.EmptyView>
                 </CollectionView>
 
 

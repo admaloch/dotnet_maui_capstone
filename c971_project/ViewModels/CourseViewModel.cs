@@ -53,13 +53,11 @@ namespace c971_project.ViewModels
             {
                 await LoadCourseAsync(CourseId); // reload from DB on Course edit
             });
-
         }
 
         partial void OnCourseIdChanged(int value)
         {
             _ = LoadDataAsync(value);
-
         }
 
         private async Task LoadDataAsync(int courseId)

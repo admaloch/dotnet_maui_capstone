@@ -38,7 +38,6 @@
                     <!--  Use AbsoluteLayout to position content + floating icon  -->
                     <AbsoluteLayout>
 
-                        <!--  Main content - REMOVE AbsoluteLayout properties  -->
                         <VerticalStackLayout Spacing="12">
                             <!--  Student ID  -->
                             <HorizontalStackLayout Spacing="10">
@@ -132,69 +131,108 @@
                     Text="Academic Terms" />
 
                 <!--  Terms List  -->
-                <CollectionView
-                    EmptyView="No terms available yet. Add your first term to get started!"
-                    ItemsSource="{Binding Terms}"
-                    SelectionMode="Single">
+                <Grid RowDefinitions="Auto,*">
+                    <CollectionView
+                        Grid.Row="1"
+                        ItemsSource="{Binding Terms}"
+                        HeightRequest="300"
+                        VerticalOptions="FillAndExpand">
 
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Border
+                                    Margin="0,5"
+                                    Padding="20,15"
+                                    BackgroundColor="{StaticResource White}"
+                                    Stroke="{StaticResource Charcoal}"
+                                    StrokeShape="RoundRectangle 10"
+                                    StrokeThickness="3">
+
+                                    <Grid>
+                                        <!--  Content  -->
+                                        <VerticalStackLayout Padding="0,0,40,0" Spacing="8">
+
+                                            <Label
+                                                FontAttributes="Bold"
+                                                HorizontalOptions="Start"
+                                                MaximumWidthRequest="250"
+                                                Text="{Binding Name}"
+                                                TextColor="{StaticResource DarkBlue}" />
+
+                                        </VerticalStackLayout>
+
+                                        <!--  Icons container  -->
+                                        <HorizontalStackLayout
+                                            HorizontalOptions="End"
+                                            Spacing="10"
+                                            VerticalOptions="Start">
+
+                                            <!--  Delete icon  -->
+                                            <Image
+                                                HeightRequest="26"
+                                                Source="trash_icon.svg"
+                                                WidthRequest="26">
+                                                <Image.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeleteTermCommand}" CommandParameter="{Binding .}" />
+                                                </Image.GestureRecognizers>
+                                            </Image>
+
+                                            <!--  More / navigate icon  -->
+                                            <Image
+                                                HeightRequest="26"
+                                                Source="more_icon.svg"
+                                                WidthRequest="26">
+                                                <Image.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.TermPageCommand}" CommandParameter="{Binding .}" />
+                                                </Image.GestureRecognizers>
+                                            </Image>
+
+                                        </HorizontalStackLayout>
+
+                                    </Grid>
+
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+
+                        <!--  EmptyView with styled box  -->
+                        <CollectionView.EmptyView>
                             <Border
-                                Margin="0,5"
-                                Padding="20, 15"
+                                Padding="30"
                                 BackgroundColor="{StaticResource White}"
+                                HorizontalOptions="Fill"
                                 Stroke="{StaticResource Charcoal}"
-                                StrokeShape="RoundRectangle 10"
-                                StrokeThickness="3">
+                                StrokeShape="RoundRectangle 15"
+                                StrokeThickness="3"
+                                VerticalOptions="Center">
 
+                                <VerticalStackLayout HorizontalOptions="Center" Spacing="15">
+                                    <Image
+                                        HeightRequest="44"
+                                        HorizontalOptions="Center"
+                                        Source="search_icon.svg"
+                                        WidthRequest="44" />
 
-                                <Grid>
-                                    <!--  Content  -->
-                                    <VerticalStackLayout Padding="0,0,40,0" Spacing="8">
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="18"
+                                        HorizontalOptions="Center"
+                                        HorizontalTextAlignment="Center"
+                                        Text="No Terms Yet"
+                                        TextColor="{StaticResource DarkBlue}" />
 
-                                        <Label
-                                            FontAttributes="Bold"
-                                            HorizontalOptions="Start"
-                                            MaximumWidthRequest="250"
-                                            Text="{Binding Name}"
-                                            TextColor="{StaticResource DarkBlue}" />
-
-                                    </VerticalStackLayout>
-
-                                    <!--  Icons container  -->
-                                    <HorizontalStackLayout
-                                        HorizontalOptions="End"
-                                        Spacing="10"
-                                        VerticalOptions="Start">
-
-                                        <!--  Delete icon  -->
-                                        <Image
-                                            HeightRequest="26"
-                                            Source="trash_icon.svg"
-                                            WidthRequest="26">
-                                            <Image.GestureRecognizers>
-                                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeleteTermCommand}" CommandParameter="{Binding .}" />
-                                            </Image.GestureRecognizers>
-                                        </Image>
-
-                                        <!--  More / navigate icon  -->
-                                        <Image
-                                            HeightRequest="26"
-                                            Source="more_icon.svg"
-                                            WidthRequest="26">
-                                            <Image.GestureRecognizers>
-                                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.TermPageCommand}" CommandParameter="{Binding .}" />
-                                            </Image.GestureRecognizers>
-                                        </Image>
-
-                                    </HorizontalStackLayout>
-
-                                </Grid>
-
+                                    <Label
+                                        FontSize="14"
+                                        HorizontalOptions="Center"
+                                        HorizontalTextAlignment="Center"
+                                        Text="Add your first term to get started!"
+                                        TextColor="{StaticResource Charcoal}" />
+                                </VerticalStackLayout>
                             </Border>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
+                        </CollectionView.EmptyView>
+
+                    </CollectionView>
+                </Grid>
 
             </VerticalStackLayout>
         </ScrollView>

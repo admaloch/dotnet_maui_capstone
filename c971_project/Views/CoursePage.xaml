@@ -163,10 +163,7 @@
                     Style="{StaticResource HeaderLabel}"
                     Text="Assessments" />
 
-                <CollectionView
-                    EmptyView="No terms available yet. Add your first term to get started!"
-                    ItemsSource="{Binding Assessments}"
-                    SelectionMode="Single">
+                <CollectionView HeightRequest="300" ItemsSource="{Binding Assessments}">
 
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
@@ -257,6 +254,41 @@
                             </Border>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
+                    <!--  EmptyView with styled box  -->
+                    <CollectionView.EmptyView>
+                        <Border
+                            Padding="30,20"
+                            BackgroundColor="{StaticResource White}"
+                            HorizontalOptions="Fill"
+                            Stroke="{StaticResource Charcoal}"
+                            StrokeShape="RoundRectangle 15"
+                            StrokeThickness="3"
+                            VerticalOptions="Center">
+
+                            <VerticalStackLayout HorizontalOptions="Center" Spacing="5">
+                                <Image
+                                    HeightRequest="24"
+                                    HorizontalOptions="Center"
+                                    Source="search_icon.svg"
+                                    WidthRequest="24" />
+
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="18"
+                                    HorizontalOptions="Center"
+                                    HorizontalTextAlignment="Center"
+                                    Text="No Assessments Yet"
+                                    TextColor="{StaticResource DarkBlue}" />
+
+                                <Label
+                                    FontSize="14"
+                                    HorizontalOptions="Center"
+                                    HorizontalTextAlignment="Center"
+                                    Text="Add your first assessment to get started!"
+                                    TextColor="{StaticResource Charcoal}" />
+                            </VerticalStackLayout>
+                        </Border>
+                    </CollectionView.EmptyView>
                 </CollectionView>
 
                 <!--  Floating Add Assessment Button with Label  -->
@@ -309,10 +341,8 @@
                     Style="{StaticResource HeaderLabel}"
                     Text="Notes" />
 
-                <CollectionView
-                    EmptyView="No terms available yet. Add your first term to get started!"
-                    ItemsSource="{Binding Notes}"
-                    SelectionMode="Single">
+                <CollectionView HeightRequest="175" ItemsSource="{Binding Notes}">
+
 
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
@@ -381,6 +411,40 @@
                             </Border>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
+                    <CollectionView.EmptyView>
+                        <Border
+                            Padding="30,20"
+                            BackgroundColor="{StaticResource White}"
+                            HorizontalOptions="Fill"
+                            Stroke="{StaticResource Charcoal}"
+                            StrokeShape="RoundRectangle 15"
+                            StrokeThickness="3"
+                            VerticalOptions="Center">
+
+                            <VerticalStackLayout HorizontalOptions="Center" Spacing="5">
+                                <Image
+                                    HeightRequest="24"
+                                    HorizontalOptions="Center"
+                                    Source="search_icon.svg"
+                                    WidthRequest="24" />
+
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="18"
+                                    HorizontalOptions="Center"
+                                    HorizontalTextAlignment="Center"
+                                    Text="No Notes Yet"
+                                    TextColor="{StaticResource DarkBlue}" />
+
+                                <Label
+                                    FontSize="14"
+                                    HorizontalOptions="Center"
+                                    HorizontalTextAlignment="Center"
+                                    Text="Add your first note to get started!"
+                                    TextColor="{StaticResource Charcoal}" />
+                            </VerticalStackLayout>
+                        </Border>
+                    </CollectionView.EmptyView>
                 </CollectionView>
 
                 <!--  Floating Add note Button with Label  -->

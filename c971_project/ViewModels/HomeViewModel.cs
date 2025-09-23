@@ -31,34 +31,53 @@ namespace c971_project.ViewModels
 
             WeakReferenceMessenger.Default.Register<StudentUpdatedMessage>(this, async (r, m) =>
             {
-                await LoadDataAsync(); // reload from DB so Home reflects persisted data
+                await LoadStudentAsync(); // reload from DB so Home reflects persisted data
             });
 
             WeakReferenceMessenger.Default.Register<TermUpdatedMessage>(this, async (r, m) =>
             {
-                await LoadDataAsync(); // refresh terms from DB
+                await LoadTermAsync(); // refresh terms from DB
             });
         }
 
         public async Task LoadDataAsync()
         {
+            await LoadStudentAsync();
+            await LoadTermAsync();
+        }
+
+        public async Task LoadStudentAsync()
+        {
             try
             {
                 CurrentStudent = await _databaseService.GetCurrentStudentAsync();
-                Terms = new ObservableCollection<Term>(await _databaseService.GetTermsAsync());
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error loading HomeViewModel data: {ex.Message}");
                 CurrentStudent = null;
-                var termList = await _databaseService.GetTermsAsync();
-                // Clear the collection first (optional depending on use case)
+                Debug.WriteLine($"Debug msg: Error loading student data: {ex.Message}");
+
+            }
+        }
+
+        public async Task LoadTermAsync()
+        {
+            try
+            {
+                var terms = await _databaseService.GetTermsAsync();
+
                 Terms.Clear();
-                foreach (var term in termList)
+                foreach (var term in terms)
                 {
-                    term.Name = term.Name.ToUpper(); // just an example update
-                    Terms.Add(term); // this will notify UI because ObservableCollection
+                    Terms.Add(term);
                 }
+                Debug.WriteLine($"number of terms is: {Terms.Count}");
+
+            }
+            catch (Exception ex)
+            {
+                Terms.Clear();
+                Debug.WriteLine($"Debug msg: Error loading term data: {ex.Message}");
             }
         }
 
@@ -100,6 +119,7 @@ namespace c971_project.ViewModels
                 }
                 await _databaseService.DeleteTermAsync(term);
                 Terms.Remove(term);
+
             }
             catch (Exception ex)
             {

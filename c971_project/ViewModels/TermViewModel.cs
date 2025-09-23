@@ -72,7 +72,6 @@ namespace c971_project.ViewModels
                 IsBusy = false;
             }
         }
-
         public async Task LoadCoursesAsync()
         {
             if (IsBusy) return;
@@ -103,7 +102,6 @@ namespace c971_project.ViewModels
                 IsBusy = false;
             }
         }
-
         [RelayCommand]
         private async Task OnEditTermAsync()
         {
@@ -117,7 +115,6 @@ namespace c971_project.ViewModels
             }
             finally { IsBusy = false; }
         }
-
         [RelayCommand]
         private async Task OnAddCourseAsync()
         {
@@ -132,7 +129,6 @@ namespace c971_project.ViewModels
                 finally { IsBusy = false; }
             }
         }
-
         [RelayCommand]
         private async Task OnDeleteCourseAsync(Course course)
         {
@@ -149,6 +145,9 @@ namespace c971_project.ViewModels
             try
             {
                 IsBusy = true;
+                //delete course and corresponding notes and assessments
+                await _databaseService.DeleteAssessmentsByCourseIdAsync(course.CourseId);
+                await _databaseService.DeleteNotesByCourseIdAsync(course.CourseId);
                 await _databaseService.DeleteCourseAsync(course);
                 Courses.Remove(course);
             }
@@ -159,7 +158,6 @@ namespace c971_project.ViewModels
             finally { IsBusy = false; }
 
         }
-
         [RelayCommand]
         private async Task OnCoursePageAsync(Course course)
         {
