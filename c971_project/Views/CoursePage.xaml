@@ -341,7 +341,7 @@
                     Style="{StaticResource HeaderLabel}"
                     Text="Notes" />
 
-                <CollectionView HeightRequest="175" ItemsSource="{Binding Notes}">
+                <CollectionView HeightRequest="300" ItemsSource="{Binding Notes}">
 
 
                     <CollectionView.ItemTemplate>

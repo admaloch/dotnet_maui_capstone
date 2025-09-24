@@ -26,7 +26,6 @@ namespace c971_project.Models
 
         [Required(ErrorMessage = "End date is required.")]
         public DateTime EndDate { get; set; } = DateTime.Today.AddMonths(4);
-
         public DateTime DateAdded { get; set; } = DateTime.Now;
 
         [Required(ErrorMessage = "Instructor is required.")]
@@ -36,6 +35,9 @@ namespace c971_project.Models
         [Required(ErrorMessage = "Term is required.")]
         [Range(1, int.MaxValue, ErrorMessage = "Please select a valid term.")]
         public int TermId { get; set; }
+
+        public bool NotifyStartDate { get; set; } = false;
+        public bool NotifyEndDate { get; set; } = false;
 
         public void Validate()
         {

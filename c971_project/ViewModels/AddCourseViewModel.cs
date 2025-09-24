@@ -96,7 +96,6 @@ namespace c971_project.ViewModels
                 // 5. Notify & navigate
                 WeakReferenceMessenger.Default.Send(new CourseUpdatedMessage());
 
-                await Shell.Current.DisplayAlert("Success", "Course saved successfully.", "OK");
                 await Shell.Current.GoToAsync("..");
             }
             catch (Exception ex)

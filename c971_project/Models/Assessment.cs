@@ -21,7 +21,8 @@ namespace c971_project.Models
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public DateTime DateAdded { get; set; } = DateTime.Now;
-
+        public bool NotifyStartDate { get; set; } = false;
+        public bool NotifyEndDate { get; set; } = false;
         public void Validate()
         {
             ValidateAllProperties();

@@ -27,10 +27,17 @@ namespace c971_project.ViewModels
 
         [ObservableProperty]
         private ObservableCollection<Course> _courses = new();
+        public bool CanAddMoreCourses => Courses.Count < 6;
 
         public TermViewModel(DatabaseService databaseService)
         {
             _databaseService = databaseService;
+
+            // Notify when Courses collection changes
+            Courses.CollectionChanged += (s, e) =>
+            {
+                OnPropertyChanged(nameof(CanAddMoreCourses));
+            };
 
             WeakReferenceMessenger.Default.Register<CourseUpdatedMessage>(this, async (r, m) =>
             {
@@ -101,6 +108,8 @@ namespace c971_project.ViewModels
             {
                 IsBusy = false;
             }
+            // update on add courses
+            OnPropertyChanged(nameof(CanAddMoreCourses));
         }
         [RelayCommand]
         private async Task OnEditTermAsync()
@@ -119,6 +128,12 @@ namespace c971_project.ViewModels
         private async Task OnAddCourseAsync()
         {
             {
+                if (!CanAddMoreCourses)
+                {
+                    await Shell.Current.DisplayAlert("Notification", "You have reached the maximum 6 courses", "OK");
+                    return;
+                }
+
                 if (IsBusy) return;
                 try
                 {

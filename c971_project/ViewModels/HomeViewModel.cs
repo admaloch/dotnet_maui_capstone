@@ -23,11 +23,20 @@ namespace c971_project.ViewModels
         [ObservableProperty]
         private ObservableCollection<Term> _terms = new();
 
+        // Computed property for button state
+        public bool CanAddMoreTerms => Terms.Count < 6;
+
         public HomeViewModel(DatabaseService databaseService)
         {
             _databaseService = databaseService;
 
             _ = LoadDataAsync();
+
+            // Notify when Terms collection changes
+            Terms.CollectionChanged += (s, e) =>
+            {
+                OnPropertyChanged(nameof(CanAddMoreTerms));
+            };
 
             WeakReferenceMessenger.Default.Register<StudentUpdatedMessage>(this, async (r, m) =>
             {
@@ -55,7 +64,7 @@ namespace c971_project.ViewModels
             catch (Exception ex)
             {
                 CurrentStudent = null;
-                Debug.WriteLine($"Debug msg: Error loading student data: {ex.Message}");
+                await Shell.Current.DisplayAlert("Error", ex.Message, "OK");
 
             }
         }
@@ -71,20 +80,26 @@ namespace c971_project.ViewModels
                 {
                     Terms.Add(term);
                 }
-                Debug.WriteLine($"number of terms is: {Terms.Count}");
 
             }
             catch (Exception ex)
             {
                 Terms.Clear();
-                Debug.WriteLine($"Debug msg: Error loading term data: {ex.Message}");
+                await Shell.Current.DisplayAlert("Error", ex.Message, "OK");
             }
+            // update on add courses
+            OnPropertyChanged(nameof(CanAddMoreTerms));
         }
 
         [RelayCommand]
         private async Task OnAddTermAsync()
         {
             if (IsBusy) return;
+            if (!CanAddMoreTerms)
+            {
+                await Shell.Current.DisplayAlert("Notification", "You have reached the maximum 6 terms", "OK");
+                return;
+            }
             try
             {
                 IsBusy = true;

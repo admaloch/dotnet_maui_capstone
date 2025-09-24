@@ -118,6 +118,40 @@
                             </Border>
                         </VerticalStackLayout>
 
+                        <!--  Notification Section  -->
+                        <VerticalStackLayout Spacing="15">
+                            <Label
+                                Margin="0,20,0,10"
+                                FontAttributes="Bold"
+                                FontSize="18"
+                                Text="Course Information"
+                                TextColor="{StaticResource DarkBlue}" />
+
+                            <!--  Start Date Notification  -->
+                            <HorizontalStackLayout Spacing="15" VerticalOptions="Center">
+                                <Switch
+                                    IsToggled="{Binding NewCourse.NotifyStartDate, Mode=TwoWay}"
+                                    OnColor="{StaticResource LightBrown}"
+                                    VerticalOptions="Center" />
+                                <Label
+                                    Text="{Binding NewCourse.StartDate, StringFormat='Alert me on Start Date'}"
+                                    TextColor="{StaticResource DarkBlue}"
+                                    VerticalOptions="Center" />
+                            </HorizontalStackLayout>
+
+                            <!--  End Date Notification  -->
+                            <HorizontalStackLayout Spacing="15" VerticalOptions="Center">
+                                <Switch
+                                    IsToggled="{Binding NewCourse.NotifyEndDate, Mode=TwoWay}"
+                                    OnColor="{StaticResource LightBrown}"
+                                    VerticalOptions="Center" />
+                                <Label
+                                    Text="{Binding NewCourse.EndDate, StringFormat='Alert me on End Date'}"
+                                    TextColor="{StaticResource DarkBlue}"
+                                    VerticalOptions="Center" />
+                            </HorizontalStackLayout>
+                        </VerticalStackLayout>
+
                         <!--  INSTRUCTOR INFORMATION SECTION  -->
                         <Label
                             Margin="0,40,0,10"

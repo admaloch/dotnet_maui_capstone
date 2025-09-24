@@ -80,7 +80,6 @@ namespace c971_project.ViewModels
                 // Optional: notify other viewmodels
                 WeakReferenceMessenger.Default.Send(new TermUpdatedMessage());
 
-                await Shell.Current.DisplayAlert("Success", "Term saved successfully.", "OK");
                 await Shell.Current.GoToAsync("..");
             }
             catch (Exception ex)
