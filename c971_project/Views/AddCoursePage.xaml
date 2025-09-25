@@ -91,66 +91,112 @@
                         </VerticalStackLayout>
 
                         <!--  Start Date  -->
-                        <VerticalStackLayout Spacing="1">
+                        <VerticalStackLayout Spacing="5">
                             <Label
                                 Style="{StaticResource FieldLabel}"
-                                Text="Start Date *"
+                                Text="Start Date"
                                 TextColor="{StaticResource DarkBlue}" />
-                            <Border BackgroundColor="White" StrokeShape="RoundRectangle 8">
+
+                            <Grid
+                                ColumnDefinitions="Auto,*,Auto,*"
+                                ColumnSpacing="10"
+                                VerticalOptions="Center">
+                                <!--  Calendar Icon  -->
+                                <Image
+                                    Grid.Column="0"
+                                    HeightRequest="20"
+                                    Source="calendar_icon.svg"
+                                    VerticalOptions="Center"
+                                    WidthRequest="20" />
+
+                                <!--  DatePicker  -->
                                 <DatePicker
-                                    BackgroundColor="Transparent"
+                                    Grid.Column="1"
                                     Date="{Binding NewCourse.StartDate, Mode=TwoWay}"
-                                    MinimumDate="{x:Static system:DateTime.Today}" />
-                            </Border>
+                                    HorizontalOptions="Fill" />
+
+                                <!--  Alarm Icon  -->
+                                <Image
+                                    Grid.Column="2"
+                                    HeightRequest="20"
+                                    Source="alarm_icon.svg"
+                                    VerticalOptions="Center"
+                                    WidthRequest="20" />
+
+                                <!--  TimePicker  -->
+                                <TimePicker
+                                    Grid.Column="3"
+                                    HorizontalOptions="Fill"
+                                    Time="{Binding NewCourse.StartTime, Mode=TwoWay}" />
+                            </Grid>
                         </VerticalStackLayout>
+
+                        <!--  Start Date Notification Toggle  -->
+                        <HorizontalStackLayout Spacing="15" VerticalOptions="Center">
+                            <Switch
+                                IsToggled="{Binding NewCourse.NotifyStartDate, Mode=TwoWay}"
+                                OnColor="{StaticResource DarkBlue}"
+                                ThumbColor="{StaticResource Cream}"
+                                VerticalOptions="Center" />
+                            <Label
+                                Text="{Binding NewCourse.StartDateTime, StringFormat='Notify me on Start Date ({0:MMM dd, yyyy h:mm tt})'}"
+                                TextColor="{StaticResource DarkBlue}"
+                                VerticalOptions="Center" />
+                        </HorizontalStackLayout>
 
                         <!--  End Date  -->
-                        <VerticalStackLayout Spacing="1">
+                        <VerticalStackLayout Spacing="5">
                             <Label
                                 Style="{StaticResource FieldLabel}"
-                                Text="End Date *"
+                                Text="End Date"
                                 TextColor="{StaticResource DarkBlue}" />
-                            <Border BackgroundColor="White" StrokeShape="RoundRectangle 8">
+
+                            <Grid
+                                ColumnDefinitions="Auto,*,Auto,*"
+                                ColumnSpacing="10"
+                                VerticalOptions="Center">
+                                <!--  Calendar Icon  -->
+                                <Image
+                                    Grid.Column="0"
+                                    HeightRequest="20"
+                                    Source="calendar_icon.svg"
+                                    VerticalOptions="Center"
+                                    WidthRequest="20" />
+
+                                <!--  DatePicker  -->
                                 <DatePicker
-                                    BackgroundColor="Transparent"
+                                    Grid.Column="1"
                                     Date="{Binding NewCourse.EndDate, Mode=TwoWay}"
-                                    MinimumDate="{Binding NewCourse.StartDate}" />
-                            </Border>
+                                    HorizontalOptions="Fill" />
+
+                                <!--  Alarm Icon  -->
+                                <Image
+                                    Grid.Column="2"
+                                    HeightRequest="20"
+                                    Source="alarm_icon.svg"
+                                    VerticalOptions="Center"
+                                    WidthRequest="20" />
+
+                                <!--  TimePicker  -->
+                                <TimePicker
+                                    Grid.Column="3"
+                                    HorizontalOptions="Fill"
+                                    Time="{Binding NewCourse.EndTime, Mode=TwoWay}" />
+                            </Grid>
                         </VerticalStackLayout>
 
-                        <!--  Notification Section  -->
-                        <VerticalStackLayout Spacing="15">
+                        <!--  End Date Notification Toggle  -->
+                        <HorizontalStackLayout Spacing="15" VerticalOptions="Center">
+                            <Switch
+                                IsToggled="{Binding NewCourse.NotifyEndDate, Mode=TwoWay}"
+                                OnColor="{StaticResource DarkBlue}"
+                                ThumbColor="{StaticResource Cream}"
+                                VerticalOptions="Center" />
                             <Label
-                                Margin="0,20,0,10"
-                                FontAttributes="Bold"
-                                FontSize="18"
-                                Text="Course Information"
-                                TextColor="{StaticResource DarkBlue}" />
-
-                            <!--  Start Date Notification  -->
-                            <HorizontalStackLayout Spacing="15" VerticalOptions="Center">
-                                <Switch
-                                    IsToggled="{Binding NewCourse.NotifyStartDate, Mode=TwoWay}"
-                                    OnColor="{StaticResource LightBrown}"
-                                    VerticalOptions="Center" />
-                                <Label
-                                    Text="{Binding NewCourse.StartDate, StringFormat='Alert me on Start Date'}"
-                                    TextColor="{StaticResource DarkBlue}"
-                                    VerticalOptions="Center" />
-                            </HorizontalStackLayout>
-
-                            <!--  End Date Notification  -->
-                            <HorizontalStackLayout Spacing="15" VerticalOptions="Center">
-                                <Switch
-                                    IsToggled="{Binding NewCourse.NotifyEndDate, Mode=TwoWay}"
-                                    OnColor="{StaticResource LightBrown}"
-                                    VerticalOptions="Center" />
-                                <Label
-                                    Text="{Binding NewCourse.EndDate, StringFormat='Alert me on End Date'}"
-                                    TextColor="{StaticResource DarkBlue}"
-                                    VerticalOptions="Center" />
-                            </HorizontalStackLayout>
-                        </VerticalStackLayout>
+                                Text="{Binding NewCourse.EndDateTime, StringFormat='Notify me on End Date ({0:MMM dd, yyyy h:mm tt})'}"
+                                TextColor="{StaticResource DarkBlue}"
+                                VerticalOptions="Center" />
+                        </HorizontalStackLayout>
 
                         <!--  INSTRUCTOR INFORMATION SECTION  -->
                         <Label
@@ -206,13 +252,8 @@
                                     TextColor="{StaticResource DarkBlue}" />
                             </Border>
                         </VerticalStackLayout>
-
-
-
-
                     </VerticalStackLayout>
                 </Border>
-
             </VerticalStackLayout>
         </ScrollView>
 
@@ -257,7 +298,6 @@
                     </Image.GestureRecognizers>
                 </Image>
             </Border>
-
         </HorizontalStackLayout>
     </Grid>
 </ContentPage>

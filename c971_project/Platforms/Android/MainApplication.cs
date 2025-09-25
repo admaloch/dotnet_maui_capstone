@@ -12,5 +12,13 @@ namespace c971_project
         }
 
         protected override MauiApp CreateMauiApp() => MauiProgram.CreateMauiApp();
+
+        public override void OnCreate()
+        {
+            base.OnCreate();
+
+            // The plugin automatically creates channels when .UseLocalNotification() is called
+            // No need for manual channel creation in newer versions
+        }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using c971_project.Models;
 using c971_project.Helpers;
 using c971_project.Messages;
-
 using c971_project.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -17,6 +16,7 @@ namespace c971_project.ViewModels
     public partial class AddAssessmentViewModel : BaseViewModel
     {
         private readonly DatabaseService _databaseService;
+        private readonly ICourseNotificationService _notificationService; // Added
 
         [ObservableProperty]
         private int courseId;
@@ -34,12 +34,14 @@ namespace c971_project.ViewModels
            "Not started", "In progress", "Completed"
         };
 
-        public AddAssessmentViewModel(DatabaseService databaseService)
+        // Updated constructor with notification service
+        public AddAssessmentViewModel(DatabaseService databaseService,
+                                    ICourseNotificationService notificationService) // Added parameter
         {
             _databaseService = databaseService;
+            _notificationService = notificationService; // Added
         }
 
-        // This runs when CourseId is assigned by Shell after navigation
         partial void OnCourseIdChanged(int value)
         {
             Debug.WriteLine($"CourseId set via query: {value}");
@@ -53,7 +55,11 @@ namespace c971_project.ViewModels
                     Type = "Objective",
                     Status = "In progress",
                     StartDate = DateTime.Today,
-                    EndDate = DateTime.Today.AddMonths(4)
+                    EndDate = DateTime.Today.AddMonths(4),
+                    StartTime = new TimeSpan(9, 0, 0),  // 9:00 AM default
+                    EndTime = new TimeSpan(17, 0, 0),   // 5:00 PM default
+                    NotifyStartDate = true, // Default to true
+                    NotifyEndDate = true    // Default to true
                 };
             }
             else
@@ -79,6 +85,15 @@ namespace c971_project.ViewModels
 
                 // Save to database
                 await _databaseService.SaveAssessmentAsync(NewAssessment);
+
+                // Schedule notifications for the new assessment - ADDED THIS
+                var notificationSuccess = await _notificationService.ScheduleAssessmentNotificationsAsync(NewAssessment);
+
+                if (!notificationSuccess)
+                {
+                    Debug.WriteLine("Assessment saved but notifications failed to schedule");
+                    // Optional: You could show a subtle warning, but don't block success
+                }
 
                 // Optional: notify other viewmodels
                 WeakReferenceMessenger.Default.Send(new AssessmentUpdatedMessage());
@@ -113,6 +128,5 @@ namespace c971_project.ViewModels
             }
             return true;
         }
-
     }
 }

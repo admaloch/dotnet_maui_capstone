@@ -1,7 +1,8 @@
-﻿using Microsoft.Extensions.Logging;
-using c971_project.Services;
-using c971_project.Views;
+﻿using c971_project.Services;
 using c971_project.ViewModels;
+using c971_project.Views;
+using Microsoft.Extensions.Logging;
+using Plugin.LocalNotification;
 
 
 namespace c971_project
@@ -14,15 +15,17 @@ namespace c971_project
 
             builder
                 .UseMauiApp<App>()
+                .UseLocalNotification()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
-
             builder.Services.AddSingleton<AppShell>();
+
             builder.Services.AddSingleton<DatabaseService>();
             builder.Services.AddSingleton<CourseValidator>();
+            builder.Services.AddSingleton<ICourseNotificationService, NotificationService>();
 
 
             builder.Services.AddTransient<HomePage>();

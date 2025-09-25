@@ -19,6 +19,7 @@
 
                 <!--  Card container  -->
                 <Border
+                    Margin="0,0,0,70"
                     Padding="20"
                     BackgroundColor="White"
                     Stroke="{StaticResource Charcoal}"
@@ -50,7 +51,6 @@
                             </Border>
                         </VerticalStackLayout>
 
-
                         <!--  Assessment Type  -->
                         <VerticalStackLayout Spacing="5">
                             <Label
@@ -81,8 +81,53 @@
                                 Style="{StaticResource FieldLabel}"
                                 Text="Start Date"
                                 TextColor="{StaticResource DarkBlue}" />
-                            <DatePicker Date="{Binding NewAssessment.StartDate, Mode=TwoWay}" />
+
+                            <Grid
+                                ColumnDefinitions="Auto,*,Auto,*"
+                                ColumnSpacing="10"
+                                VerticalOptions="Center">
+                                <!--  Calendar Icon  -->
+                                <Image
+                                    Grid.Column="0"
+                                    HeightRequest="20"
+                                    Source="calendar_icon.svg"
+                                    VerticalOptions="Center"
+                                    WidthRequest="20" />
+
+                                <!--  DatePicker  -->
+                                <DatePicker
+                                    Grid.Column="1"
+                                    Date="{Binding Course.StartDate, Mode=TwoWay}"
+                                    HorizontalOptions="Fill" />
+
+                                <!--  Alarm Icon  -->
+                                <Image
+                                    Grid.Column="2"
+                                    HeightRequest="20"
+                                    Source="alarm_icon.svg"
+                                    VerticalOptions="Center"
+                                    WidthRequest="20" />
+
+                                <!--  TimePicker  -->
+                                <TimePicker
+                                    Grid.Column="3"
+                                    HorizontalOptions="Fill"
+                                    Time="{Binding Course.StartTime, Mode=TwoWay}" />
+                            </Grid>
                         </VerticalStackLayout>
+
+                        <!--  Start Date Notification Toggle  -->
+                        <HorizontalStackLayout Spacing="15" VerticalOptions="Center">
+                            <Switch
+                                IsToggled="{Binding NewAssessment.NotifyStartDate, Mode=TwoWay}"
+                                OnColor="{StaticResource DarkBlue}"
+                                ThumbColor="{StaticResource Cream}"
+                                VerticalOptions="Center" />
+                            <Label
+                                Text="{Binding NewAssessment.StartDateTime, StringFormat='Notify me on Start Date ({0:MMM dd, yyyy h:mm tt})'}"
+                                TextColor="{StaticResource DarkBlue}"
+                                VerticalOptions="Center" />
+                        </HorizontalStackLayout>
 
                         <!--  End Date  -->
                         <VerticalStackLayout Spacing="5">
@@ -90,14 +135,59 @@
                                 Style="{StaticResource FieldLabel}"
                                 Text="End Date"
                                 TextColor="{StaticResource DarkBlue}" />
-                            <DatePicker Date="{Binding NewAssessment.EndDate, Mode=TwoWay}" />
+
+                            <Grid
+                                ColumnDefinitions="Auto,*,Auto,*"
+                                ColumnSpacing="10"
+                                VerticalOptions="Center">
+                                <!--  Calendar Icon  -->
+                                <Image
+                                    Grid.Column="0"
+                                    HeightRequest="20"
+                                    Source="calendar_icon.svg"
+                                    VerticalOptions="Center"
+                                    WidthRequest="20" />
+
+                                <!--  DatePicker  -->
+                                <DatePicker
+                                    Grid.Column="1"
+                                    Date="{Binding Course.EndDate, Mode=TwoWay}"
+                                    HorizontalOptions="Fill" />
+
+                                <!--  Alarm Icon  -->
+                                <Image
+                                    Grid.Column="2"
+                                    HeightRequest="20"
+                                    Source="alarm_icon.svg"
+                                    VerticalOptions="Center"
+                                    WidthRequest="20" />
+
+                                <!--  TimePicker  -->
+                                <TimePicker
+                                    Grid.Column="3"
+                                    HorizontalOptions="Fill"
+                                    Time="{Binding Course.EndTime, Mode=TwoWay}" />
+                            </Grid>
                         </VerticalStackLayout>
+
+                        <!--  End Date Notification Toggle  -->
+                        <HorizontalStackLayout Spacing="15" VerticalOptions="Center">
+                            <Switch
+                                IsToggled="{Binding NewAssessment.NotifyEndDate, Mode=TwoWay}"
+                                OnColor="{StaticResource DarkBlue}"
+                                ThumbColor="{StaticResource Cream}"
+                                VerticalOptions="Center" />
+                            <Label
+                                Text="{Binding NewAssessment.EndDateTime, StringFormat='Notify me on End Date ({0:MMM dd, yyyy h:mm tt})'}"
+                                TextColor="{StaticResource DarkBlue}"
+                                VerticalOptions="Center" />
+                        </HorizontalStackLayout>
 
                     </VerticalStackLayout>
                 </Border>
-
             </VerticalStackLayout>
         </ScrollView>
+
         <!--  Floating Save Button  -->
         <HorizontalStackLayout
             Padding="16"
@@ -139,7 +229,6 @@
                     </Image.GestureRecognizers>
                 </Image>
             </Border>
-
         </HorizontalStackLayout>
     </Grid>
 </ContentPage>

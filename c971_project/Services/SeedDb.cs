@@ -60,7 +60,9 @@ namespace c971_project.Services
                 InstructorId = instructor1.InstructorId,
                 TermId = term1.TermId,
                 StartDate = term1.StartDate,
-                EndDate = term1.StartDate.AddMonths(2)
+                EndDate = term1.StartDate.AddMonths(2),
+                NotifyStartDate = true,
+                NotifyEndDate = true
             };
             await connection.InsertAsync(course1);
             Debug.WriteLine($"Inserted courses: {course1.CourseId}");
@@ -75,7 +77,9 @@ namespace c971_project.Services
                 Type = "Objective",
                 Status = "In progress",
                 StartDate = term1.StartDate.AddDays(60),
-                EndDate = term1.StartDate.AddDays(60)
+                EndDate = term1.StartDate.AddDays(60),
+                NotifyStartDate = true,
+                NotifyEndDate = true
             };
             var assess2 = new Assessment
             {
@@ -84,7 +88,9 @@ namespace c971_project.Services
                 Type = "Practical",
                 Status = "Not started",
                 StartDate = term1.StartDate,
-                EndDate = term1.StartDate.AddDays(30)
+                EndDate = term1.StartDate.AddDays(30),
+                NotifyStartDate = true,
+                NotifyEndDate = true
             };
             await connection.InsertAsync(assess1);
             await connection.InsertAsync(assess2);

@@ -20,12 +20,6 @@ namespace c971_project.Models
 
         [Range(1, 10, ErrorMessage = "Credit units must be between 1 and 10.")]
         public int CuNum { get; set; } = 3;
-
-        [Required(ErrorMessage = "Start date is required.")]
-        public DateTime StartDate { get; set; } = DateTime.Today;
-
-        [Required(ErrorMessage = "End date is required.")]
-        public DateTime EndDate { get; set; } = DateTime.Today.AddMonths(4);
         public DateTime DateAdded { get; set; } = DateTime.Now;
 
         [Required(ErrorMessage = "Instructor is required.")]
@@ -35,9 +29,21 @@ namespace c971_project.Models
         [Required(ErrorMessage = "Term is required.")]
         [Range(1, int.MaxValue, ErrorMessage = "Please select a valid term.")]
         public int TermId { get; set; }
+        // Existing date properties
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
 
-        public bool NotifyStartDate { get; set; } = false;
-        public bool NotifyEndDate { get; set; } = false;
+        // NEW: Add these time propertieso
+        public TimeSpan StartTime { get; set; } // Default to 9:00 AM
+        public TimeSpan EndTime { get; set; }   // Default to 5:00 PM
+
+        // NEW: Computed properties that combine date + time
+        public DateTime StartDateTime => StartDate.Add(StartTime);
+        public DateTime EndDateTime => EndDate.Add(EndTime);
+
+        // Your existing notification properties
+        public bool NotifyStartDate { get; set; } = true;
+        public bool NotifyEndDate { get; set; } = true;
 
         public void Validate()
         {

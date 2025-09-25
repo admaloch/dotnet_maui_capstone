@@ -10,13 +10,11 @@ using System.Diagnostics;
 namespace c971_project.ViewModels
 {
     [QueryProperty(nameof(CourseId), "CourseId")]
-
     public partial class EditCourseViewModel : BaseViewModel
     {
-
         private readonly DatabaseService _databaseService;
-
         private readonly CourseValidator _courseValidator;
+        private readonly ICourseNotificationService _notificationService; // Added
 
         [ObservableProperty]
         private int courseId;
@@ -34,11 +32,14 @@ namespace c971_project.ViewModels
             1, 2, 3, 4
         };
 
-
-        public EditCourseViewModel(DatabaseService databaseService, CourseValidator courseValidator)
+        // Updated constructor with notification service
+        public EditCourseViewModel(DatabaseService databaseService,
+                                 CourseValidator courseValidator,
+                                 ICourseNotificationService notificationService) // Added parameter
         {
             _databaseService = databaseService;
             _courseValidator = courseValidator;
+            _notificationService = notificationService; // Added
         }
 
         partial void OnCourseIdChanged(int value)
@@ -77,7 +78,16 @@ namespace c971_project.ViewModels
                 // 4. Save course
                 await _courseValidator.SaveCourseAsync(Course.TermId, Course, Instructor);
 
-                // 5. Notify & navigate
+                // 5. Schedule notifications for the UPDATED course - ADDED THIS
+                var notificationSuccess = await _notificationService.ScheduleCourseNotificationsAsync(Course);
+
+                if (!notificationSuccess)
+                {
+                    // Optional: Log that notifications failed but course was saved
+                    Debug.WriteLine("Course saved but notifications failed to update");
+                }
+
+                // 6. Notify & navigate
                 WeakReferenceMessenger.Default.Send(new CourseUpdatedMessage());
 
                 await Shell.Current.DisplayAlert("Success", "Course saved successfully.", "OK");
@@ -93,8 +103,5 @@ namespace c971_project.ViewModels
                 IsBusy = false;
             }
         }
-
-
-
     }
 }

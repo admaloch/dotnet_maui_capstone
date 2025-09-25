@@ -17,8 +17,8 @@ namespace c971_project.ViewModels
     public partial class AddCourseViewModel : BaseViewModel
     {
         private readonly DatabaseService _databaseService;
-
         private readonly CourseValidator _courseValidator;
+        private readonly ICourseNotificationService _notificationService; // Added
 
         [ObservableProperty]
         private int termId;
@@ -31,16 +31,19 @@ namespace c971_project.ViewModels
 
         private bool isEdit = false;
 
-
         public List<int> CreditUnitOptions { get; } = new()
         {
             1, 2, 3, 4
         };
 
-        public AddCourseViewModel(DatabaseService databaseService, CourseValidator courseValidator)
+        // Updated constructor with notification service injection
+        public AddCourseViewModel(DatabaseService databaseService,
+                                CourseValidator courseValidator,
+                                ICourseNotificationService notificationService) // Added parameter
         {
             _databaseService = databaseService;
             _courseValidator = courseValidator;
+            _notificationService = notificationService; // Added
         }
 
         partial void OnTermIdChanged(int value)
@@ -53,9 +56,13 @@ namespace c971_project.ViewModels
                 CuNum = 3, // default credit units
                 StartDate = DateTime.Today,
                 EndDate = DateTime.Today.AddMonths(2), // default course length
+                StartTime = new TimeSpan(9, 0, 0),  // 9:00 AM default
+                EndTime = new TimeSpan(17, 0, 0),   // 5:00 PM default
                 DateAdded = DateTime.Now,
                 InstructorId = 0,   // will be selected later
-                TermId = value     // links this course to the current Term
+                TermId = value,     // links this course to the current Term
+                NotifyStartDate = true, // Default to true
+                NotifyEndDate = true    // Default to true
             };
 
             // Initialize the new course
@@ -66,7 +73,6 @@ namespace c971_project.ViewModels
                 Phone = string.Empty
             };
         }
-
 
         [RelayCommand]
         private async Task SaveCourseAsync()
@@ -83,7 +89,7 @@ namespace c971_project.ViewModels
                 // 2. print errors if any and return
                 if (!string.IsNullOrWhiteSpace(errors))
                 {
-                    await Shell.Current.DisplayAlert("Validation Errors",errors, "OK");
+                    await Shell.Current.DisplayAlert("Validation Errors", errors, "OK");
                     return;
                 }
 
@@ -93,7 +99,16 @@ namespace c971_project.ViewModels
                 // 4. Save course
                 await _courseValidator.SaveCourseAsync(TermId, NewCourse, NewInstructor);
 
-                // 5. Notify & navigate
+                // 5. Schedule notifications - UPDATED THIS SECTION
+                var notificationSuccess = await _notificationService.ScheduleCourseNotificationsAsync(NewCourse);
+
+                if (!notificationSuccess)
+                {
+                    // Optional: Inform user that notifications failed but course was saved
+                    Debug.WriteLine("Course saved but notifications failed to schedule");
+                }
+
+                // 6. Notify & navigate
                 WeakReferenceMessenger.Default.Send(new CourseUpdatedMessage());
 
                 await Shell.Current.GoToAsync("..");
@@ -108,9 +123,5 @@ namespace c971_project.ViewModels
                 IsBusy = false;
             }
         }
-
-       
-
-
     }
 }

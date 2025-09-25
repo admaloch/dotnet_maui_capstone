@@ -1,7 +1,6 @@
 ﻿using c971_project.Models;
 using c971_project.Helpers;
 using c971_project.Messages;
-
 using c971_project.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -17,6 +16,7 @@ namespace c971_project.ViewModels
     public partial class EditAssessmentViewModel : BaseViewModel
     {
         private readonly DatabaseService _databaseService;
+        private readonly ICourseNotificationService _notificationService; // Added
 
         [ObservableProperty]
         private int assessmentId;
@@ -34,12 +34,14 @@ namespace c971_project.ViewModels
            "Not started", "In progress", "Completed"
         };
 
-        public EditAssessmentViewModel(DatabaseService databaseService)
+        // Updated constructor with notification service
+        public EditAssessmentViewModel(DatabaseService databaseService,
+                                     ICourseNotificationService notificationService) // Added parameter
         {
             _databaseService = databaseService;
+            _notificationService = notificationService; // Added
         }
 
-        // This runs when CourseId is assigned by Shell after navigation
         partial void OnAssessmentIdChanged(int value)
         {
             LoadAssessmentDataAsync(value);
@@ -47,7 +49,7 @@ namespace c971_project.ViewModels
 
         private async Task LoadAssessmentDataAsync(int assessmentId)
         {
-            Assessment = await _databaseService.GetAssessmentByIdAsync(AssessmentId);
+            Assessment = await _databaseService.GetAssessmentByIdAsync(assessmentId);
         }
 
         [RelayCommand]
@@ -66,6 +68,15 @@ namespace c971_project.ViewModels
 
                 // Save to database
                 await _databaseService.SaveAssessmentAsync(Assessment);
+
+                // Schedule notifications for the UPDATED assessment - ADDED THIS
+                var notificationSuccess = await _notificationService.ScheduleAssessmentNotificationsAsync(Assessment);
+
+                if (!notificationSuccess)
+                {
+                    Debug.WriteLine("Assessment saved but notifications failed to update");
+                    // Optional: Log the issue but don't block success
+                }
 
                 // Optional: notify other viewmodels
                 WeakReferenceMessenger.Default.Send(new AssessmentUpdatedMessage());
@@ -100,6 +111,5 @@ namespace c971_project.ViewModels
             }
             return true;
         }
-
     }
 }
