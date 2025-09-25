@@ -26,6 +26,11 @@ namespace c971_project.ViewModels
         [ObservableProperty]
         private Note note;
 
+        [ObservableProperty]
+        private Course course;
+
+
+
         public NoteViewModel(DatabaseService databaseService)
         {
             _databaseService = databaseService;
@@ -38,10 +43,17 @@ namespace c971_project.ViewModels
 
         partial void OnNoteIdChanged(int value)
         {
-            _ = LoadNoteAsync(value);
+            _ = LoadDataAsync(value);
         }
 
-        //load data
+        private async Task LoadDataAsync(int noteId)
+        {
+            await LoadNoteAsync(noteId);
+            await LoadCourseAsync();
+        }
+
+
+        //load note data
         private async Task LoadNoteAsync(int id)
         {
             if (IsBusy) return;
@@ -49,6 +61,25 @@ namespace c971_project.ViewModels
             {
                 IsBusy = true;
                 Note = await _databaseService.GetNoteByIdAsync(id);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error loading Note: {ex.Message}");
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+
+        //load course data for note
+        private async Task LoadCourseAsync()
+        {
+            if (IsBusy) return;
+            try
+            {
+                IsBusy = true;
+                Course = await _databaseService.GetCourseByIdAsync(Note.CourseId);
             }
             catch (Exception ex)
             {
@@ -72,6 +103,61 @@ namespace c971_project.ViewModels
                     new Dictionary<string, object> { { "NoteId", NoteId } });
             }
             finally { IsBusy = false; }
+        }
+
+        //share note -- built in share feature
+        [RelayCommand]
+        private async Task ShareNote()
+        {
+            if (IsBusy) return;
+
+            try
+            {
+                IsBusy = true;
+
+                // Check if there are notes to share
+                if (string.IsNullOrWhiteSpace(Note.Body))
+                {
+                    await Shell.Current.DisplayAlert("No Notes", "Please add some notes before sharing.", "OK");
+                    return;
+                }
+
+                // Prepare the text to share
+                var shareText = GenerateShareText();
+
+                // Use MAUI's Share API
+                await Share.Default.RequestAsync(new ShareTextRequest
+                {
+                    Text = shareText,
+                    Title = $"Share {Note.Title} note for {Course.Name} -- {Course.CourseNum}"
+                });
+
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Error", $"Unable to share notes: {ex.Message}", "OK");
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+
+        private string GenerateShareText()
+        {
+            return $"""
+            Course Notes: {Note.Title}
+            Course: {Course.Name}
+            Course Number: {Course.CourseNum}
+            Date Created: {Note.DateAdded:MMM dd, yyyy}
+            Last Updated: {Note.LastUpdated:MMM dd, yyyy}
+           
+            NOTES:
+            {Note.Body}
+            
+            ---
+            Shared from Course Tracker App
+            """;
         }
     }
 }

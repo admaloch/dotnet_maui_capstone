@@ -25,7 +25,7 @@ namespace c971_project
 
             builder.Services.AddSingleton<DatabaseService>();
             builder.Services.AddSingleton<CourseValidator>();
-            builder.Services.AddSingleton<ICourseNotificationService, NotificationService>();
+            builder.Services.AddSingleton<IScheduleNotificationService, NotificationService>();
 
 
             builder.Services.AddTransient<HomePage>();

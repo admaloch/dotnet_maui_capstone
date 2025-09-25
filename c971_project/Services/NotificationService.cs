@@ -5,7 +5,7 @@ using System.Diagnostics;
 
 namespace c971_project.Services;
 
-public class NotificationService : ICourseNotificationService
+public class NotificationService : IScheduleNotificationService
 {
     public async Task<bool> ScheduleCourseNotificationsAsync(Course course)
     {

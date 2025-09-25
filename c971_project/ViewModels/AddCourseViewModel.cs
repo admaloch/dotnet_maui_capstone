@@ -18,7 +18,7 @@ namespace c971_project.ViewModels
     {
         private readonly DatabaseService _databaseService;
         private readonly CourseValidator _courseValidator;
-        private readonly ICourseNotificationService _notificationService; // Added
+        private readonly IScheduleNotificationService _notificationService; // Added
 
         [ObservableProperty]
         private int termId;
@@ -39,7 +39,7 @@ namespace c971_project.ViewModels
         // Updated constructor with notification service injection
         public AddCourseViewModel(DatabaseService databaseService,
                                 CourseValidator courseValidator,
-                                ICourseNotificationService notificationService) // Added parameter
+                                IScheduleNotificationService notificationService) // Added parameter
         {
             _databaseService = databaseService;
             _courseValidator = courseValidator;

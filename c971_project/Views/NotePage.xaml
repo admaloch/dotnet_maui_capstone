@@ -3,7 +3,7 @@
     x:Class="c971_project.Views.NotePage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    Title="Note"
+    Title="{Binding Course.CourseNum}"
     BackgroundColor="{StaticResource Cream}">
 
     <Grid>
@@ -22,7 +22,7 @@
                 <Border
                     Padding="15"
                     BackgroundColor="{StaticResource White}"
-                    HeightRequest="550"
+                    HeightRequest="525"
                     Stroke="{StaticResource Charcoal}"
                     StrokeShape="RoundRectangle 12"
                     StrokeThickness="3">
@@ -59,48 +59,94 @@
                 </Border>
             </VerticalStackLayout>
         </ScrollView>
-        <!--  Floating Add note Button with Label  -->
-        <HorizontalStackLayout
-            Padding="16"
-            HorizontalOptions="End"
-            InputTransparent="False"
-            Spacing="12"
-            VerticalOptions="End">
 
-            <!--  Label  -->
-            <Label
-                FontAttributes="Bold"
-                FontSize="22"
-                Text="Edit Note"
-                TextColor="{StaticResource DarkBlue}"
-                VerticalOptions="Center" />
+        <VerticalStackLayout VerticalOptions="End">
+            <!--  Floating Add note Button with Label  -->
+            <HorizontalStackLayout
+                Padding="0, 16, 16, 8"
+                HorizontalOptions="End"
+                InputTransparent="False"
+                Spacing="12"
+                VerticalOptions="End">
 
-            <!--  Circular Button  -->
-            <Border
-                BackgroundColor="{StaticResource DarkBlue}"
-                HeightRequest="56"
-                StrokeShape="Ellipse"
-                WidthRequest="56">
-                <Border.Shadow>
-                    <Shadow
-                        Brush="{StaticResource DarkBlue}"
-                        Opacity="0.5"
-                        Radius="8"
-                        Offset="2,2" />
-                </Border.Shadow>
+                <!--  Label  -->
+                <Label
+                    FontAttributes="Bold"
+                    FontSize="22"
+                    Text="Edit Note"
+                    TextColor="{StaticResource DarkBlue}"
+                    VerticalOptions="Center" />
 
-                <Image
-                    HeightRequest="35"
-                    HorizontalOptions="Center"
-                    Source="add_icon.svg"
-                    VerticalOptions="Center"
-                    WidthRequest="35">
-                    <Image.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding EditNoteCommand}" />
-                    </Image.GestureRecognizers>
-                </Image>
-            </Border>
-        </HorizontalStackLayout>
+                <!--  Circular Button  -->
+                <Border
+                    BackgroundColor="{StaticResource DarkBlue}"
+                    HeightRequest="56"
+                    StrokeShape="Ellipse"
+                    WidthRequest="56">
+                    <Border.Shadow>
+                        <Shadow
+                            Brush="{StaticResource DarkBlue}"
+                            Opacity="0.5"
+                            Radius="8"
+                            Offset="2,2" />
+                    </Border.Shadow>
+
+                    <Image
+                        HeightRequest="35"
+                        HorizontalOptions="Center"
+                        Source="add_icon.svg"
+                        VerticalOptions="Center"
+                        WidthRequest="35">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding EditNoteCommand}" />
+                        </Image.GestureRecognizers>
+                    </Image>
+                </Border>
+            </HorizontalStackLayout>
+            <!--  Floating Add note Button with Label  -->
+            <HorizontalStackLayout
+                Padding="0, 0, 16, 16"
+                HorizontalOptions="End"
+                InputTransparent="False"
+                Spacing="12"
+                VerticalOptions="End">
+
+                <!--  Label  -->
+                <Label
+                    FontAttributes="Bold"
+                    FontSize="22"
+                    Text="Share Note"
+                    TextColor="{StaticResource DarkBlue}"
+                    VerticalOptions="Center" />
+
+                <!--  Circular Button  -->
+                <Border
+                    BackgroundColor="{StaticResource LightBrown}"
+                    HeightRequest="56"
+                    StrokeShape="Ellipse"
+                    WidthRequest="56">
+                    <Border.Shadow>
+                        <Shadow
+                            Brush="{StaticResource DarkBlue}"
+                            Opacity=".3"
+                            Radius="8"
+                            Offset="2,2" />
+                    </Border.Shadow>
+
+                    <Image
+                        HeightRequest="27"
+                        HorizontalOptions="Center"
+                        Source="share_icon.svg"
+                        VerticalOptions="Center"
+                        WidthRequest="27">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ShareNoteCommand}" />
+                        </Image.GestureRecognizers>
+                    </Image>
+                </Border>
+            </HorizontalStackLayout>
+
+        </VerticalStackLayout>
 
     </Grid>
 </ContentPage>

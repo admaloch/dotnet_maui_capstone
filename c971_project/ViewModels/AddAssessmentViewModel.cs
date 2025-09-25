@@ -16,7 +16,7 @@ namespace c971_project.ViewModels
     public partial class AddAssessmentViewModel : BaseViewModel
     {
         private readonly DatabaseService _databaseService;
-        private readonly ICourseNotificationService _notificationService; // Added
+        private readonly IScheduleNotificationService _notificationService; // Added
 
         [ObservableProperty]
         private int courseId;
@@ -36,7 +36,7 @@ namespace c971_project.ViewModels
 
         // Updated constructor with notification service
         public AddAssessmentViewModel(DatabaseService databaseService,
-                                    ICourseNotificationService notificationService) // Added parameter
+                                    IScheduleNotificationService notificationService) // Added parameter
         {
             _databaseService = databaseService;
             _notificationService = notificationService; // Added
