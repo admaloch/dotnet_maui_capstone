@@ -50,15 +50,7 @@
                                 <Label Text="{Binding Term.Name}" TextColor="{StaticResource DarkBlue}" />
                             </HorizontalStackLayout>
 
-                            <!--  number  -->
-                            <HorizontalStackLayout Spacing="10">
-                                <Label
-                                    FontAttributes="Bold"
-                                    Text="Term number:"
-                                    TextColor="{StaticResource MediumGray}"
-                                    WidthRequest="105" />
-                                <Label Text="{Binding Term.TermNum}" TextColor="{StaticResource DarkBlue}" />
-                            </HorizontalStackLayout>
+
 
                             <!--  start date  -->
                             <HorizontalStackLayout Spacing="10">

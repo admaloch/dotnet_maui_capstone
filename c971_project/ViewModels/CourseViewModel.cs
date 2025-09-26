@@ -1,4 +1,5 @@
 ﻿using c971_project.Messages;
+using System.Collections.Specialized;
 using c971_project.Models;
 using c971_project.Services;
 using c971_project.ViewModels;
@@ -10,6 +11,9 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+
+
+using System.Threading.Tasks;
 
 
 namespace c971_project.ViewModels
@@ -35,9 +39,26 @@ namespace c971_project.ViewModels
         [ObservableProperty]
         private ObservableCollection<Note> _notes = new();
 
+        public bool CanAddMoreAssessments
+        {
+            get
+            {
+                var objectiveCount = Assessments.Count(a => a.Type == "Objective");
+                var performanceCount = Assessments.Count(a => a.Type == "Performance");
+
+                return objectiveCount < 1 || performanceCount < 1;
+            }
+        }
+
         public CourseViewModel(DatabaseService databaseService)
         {
             _databaseService = databaseService;
+
+            // Notify when Assessment collection changes
+            Assessments.CollectionChanged += (s, e) =>
+            {
+                OnPropertyChanged(nameof(CanAddMoreAssessments));
+            };
 
             WeakReferenceMessenger.Default.Register<AssessmentUpdatedMessage>(this, async (r, m) =>
             {
@@ -86,6 +107,7 @@ namespace c971_project.ViewModels
             {
                 IsBusy = false;
             }
+
         }
         private async Task LoadInstructorAsync()
         {
@@ -132,6 +154,8 @@ namespace c971_project.ViewModels
             {
                 IsBusy = false;
             }
+            // update on add courses
+            OnPropertyChanged(nameof(CanAddMoreAssessments));
         }
 
         public async Task LoadNotesAsync()
@@ -182,6 +206,12 @@ namespace c971_project.ViewModels
         private async Task OnAddAssessmentAsync()
         {
             {
+                if (!CanAddMoreAssessments)
+                {
+                    await Shell.Current.DisplayAlert("Notification", "You have reached the maximum 2 assessments", "OK");
+                    return;
+                }
+
                 if (IsBusy) return;
                 try
                 {

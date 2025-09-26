@@ -97,7 +97,7 @@
                                 <!--  DatePicker  -->
                                 <DatePicker
                                     Grid.Column="1"
-                                    Date="{Binding Course.StartDate, Mode=TwoWay}"
+                                    Date="{Binding Assessment.StartDate, Mode=TwoWay}"
                                     HorizontalOptions="Fill" />
 
                                 <!--  Alarm Icon  -->
@@ -112,7 +112,7 @@
                                 <TimePicker
                                     Grid.Column="3"
                                     HorizontalOptions="Fill"
-                                    Time="{Binding Course.StartTime, Mode=TwoWay}" />
+                                    Time="{Binding Assessment.StartTime, Mode=TwoWay}" />
                             </Grid>
                         </VerticalStackLayout>
 
@@ -151,7 +151,7 @@
                                 <!--  DatePicker  -->
                                 <DatePicker
                                     Grid.Column="1"
-                                    Date="{Binding Course.EndDate, Mode=TwoWay}"
+                                    Date="{Binding Assessment.EndDate, Mode=TwoWay}"
                                     HorizontalOptions="Fill" />
 
                                 <!--  Alarm Icon  -->
@@ -166,7 +166,7 @@
                                 <TimePicker
                                     Grid.Column="3"
                                     HorizontalOptions="Fill"
-                                    Time="{Binding Course.EndTime, Mode=TwoWay}" />
+                                    Time="{Binding Assessment.EndTime, Mode=TwoWay}" />
                             </Grid>
                         </VerticalStackLayout>
 

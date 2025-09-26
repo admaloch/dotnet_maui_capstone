@@ -14,8 +14,9 @@ namespace c971_project.Models
         [Required(ErrorMessage = "Name is required.")]
         public string Name { get; set; } = string.Empty;
 
+        [Required(ErrorMessage = "Email address is required")]
         [EmailAddress(ErrorMessage = "Please enter a valid email address")]
-        public string Email { get; set; } = string.Empty;
+        [MaxLength(100, ErrorMessage = "Email cannot exceed 100 characters")] public string Email { get; set; } = string.Empty;
 
         public string Status { get; set; } = "Currently Enrolled";
 

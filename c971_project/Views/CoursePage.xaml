@@ -163,7 +163,7 @@
                     Style="{StaticResource HeaderLabel}"
                     Text="Assessments" />
 
-                <CollectionView HeightRequest="300" ItemsSource="{Binding Assessments}">
+                <CollectionView HeightRequest="250" ItemsSource="{Binding Assessments}">
 
                     <CollectionView.ItemTemplate>
                         <DataTemplate>

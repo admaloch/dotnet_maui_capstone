@@ -3,7 +3,7 @@
     x:Class="c971_project.Views.NotePage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    Title="{Binding Course.CourseNum}"
+    Title="{Binding Course.CourseNum, StringFormat='{0} Note'}"
     BackgroundColor="{StaticResource Cream}">
 
     <Grid>
@@ -63,7 +63,7 @@
         <VerticalStackLayout VerticalOptions="End">
             <!--  Floating Add note Button with Label  -->
             <HorizontalStackLayout
-                Padding="0, 16, 16, 8"
+                Padding="0,16,16,8"
                 HorizontalOptions="End"
                 InputTransparent="False"
                 Spacing="12"
@@ -105,7 +105,7 @@
             </HorizontalStackLayout>
             <!--  Floating Add note Button with Label  -->
             <HorizontalStackLayout
-                Padding="0, 0, 16, 16"
+                Padding="0,0,16,16"
                 HorizontalOptions="End"
                 InputTransparent="False"
                 Spacing="12"

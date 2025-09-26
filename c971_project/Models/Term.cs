@@ -22,13 +22,6 @@ namespace c971_project.Models
         }
         private string _name = string.Empty;
 
-        public int TermNum
-        {
-            get => _termNum;
-            set => SetProperty(ref _termNum, value);
-        }
-        private int _termNum;
-
         public DateTime StartDate
         {
             get => _startDate;

@@ -1,12 +1,13 @@
-﻿using c971_project.Models;
-using c971_project.Helpers;
+﻿using c971_project.Helpers;
 using c971_project.Messages;
+using c971_project.Models;
 using c971_project.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
 
@@ -16,7 +17,7 @@ namespace c971_project.ViewModels
     public partial class EditAssessmentViewModel : BaseViewModel
     {
         private readonly DatabaseService _databaseService;
-        private readonly IScheduleNotificationService _notificationService; // Added
+        private readonly IScheduleNotificationService _notificationService;
 
         [ObservableProperty]
         private int assessmentId;
@@ -24,32 +25,85 @@ namespace c971_project.ViewModels
         [ObservableProperty]
         private Assessment _assessment;
 
-        public List<string> TypeOptions { get; } = new()
-        {
-            "Objective", "Performance"
-        };
+        [ObservableProperty]
+        private ObservableCollection<Assessment> _assessments = new();
+
+        // Change to a property with a private setter
+        public List<string> TypeOptions { get; private set; } = new() { "Objective", "Performance" };
 
         public List<string> StatusOptions { get; } = new()
         {
            "Not started", "In progress", "Completed"
         };
 
-        // Updated constructor with notification service
         public EditAssessmentViewModel(DatabaseService databaseService,
-                                     IScheduleNotificationService notificationService) // Added parameter
+                                     IScheduleNotificationService notificationService)
         {
             _databaseService = databaseService;
-            _notificationService = notificationService; // Added
+            _notificationService = notificationService;
         }
 
         partial void OnAssessmentIdChanged(int value)
         {
-            LoadAssessmentDataAsync(value);
+            _ = LoadAssessmentDataAsync(value);
         }
 
         private async Task LoadAssessmentDataAsync(int assessmentId)
         {
-            Assessment = await _databaseService.GetAssessmentByIdAsync(assessmentId);
+            await LoadAssessmentAsync(assessmentId);
+            if (Assessment == null) return;
+
+            await LoadCourseAssessmentsAsync(Assessment.CourseId);
+
+            TypeOptions = Assessments.Count >= 2
+                ? new List<string> { Assessment.Type }
+                : new List<string> { "Objective", "Performance" };
+
+            OnPropertyChanged(nameof(TypeOptions));
+        }
+
+        private async Task LoadAssessmentAsync(int assessmentId)
+        {
+            if (IsBusy) return;
+            try
+            {
+                IsBusy = true;
+                Assessment = await _databaseService.GetAssessmentByIdAsync(assessmentId);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error loading Assessment: {ex.Message}");
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+
+        private async Task LoadCourseAssessmentsAsync(int courseId)
+        {
+            if (IsBusy) return;
+
+            try
+            {
+                IsBusy = true;
+
+                if (courseId <= 0) return;
+
+                var assessmentList = await _databaseService.GetAssessmentsByCourseIdAsync(courseId);
+
+                Assessments.Clear();
+                foreach (var assessment in assessmentList)
+                    Assessments.Add(assessment);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error loading assessments: {ex.Message}");
+            }
+            finally
+            {
+                IsBusy = false;
+            }
         }
 
         [RelayCommand]
@@ -62,25 +116,12 @@ namespace c971_project.ViewModels
                 IsBusy = true;
 
                 var isTaskValid = await ValidateAssessmentAsync();
+                if (!isTaskValid) return;
 
-                if (!isTaskValid)
-                    return;
-
-                // Save to database
                 await _databaseService.SaveAssessmentAsync(Assessment);
+                await _notificationService.ScheduleAssessmentNotificationsAsync(Assessment);
 
-                // Schedule notifications for the UPDATED assessment - ADDED THIS
-                var notificationSuccess = await _notificationService.ScheduleAssessmentNotificationsAsync(Assessment);
-
-                if (!notificationSuccess)
-                {
-                    Debug.WriteLine("Assessment saved but notifications failed to update");
-                    // Optional: Log the issue but don't block success
-                }
-
-                // Optional: notify other viewmodels
                 WeakReferenceMessenger.Default.Send(new AssessmentUpdatedMessage());
-
                 await Shell.Current.DisplayAlert("Success", "Assessment saved successfully.", "OK");
                 await Shell.Current.GoToAsync("..");
             }
@@ -95,17 +136,15 @@ namespace c971_project.ViewModels
             }
         }
 
+
+
         private async Task<bool> ValidateAssessmentAsync()
         {
             Assessment.Validate();
 
             if (Assessment.HasErrors)
             {
-                var errorMessage = ValidationHelper.GetErrors(
-                    Assessment,
-                    nameof(Assessment.Name)
-                );
-
+                var errorMessage = ValidationHelper.GetErrors(Assessment, nameof(Assessment.Name));
                 await Shell.Current.DisplayAlert("Validation Errors", errorMessage, "OK");
                 return false;
             }

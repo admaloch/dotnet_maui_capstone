@@ -1,4 +1,6 @@
-﻿using c971_project.Views;
+﻿
+
+using c971_project.Views;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Maui.Controls;
 using System.Diagnostics;

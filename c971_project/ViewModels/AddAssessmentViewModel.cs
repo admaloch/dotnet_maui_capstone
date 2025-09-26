@@ -1,12 +1,13 @@
-﻿using c971_project.Models;
-using c971_project.Helpers;
+﻿using c971_project.Helpers;
 using c971_project.Messages;
+using c971_project.Models;
 using c971_project.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
 
@@ -24,10 +25,33 @@ namespace c971_project.ViewModels
         [ObservableProperty]
         private Assessment _newAssessment;
 
-        public List<string> TypeOptions { get; } = new()
+        [ObservableProperty]
+        private ObservableCollection<Assessment> _assessments = new();
+
+        public List<string> TypeOptions
         {
-            "Objective", "Performance"
-        };
+            get
+            {
+                var availableTypes = new List<string>();
+
+                // Check if Objective assessment can be added
+                if (CanAddObjectiveAssessment)
+                    availableTypes.Add("Objective");
+
+                // Check if Performance assessment can be added  
+                if (CanAddPerformanceAssessment)
+                    availableTypes.Add("Performance");
+
+                return availableTypes;
+            }
+        }
+
+        // Helper properties to check limits
+        public bool CanAddObjectiveAssessment
+            => Assessments.Count(a => a.Type == "Objective") < 1;
+
+        public bool CanAddPerformanceAssessment
+            => Assessments.Count(a => a.Type == "Performance") < 1;
 
         public List<string> StatusOptions { get; } = new()
         {
@@ -39,20 +63,32 @@ namespace c971_project.ViewModels
                                     IScheduleNotificationService notificationService) // Added parameter
         {
             _databaseService = databaseService;
-            _notificationService = notificationService; // Added
+            _notificationService = notificationService;
+
+            // Update dropdown when assessments collection changes
+            Assessments.CollectionChanged += (s, e) =>
+            {
+                OnPropertyChanged(nameof(TypeOptions));
+            };
         }
 
         partial void OnCourseIdChanged(int value)
         {
-            Debug.WriteLine($"CourseId set via query: {value}");
 
+            SetDefaultAssessmentItem(value);
+            _ = LoadCourseAssessmentsAsync(value);
+
+        }
+
+        private void SetDefaultAssessmentItem(int courseId)
+        {
             if (NewAssessment == null)
             {
                 NewAssessment = new Assessment
                 {
                     Name = string.Empty,
-                    CourseId = value,
-                    Type = "Objective",
+                    CourseId = courseId,
+                    Type = TypeOptions.FirstOrDefault() ?? string.Empty,
                     Status = "In progress",
                     StartDate = DateTime.Today,
                     EndDate = DateTime.Today.AddMonths(4),
@@ -65,8 +101,37 @@ namespace c971_project.ViewModels
             else
             {
                 // If NewAssessment exists already, just update the CourseId
-                NewAssessment.CourseId = value;
+                NewAssessment.CourseId = courseId;
             }
+        }
+
+        //load course assessments
+        private async Task LoadCourseAssessmentsAsync(int courseId)
+        {
+            if (IsBusy) return;
+
+            try
+            {
+                IsBusy = true;
+
+                if (CourseId <= 0)
+                    return;
+
+                var assessmentList = await _databaseService.GetAssessmentsByCourseIdAsync(CourseId);
+
+                Assessments.Clear();
+                foreach (var assessment in assessmentList)
+                    Assessments.Add(assessment); 
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error loading Course: {ex.Message}");
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+
         }
 
         [RelayCommand]
