@@ -94,7 +94,7 @@ namespace c971_project.ViewModels
                 }
 
                 // 3. Resolve instructor - if new create new db item - else grab current item
-                await _courseValidator.EnsureInstructorExistsAsync(NewInstructor);
+                NewInstructor = await _courseValidator.EnsureInstructorExistsAsync(NewInstructor);
 
                 // 4. Save course
                 await _courseValidator.SaveCourseAsync(TermId, NewCourse, NewInstructor);

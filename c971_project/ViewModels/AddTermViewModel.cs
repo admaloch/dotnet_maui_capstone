@@ -42,6 +42,16 @@ namespace c971_project.ViewModels
             {
                 IsBusy = true;
 
+                // Ensure StartDate is always the first day of the month
+                if (NewTerm.StartDate.Day != 1)
+                {
+                    NewTerm.StartDate = new DateTime(
+                        NewTerm.StartDate.Year,
+                        NewTerm.StartDate.Month,
+                        1
+                    );
+                }
+
                 // Add 6 months
                 var endDate = NewTerm.StartDate.AddMonths(6);
 
@@ -92,6 +102,8 @@ namespace c971_project.ViewModels
                 IsBusy = false;
             }
         }
+
+
 
     }
 }

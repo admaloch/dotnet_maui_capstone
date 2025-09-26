@@ -73,6 +73,8 @@ namespace c971_project.ViewModels
             WeakReferenceMessenger.Default.Register<CourseUpdatedMessage>(this, async (r, m) =>
             {
                 await LoadCourseAsync(CourseId); // reload from DB on Course edit
+                await LoadInstructorAsync();
+
             });
         }
 

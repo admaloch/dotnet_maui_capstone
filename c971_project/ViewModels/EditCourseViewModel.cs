@@ -73,7 +73,7 @@ namespace c971_project.ViewModels
                 }
 
                 // 3. Resolve instructor - if new create new db item - else grab current item
-                await _courseValidator.EnsureInstructorExistsAsync(Instructor);
+                Instructor = await _courseValidator.EnsureInstructorExistsAsync(Instructor);
 
                 // 4. Save course
                 await _courseValidator.SaveCourseAsync(Course.TermId, Course, Instructor);
@@ -90,7 +90,6 @@ namespace c971_project.ViewModels
                 // 6. Notify & navigate
                 WeakReferenceMessenger.Default.Send(new CourseUpdatedMessage());
 
-                await Shell.Current.DisplayAlert("Success", "Course saved successfully.", "OK");
                 await Shell.Current.GoToAsync("..");
             }
             catch (Exception ex)

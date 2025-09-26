@@ -51,6 +51,15 @@ namespace c971_project.ViewModels
 
                 var errorBuilder = new StringBuilder();
 
+                // Ensure StartDate is always the first day of the month
+                if (Term.StartDate.Day != 1)
+                {
+                    Term.StartDate = new DateTime(
+                        Term.StartDate.Year,
+                        Term.StartDate.Month,
+                        1
+                    );
+                }
                 // Add 6 months
                 var endDate = Term.StartDate.AddMonths(6);
 
@@ -86,7 +95,6 @@ namespace c971_project.ViewModels
                 // Optional: notify other viewmodels
                 WeakReferenceMessenger.Default.Send(new TermUpdatedMessage());
 
-                await Shell.Current.DisplayAlert("Success", "Term saved successfully.", "OK");
                 await Shell.Current.GoToAsync("..");
             }
             catch (Exception ex)

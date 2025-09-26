@@ -70,7 +70,6 @@ namespace c971_project.ViewModels
                 // Optional: notify other viewmodels
                 WeakReferenceMessenger.Default.Send(new StudentUpdatedMessage());
 
-                await Shell.Current.DisplayAlert("Success", "Student saved successfully.", "OK");
                 await Shell.Current.GoToAsync("..");
             }
             catch (Exception ex)

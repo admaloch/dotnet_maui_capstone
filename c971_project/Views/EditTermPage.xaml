@@ -117,7 +117,7 @@
                     VerticalOptions="Center"
                     WidthRequest="45">
                     <Image.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding EditTermCommand}" />
+                        <TapGestureRecognizer Command="{Binding SaveTermCommand}" />
                     </Image.GestureRecognizers>
                 </Image>
             </Border>

@@ -30,6 +30,7 @@ namespace c971_project.Services
 
             // toolkit validation for instructor and course model
             NewCourse.Validate();
+
             NewInstructor.Validate();
 
             // Course errors
@@ -69,22 +70,38 @@ namespace c971_project.Services
             return "";
         }
 
-        public async Task EnsureInstructorExistsAsync(Instructor NewInstructor)
+        //public async Task EnsureInstructorExistsAsync(Instructor NewInstructor)
+        //{
+        //    var searchInstructor = await _databaseService.GetInstructorByEmailAsync(NewInstructor.Email);
+
+        //    if (searchInstructor != null)
+        //    {
+        //        Debug.WriteLine($"Instructor already found -- set to {searchInstructor.Name}");
+        //        NewInstructor = searchInstructor;
+        //    }
+        //    else
+        //    {
+        //        Debug.WriteLine("New instructor created");
+        //        await _databaseService.SaveInstructorAsync(NewInstructor);
+        //    }
+        //}
+
+        public async Task<Instructor> EnsureInstructorExistsAsync(Instructor NewInstructor)
         {
             var searchInstructor = await _databaseService.GetInstructorByEmailAsync(NewInstructor.Email);
 
             if (searchInstructor != null)
             {
                 Debug.WriteLine($"Instructor already found -- set to {searchInstructor.Name}");
-                NewInstructor = searchInstructor;
+                return searchInstructor;
             }
             else
             {
                 Debug.WriteLine("New instructor created");
                 await _databaseService.SaveInstructorAsync(NewInstructor);
+                return NewInstructor;
             }
         }
-
 
         public async Task SaveCourseAsync(int TermId, Course NewCourse, Instructor NewInstructor)
         {
