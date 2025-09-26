@@ -14,36 +14,73 @@ namespace c971_project.Services
     public class DatabaseService
     {
         private readonly SQLiteAsyncConnection _connection;
-
-        private String dbLocation = "app.db";
+        private readonly Task _initializationTask;
 
         public DatabaseService()
         {
-            var dbPath = Path.Combine(FileSystem.AppDataDirectory, dbLocation);
-
-            // Use async connection
+            var dbPath = Path.Combine(FileSystem.AppDataDirectory, "app.db");
             _connection = new SQLiteAsyncConnection(dbPath);
 
-            //DeleteDb.DeleteDatabaseAsync(dbLocation);
-
-            // Create tables (async, but safe to Wait() here since it's in constructor)
-            _connection.CreateTableAsync<Student>().Wait();
-            _connection.CreateTableAsync<Term>().Wait();
-            _connection.CreateTableAsync<Instructor>().Wait();
-            _connection.CreateTableAsync<Course>().Wait();
-            _connection.CreateTableAsync<TermCourse>().Wait();
-            _connection.CreateTableAsync<Assessment>().Wait();
-            _connection.CreateTableAsync<Note>().Wait();
-
-
-            //SeedDb.SeedDataAsync(_connection);
-
+            // Start initialization task
+            _initializationTask = InitializeAsync();
         }
+
+        private async Task InitializeAsync()
+        {
+            try
+            {
+                // Create tables sequentially to avoid conflicts
+                await _connection.CreateTableAsync<Student>();
+                await _connection.CreateTableAsync<Term>();
+                await _connection.CreateTableAsync<Instructor>();
+                await _connection.CreateTableAsync<Course>();
+                await _connection.CreateTableAsync<TermCourse>();
+                await _connection.CreateTableAsync<Assessment>();
+                await _connection.CreateTableAsync<Note>();
+
+                // Initialize data after tables are created
+                await InitializeDataAsync();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Database initialization failed: {ex.Message}");
+                throw; // Re-throw to make initialization task fail
+            }
+        }
+
+        private async Task InitializeDataAsync()
+        {
+            try
+            {
+                // Check if database already has data
+                var termCount = await _connection.Table<Term>().CountAsync();
+
+                if (termCount == 0)
+                {
+                    Debug.WriteLine("Database is empty - seeding sample data...");
+                    await SeedDb.SeedDataAsync(_connection);
+                    Debug.WriteLine("Sample data seeded successfully!");
+                }
+                else
+                {
+                    Debug.WriteLine($"Database already has {termCount} terms - skipping seed");
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error seeding data: {ex.Message}");
+                // Don't throw here - we want the app to continue even if seeding fails
+            }
+        }
+
+        // Public method to await initialization completion
+        public Task EnsureInitialized() => _initializationTask;
 
 
         //STUDENT 
         public async Task<Student> GetStudentByIdAsync(string studentId)
         {
+            await EnsureInitialized();
             return await _connection.Table<Student>()
                                     .Where(t => t.StudentId == studentId)
                                     .FirstOrDefaultAsync();
@@ -51,12 +88,14 @@ namespace c971_project.Services
 
         public async Task<Student> GetCurrentStudentAsync()
         {
+            await EnsureInitialized();
             var students = await _connection.Table<Student>().ToListAsync();
             return students.FirstOrDefault(); // Returns null if no student
         }
 
         public async Task<int> SaveStudentAsync(Student student)
         {
+            await EnsureInitialized();
             if (string.IsNullOrEmpty(student.StudentId))
                 return await _connection.InsertAsync(student);
             else
@@ -66,11 +105,13 @@ namespace c971_project.Services
         //TERM 
         public async Task<List<Term>> GetTermsAsync()
         {
+            await EnsureInitialized();
             return await _connection.Table<Term>().ToListAsync();
         }
 
         public async Task<Term> GetTermByIdAsync(int termId)
         {
+            await EnsureInitialized();
 
             return await _connection.Table<Term>()
                                     .Where(t => t.TermId == termId)
@@ -78,6 +119,7 @@ namespace c971_project.Services
         }
         public async Task<int> SaveTermAsync(Term term)
         {
+            await EnsureInitialized();
             if (term.TermId == 0)
                 return await _connection.InsertAsync(term);
             else
@@ -86,30 +128,35 @@ namespace c971_project.Services
 
         public async Task<int> DeleteTermAsync(Term term)
         {
+            await EnsureInitialized();
             return await _connection.DeleteAsync(term);
         }
 
         //COURSES 
-        public Task<List<Course>> GetCoursesByTermIdAsync(int termId)
+        public async Task<List<Course>> GetCoursesByTermIdAsync(int termId)
         {
-            return _connection.Table<Course>()
+            await EnsureInitialized();
+            return await _connection.Table<Course>()
                       .Where(c => c.TermId == termId)
                       .ToListAsync();
         }
         public async Task<Course> GetCourseByIdAsync(int courseId)
         {
+            await EnsureInitialized();
             return await _connection.Table<Course>()
                                     .Where(t => t.CourseId == courseId)
                                     .FirstOrDefaultAsync();
         }
-        public Task<Course> GetCourseByCourseNumAsync(string courseNum)
+        public async Task<Course> GetCourseByCourseNumAsync(string courseNum)
         {
-            return _connection.Table<Course>()
+            await EnsureInitialized();
+            return await _connection.Table<Course>()
                       .Where(c => c.CourseNum == courseNum)
                       .FirstOrDefaultAsync();
         }
         public async Task<int> SaveCourseAsync(Course course)
         {
+            await EnsureInitialized();
             if (course.CourseId == 0)
                 return await _connection.InsertAsync(course);
             else
@@ -117,24 +164,28 @@ namespace c971_project.Services
         }
         public async Task<int> DeleteCourseAsync(Course course)
         {
+            await EnsureInitialized();
             return await _connection.DeleteAsync(course);
         }
 
         //INSTRUCTOR
         public async Task<Instructor> GetInstructorByIdAsync(int instructorId)
         {
+            await EnsureInitialized();
             return await _connection.Table<Instructor>()
                                     .Where(t => t.InstructorId == instructorId)
                                     .FirstOrDefaultAsync();
         }
-        public Task<Instructor> GetInstructorByEmailAsync(string email)
+        public async Task<Instructor> GetInstructorByEmailAsync(string email)
         {
-            return _connection.Table<Instructor>()
+            await EnsureInitialized();
+            return await _connection.Table<Instructor>()
                       .Where(i => i.Email == email)
                       .FirstOrDefaultAsync();
         }
         public async Task<int> SaveInstructorAsync(Instructor instructor)
         {
+            await EnsureInitialized();
             if (instructor.InstructorId == 0)
                 return await _connection.InsertAsync(instructor);
             else
@@ -142,20 +193,23 @@ namespace c971_project.Services
         }
 
         //ASSESSMENTS
-        public Task<List<Assessment>> GetAssessmentsByCourseIdAsync(int courseId)
+        public async Task<List<Assessment>> GetAssessmentsByCourseIdAsync(int courseId)
         {
-            return _connection.Table<Assessment>()
+            await EnsureInitialized();
+            return await _connection.Table<Assessment>()
                       .Where(c => c.CourseId == courseId)
                       .ToListAsync();
         }
         public async Task<Assessment> GetAssessmentByIdAsync(int assessmentId)
         {
+            await EnsureInitialized();
             return await _connection.Table<Assessment>()
                                     .Where(t => t.AssessmentId == assessmentId)
                                     .FirstOrDefaultAsync();
         }
         public async Task<int> SaveAssessmentAsync(Assessment assessment)
         {
+            await EnsureInitialized();
             if (assessment.AssessmentId == 0)
                 return await _connection.InsertAsync(assessment);
             else
@@ -163,30 +217,35 @@ namespace c971_project.Services
         }
         public async Task<int> DeleteAssessmentAsync(Assessment assessment)
         {
+            await EnsureInitialized();
             return await _connection.DeleteAsync(assessment);
         }
         public async Task<int> DeleteAssessmentsByCourseIdAsync(int courseId)
         {
+            await EnsureInitialized();
             return await _connection.ExecuteAsync(
                 "DELETE FROM Assessment WHERE CourseId = ?",
                 courseId);
         }
 
         //NOTES
-        public Task<List<Note>> GetNotesByCourseIdAsync(int courseId)
+        public async Task<List<Note>> GetNotesByCourseIdAsync(int courseId)
         {
-            return _connection.Table<Note>()
+            await EnsureInitialized();
+            return await _connection.Table<Note>()
                       .Where(c => c.CourseId == courseId)
                       .ToListAsync();
         }
         public async Task<Note> GetNoteByIdAsync(int noteId)
         {
+            await EnsureInitialized();
             return await _connection.Table<Note>()
                                     .Where(t => t.NoteId == noteId)
                                     .FirstOrDefaultAsync();
         }
         public async Task<int> SaveNoteAsync(Note note)
         {
+            await EnsureInitialized();
             if (note.NoteId == 0)
                 return await _connection.InsertAsync(note);
             else
@@ -195,10 +254,12 @@ namespace c971_project.Services
 
         public async Task<int> DeleteNoteAsync(Note Note)
         {
+            await EnsureInitialized();
             return await _connection.DeleteAsync(Note);
         }
         public async Task<int> DeleteNotesByCourseIdAsync(int courseId)
         {
+            await EnsureInitialized();
             return await _connection.ExecuteAsync(
                 "DELETE FROM Note WHERE CourseId = ?",
                 courseId);

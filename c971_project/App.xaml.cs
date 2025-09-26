@@ -1,6 +1,8 @@
-﻿
+﻿using System.Diagnostics;
+
 
 using c971_project.Views;
+using c971_project.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Maui.Controls;
 using System.Diagnostics;
@@ -9,31 +11,49 @@ namespace c971_project
 {
     public partial class App : Application
     {
-        private readonly IServiceProvider _serviceProvider;
-
         public App(IServiceProvider serviceProvider)
         {
             InitializeComponent();
 
-            // Set MainPage to the AppShell
-            MainPage = new AppShell();
-            //MainPage = serviceProvider.GetRequiredService<AppShell>();
+            // Show loading page immediately
+            MainPage = new ContentPage
+            {
+                Content = new Label
+                {
+                    Text = "Loading...",
+                    HorizontalOptions = LayoutOptions.Center,
+                    VerticalOptions = LayoutOptions.Center
+                }
+            };
 
-
-            //RequestNotificationPermission();
-
+            // Start initialization in background (fire and forget)
+            _ = InitializeAppAsync(serviceProvider);
         }
-        private async void RequestNotificationPermission()
+
+        private async Task InitializeAppAsync(IServiceProvider serviceProvider)
         {
             try
             {
-                // Use LocalNotificationCenter.Current, not NotificationCenter
-                var permission = await Plugin.LocalNotification.LocalNotificationCenter.Current.RequestNotificationPermission();
-                Debug.WriteLine($"App startup permission: {permission}");
+                // Get the database service and wait for it to initialize
+                var dbService = serviceProvider.GetRequiredService<DatabaseService>();
+                await dbService.EnsureInitialized(); // Properly wait for DB to be ready
+
+                // Switch to main app
+                MainPage = new AppShell();
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Permission request error: {ex.Message}");
+                // Handle any initialization errors gracefully
+                MainPage = new ContentPage
+                {
+                    Content = new Label
+                    {
+                        Text = $"Initialization Error: {ex.Message}",
+                        HorizontalOptions = LayoutOptions.Center,
+                        VerticalOptions = LayoutOptions.Center
+                    }
+                };
+                Debug.WriteLine($"App initialization failed: {ex}");
             }
         }
     }
