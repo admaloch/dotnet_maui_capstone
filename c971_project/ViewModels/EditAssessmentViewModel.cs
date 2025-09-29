@@ -115,14 +115,23 @@ namespace c971_project.ViewModels
             {
                 IsBusy = true;
 
-                var isTaskValid = await ValidateAssessmentAsync();
-                if (!isTaskValid) return;
+                var errors = AssessmentValidator.ValidateAssessment(Assessment).ToString().Trim();
+                // print errors if any and return
+                if (!string.IsNullOrWhiteSpace(errors))
+                {
+                    await Shell.Current.DisplayAlert("Validation Errors", errors, "OK");
+                    return;
+                }
 
+                // Save to database
                 await _databaseService.SaveAssessmentAsync(Assessment);
-                await _notificationService.ScheduleAssessmentNotificationsAsync(Assessment);
 
+                // Schedule notifications for the new assessment - ADDED THIS
+                var notificationSuccess = await _notificationService.ScheduleAssessmentNotificationsAsync(Assessment);
+
+                // notify update
                 WeakReferenceMessenger.Default.Send(new AssessmentUpdatedMessage());
-                await Shell.Current.DisplayAlert("Success", "Assessment saved successfully.", "OK");
+
                 await Shell.Current.GoToAsync("..");
             }
             catch (Exception ex)
@@ -134,21 +143,6 @@ namespace c971_project.ViewModels
             {
                 IsBusy = false;
             }
-        }
-
-
-
-        private async Task<bool> ValidateAssessmentAsync()
-        {
-            Assessment.Validate();
-
-            if (Assessment.HasErrors)
-            {
-                var errorMessage = ValidationHelper.GetErrors(Assessment, nameof(Assessment.Name));
-                await Shell.Current.DisplayAlert("Validation Errors", errorMessage, "OK");
-                return false;
-            }
-            return true;
         }
     }
 }

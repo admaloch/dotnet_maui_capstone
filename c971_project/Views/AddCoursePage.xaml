@@ -113,7 +113,8 @@
                                 <DatePicker
                                     Grid.Column="1"
                                     Date="{Binding NewCourse.StartDate, Mode=TwoWay}"
-                                    HorizontalOptions="Fill" />
+                                    HorizontalOptions="Fill"
+                                    MinimumDate="{x:Static system:DateTime.Today}" />
 
                                 <!--  Alarm Icon  -->
                                 <Image
@@ -139,7 +140,7 @@
                                 ThumbColor="{StaticResource Cream}"
                                 VerticalOptions="Center" />
                             <Label
-                                Text="{Binding NewCourse.StartDateTime, StringFormat='Notify me on Start Date ({0:MMM dd, yyyy h:mm tt})'}"
+                                Text="{Binding NewCourse.StartDateTime, StringFormat='Notify me on Start Date'}"
                                 TextColor="{StaticResource DarkBlue}"
                                 VerticalOptions="Center" />
                         </HorizontalStackLayout>
@@ -167,7 +168,8 @@
                                 <DatePicker
                                     Grid.Column="1"
                                     Date="{Binding NewCourse.EndDate, Mode=TwoWay}"
-                                    HorizontalOptions="Fill" />
+                                    HorizontalOptions="Fill"
+                                    MinimumDate="{x:Static system:DateTime.Today}" />
 
                                 <!--  Alarm Icon  -->
                                 <Image
@@ -193,7 +195,7 @@
                                 ThumbColor="{StaticResource Cream}"
                                 VerticalOptions="Center" />
                             <Label
-                                Text="{Binding NewCourse.EndDateTime, StringFormat='Notify me on End Date ({0:MMM dd, yyyy h:mm tt})'}"
+                                Text="{Binding NewCourse.EndDateTime, StringFormat='Notify me on End Date'}"
                                 TextColor="{StaticResource DarkBlue}"
                                 VerticalOptions="Center" />
                         </HorizontalStackLayout>

@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace c971_project.ViewModels
 {
@@ -109,16 +110,12 @@ namespace c971_project.ViewModels
         private async Task LoadCourseAssessmentsAsync(int courseId)
         {
             if (IsBusy) return;
-
             try
             {
                 IsBusy = true;
-
                 if (CourseId <= 0)
                     return;
-
                 var assessmentList = await _databaseService.GetAssessmentsByCourseIdAsync(CourseId);
-
                 Assessments.Clear();
                 foreach (var assessment in assessmentList)
                     Assessments.Add(assessment); 
@@ -138,32 +135,22 @@ namespace c971_project.ViewModels
         private async Task SaveAssessmentAsync()
         {
             if (IsBusy) return;
-
             try
             {
                 IsBusy = true;
-
-                var isTaskValid = await ValidateAssessmentAsync();
-
-                if (!isTaskValid)
+                // validate -- if errors -- print and return
+                var errors = AssessmentValidator.ValidateAssessment(NewAssessment).ToString().Trim();
+                if (!string.IsNullOrWhiteSpace(errors))
+                {
+                    await Shell.Current.DisplayAlert("Validation Errors", errors, "OK");
                     return;
-
+                }
                 // Save to database
                 await _databaseService.SaveAssessmentAsync(NewAssessment);
-
                 // Schedule notifications for the new assessment - ADDED THIS
                 var notificationSuccess = await _notificationService.ScheduleAssessmentNotificationsAsync(NewAssessment);
-
-                if (!notificationSuccess)
-                {
-                    Debug.WriteLine("Assessment saved but notifications failed to schedule");
-                    // Optional: You could show a subtle warning, but don't block success
-                }
-
-                // Optional: notify other viewmodels
+                // notify update
                 WeakReferenceMessenger.Default.Send(new AssessmentUpdatedMessage());
-
-                await Shell.Current.DisplayAlert("Success", "Assessment saved successfully.", "OK");
                 await Shell.Current.GoToAsync("..");
             }
             catch (Exception ex)
@@ -175,23 +162,6 @@ namespace c971_project.ViewModels
             {
                 IsBusy = false;
             }
-        }
-
-        private async Task<bool> ValidateAssessmentAsync()
-        {
-            NewAssessment.Validate();
-
-            if (NewAssessment.HasErrors)
-            {
-                var errorMessage = ValidationHelper.GetErrors(
-                    NewAssessment,
-                    nameof(Assessment.Name)
-                );
-
-                await Shell.Current.DisplayAlert("Validation Errors", errorMessage, "OK");
-                return false;
-            }
-            return true;
         }
     }
 }

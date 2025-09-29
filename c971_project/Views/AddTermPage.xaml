@@ -54,12 +54,15 @@
                             </Border>
                         </VerticalStackLayout>
 
-                        <!--  Start Date  -->
                         <VerticalStackLayout Spacing="5">
                             <Label
                                 Style="{StaticResource FieldLabel}"
                                 Text="Start Date"
                                 TextColor="{StaticResource DarkBlue}" />
+                            <Label
+                                FontSize="12"
+                                Text="Terms must start on the 1st of the month."
+                                TextColor="Gray" />
                             <Border
                                 Padding="10"
                                 BackgroundColor="White"
@@ -67,7 +70,7 @@
                                 <DatePicker
                                     BackgroundColor="Transparent"
                                     Date="{Binding NewTerm.StartDate, Mode=TwoWay}"
-                                    MinimumDate="{x:Static System:DateTime.Today}" />
+                                    MinimumDate="{Binding EarliestAllowedTermDate}" />
                             </Border>
                         </VerticalStackLayout>
 

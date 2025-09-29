@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace c971_project.ViewModels
 {
@@ -19,6 +20,16 @@ namespace c971_project.ViewModels
 
         [ObservableProperty]
         private Term _newTerm;
+
+        public DateTime EarliestAllowedTermDate
+        {
+            get
+            {
+                var today = DateTime.Today;
+                // Always returns the 1st day of the next month
+                return new DateTime(today.Year, today.Month, 1).AddMonths(1);
+            }
+        }
 
         public AddTermViewModel(DatabaseService databaseService)
         {
@@ -42,41 +53,11 @@ namespace c971_project.ViewModels
             {
                 IsBusy = true;
 
-                // Ensure StartDate is always the first day of the month
-                if (NewTerm.StartDate.Day != 1)
-                {
-                    NewTerm.StartDate = new DateTime(
-                        NewTerm.StartDate.Year,
-                        NewTerm.StartDate.Month,
-                        1
-                    );
-                }
+                //validate iinputs
+                TermValidator.SetInitialStartAndEndDates(NewTerm);
 
-                // Add 6 months
-                var endDate = NewTerm.StartDate.AddMonths(6);
-
-                // Move back one day and set time to 23:59:59
-                NewTerm.EndDate = new DateTime(
-                    endDate.Year,
-                    endDate.Month,
-                    endDate.Day,
-                    23, 59, 59
-                ).AddDays(-1);
-
-                NewTerm.Validate();
-
-                var errorBuilder = new StringBuilder();
-
-                // NewTerm errors
-                errorBuilder.AppendLine(ValidationHelper.GetErrors(
-                    NewTerm, nameof(NewTerm.Name)));
-
-                // Custom rules
-                if (NewTerm.EndDate < NewTerm.StartDate)
-                    errorBuilder.AppendLine("End date cannot be before start date.");
-
-                var errors = errorBuilder.ToString().Trim();
-
+                //grab errors and disply message if any
+                var errors = TermValidator.ValidateTerm(NewTerm).ToString().Trim();
                 //  print errors if any and return
                 if (!string.IsNullOrWhiteSpace(errors))
                 {
@@ -102,8 +83,6 @@ namespace c971_project.ViewModels
                 IsBusy = false;
             }
         }
-
-
 
     }
 }

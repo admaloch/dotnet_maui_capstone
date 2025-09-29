@@ -11,8 +11,16 @@ public class NotificationService : IScheduleNotificationService
     {
         try
         {
-            Debug.WriteLine($"=== Scheduling notifications for: {course.Name} ===");
+            Debug.WriteLine($"=== Scheduling course notifications for: {course.Name} ===");
+            Debug.WriteLine($"Current time: {DateTime.Now}");
+            Debug.WriteLine($"Course ID: {course.CourseId}");
+            Debug.WriteLine($"StartDate: {course.StartDate} | StartDateTime: {course.StartDateTime}");
+            Debug.WriteLine($"EndDate: {course.EndDate} | EndDateTime: {course.EndDateTime}");
+            Debug.WriteLine($"NotifyStart: {course.NotifyStartDate} | NotifyEnd: {course.NotifyEndDate}");
 
+            // ✅ FIX: Use StartDateTime and EndDateTime for comparisons
+            Debug.WriteLine($"StartDateTime > Now: {course.StartDateTime > DateTime.Now}");
+            Debug.WriteLine($"EndDateTime > Now: {course.EndDateTime > DateTime.Now}");
             // Cancel any existing notifications for this course first
             await CancelCourseNotificationsAsync(course.CourseId);
 
@@ -91,13 +99,25 @@ public class NotificationService : IScheduleNotificationService
         try
         {
             Debug.WriteLine($"=== Scheduling assessment notifications for: {assessment.Name} ===");
+            Debug.WriteLine($"Assessment ID: {assessment.AssessmentId}");
+            Debug.WriteLine($"StartDate: {assessment.StartDate} | StartDateTime: {assessment.StartDateTime}");
+            Debug.WriteLine($"EndDate: {assessment.EndDate} | EndDateTime: {assessment.EndDateTime}");
+            Debug.WriteLine($"NotifyStart: {assessment.NotifyStartDate} | NotifyEnd: {assessment.NotifyEndDate}");
+            Debug.WriteLine($"Current time: {DateTime.Now}");
+
+            // ✅ FIX: Use StartDateTime and EndDateTime for comparisons
+            Debug.WriteLine($"StartDateTime > Now: {assessment.StartDateTime > DateTime.Now}");
+            Debug.WriteLine($"EndDateTime > Now: {assessment.EndDateTime > DateTime.Now}");
 
             await CancelAssessmentNotificationsAsync(assessment.AssessmentId);
 
             var results = new List<bool>();
 
-            if (assessment.NotifyStartDate && assessment.StartDate > DateTime.Now)
+            // ✅ FIX: Compare against StartDateTime instead of StartDate
+            if (assessment.NotifyStartDate && assessment.StartDateTime > DateTime.Now)
             {
+                Debug.WriteLine("✅ Conditions met for START notification");
+
                 var startNotification = new NotificationRequest
                 {
                     NotificationId = GenerateAssessmentNotificationId(assessment.AssessmentId, isStartDate: true),
@@ -105,7 +125,7 @@ public class NotificationService : IScheduleNotificationService
                     Description = $"{assessment.Name} starts on {assessment.StartDate:MMM dd, yyyy}",
                     Schedule = new NotificationRequestSchedule
                     {
-                        NotifyTime = assessment.StartDateTime // uses combined date+time
+                        NotifyTime = assessment.StartDateTime
                     },
                     Android = new AndroidOptions
                     {
@@ -116,11 +136,20 @@ public class NotificationService : IScheduleNotificationService
 
                 var startResult = await LocalNotificationCenter.Current.Show(startNotification);
                 results.Add(startResult);
-                Debug.WriteLine($"Assessment start notification scheduled - Result: {startResult}");
+                Debug.WriteLine($"Assessment start notification scheduled for {assessment.StartDateTime:MMM dd, yyyy h:mm tt} - Result: {startResult}");
+            }
+            else
+            {
+                Debug.WriteLine("❌ START notification skipped - conditions not met");
+                Debug.WriteLine($"  - NotifyStartDate: {assessment.NotifyStartDate}");
+                Debug.WriteLine($"  - StartDateTime > Now: {assessment.StartDateTime > DateTime.Now}");
             }
 
-            if (assessment.NotifyEndDate && assessment.EndDate > DateTime.Now)
+            // ✅ FIX: Compare against EndDateTime instead of EndDate
+            if (assessment.NotifyEndDate && assessment.EndDateTime > DateTime.Now)
             {
+                Debug.WriteLine("✅ Conditions met for END notification");
+
                 var endNotification = new NotificationRequest
                 {
                     NotificationId = GenerateAssessmentNotificationId(assessment.AssessmentId, isStartDate: false),
@@ -128,7 +157,7 @@ public class NotificationService : IScheduleNotificationService
                     Description = $"{assessment.Name} is due on {assessment.EndDate:MMM dd, yyyy}",
                     Schedule = new NotificationRequestSchedule
                     {
-                        NotifyTime = assessment.StartDateTime // NEW - uses the combined date+time
+                        NotifyTime = assessment.EndDateTime
                     },
                     Android = new AndroidOptions
                     {
@@ -139,10 +168,26 @@ public class NotificationService : IScheduleNotificationService
 
                 var endResult = await LocalNotificationCenter.Current.Show(endNotification);
                 results.Add(endResult);
-                Debug.WriteLine($"Assessment end notification scheduled - Result: {endResult}");
+                Debug.WriteLine($"Assessment end notification scheduled for {assessment.EndDateTime:MMM dd, yyyy h:mm tt} - Result: {endResult}");
+            }
+            else
+            {
+                Debug.WriteLine("❌ END notification skipped - conditions not met");
+                Debug.WriteLine($"  - NotifyEndDate: {assessment.NotifyEndDate}");
+                Debug.WriteLine($"  - EndDateTime > Now: {assessment.EndDateTime > DateTime.Now}");
             }
 
-            return results.Count == 0 || results.Any(r => r);
+            if (results.Count == 0)
+            {
+                Debug.WriteLine("📭 No notifications were scheduled");
+                return true;
+            }
+            else
+            {
+                var success = results.Any(r => r);
+                Debug.WriteLine($"📋 Notification summary: {results.Count} attempted, {results.Count(r => r)} successful");
+                return success;
+            }
         }
         catch (Exception ex)
         {
@@ -150,7 +195,6 @@ public class NotificationService : IScheduleNotificationService
             return false;
         }
     }
-
     private async Task CancelCourseNotificationsAsync(int courseId)
     {
         try

@@ -48,6 +48,11 @@ namespace c971_project.ViewModels
 
         partial void OnTermIdChanged(int value)
         {
+            InitializeDefaultCourse(value);
+        }
+
+        private void InitializeDefaultCourse(int termId)
+        {
             // Initialize the new course
             NewCourse = new Course
             {
@@ -60,7 +65,7 @@ namespace c971_project.ViewModels
                 EndTime = new TimeSpan(17, 0, 0),   // 5:00 PM default
                 DateAdded = DateTime.Now,
                 InstructorId = 0,   // will be selected later
-                TermId = value,     // links this course to the current Term
+                TermId = termId,     // links this course to the current Term
                 NotifyStartDate = true, // Default to true
                 NotifyEndDate = true    // Default to true
             };

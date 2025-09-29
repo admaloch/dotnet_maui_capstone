@@ -4,6 +4,7 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:System="clr-namespace:System;assembly=mscorlib"
+    xmlns:system="clr-namespace:System;assembly=netstandard"
     Title="Edit Assessment"
     BackgroundColor="{StaticResource Cream}">
     <Grid>
@@ -98,7 +99,9 @@
                                 <DatePicker
                                     Grid.Column="1"
                                     Date="{Binding Assessment.StartDate, Mode=TwoWay}"
-                                    HorizontalOptions="Fill" />
+                                    HorizontalOptions="Fill"
+                                    MinimumDate="{x:Static system:DateTime.Today}" />
+
 
                                 <!--  Alarm Icon  -->
                                 <Image
@@ -152,7 +155,9 @@
                                 <DatePicker
                                     Grid.Column="1"
                                     Date="{Binding Assessment.EndDate, Mode=TwoWay}"
-                                    HorizontalOptions="Fill" />
+                                    HorizontalOptions="Fill"
+                                    MinimumDate="{x:Static system:DateTime.Today}" />
+
 
                                 <!--  Alarm Icon  -->
                                 <Image
@@ -178,7 +183,7 @@
                                 ThumbColor="{StaticResource Cream}"
                                 VerticalOptions="Center" />
                             <Label
-                                Text="{Binding Assessment.EndDateTime, StringFormat='Notify me on End Date ({0:MMM dd, yyyy h:mm tt})'}"
+                                Text="{Binding Assessment.EndDateTime, StringFormat='Notify me on End Date '}"
                                 TextColor="{StaticResource DarkBlue}"
                                 VerticalOptions="Center" />
                         </HorizontalStackLayout>

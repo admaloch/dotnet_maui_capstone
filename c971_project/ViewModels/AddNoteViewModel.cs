@@ -32,22 +32,25 @@ namespace c971_project.ViewModels
         // This runs when CourseId is assigned by Shell after navigation
         partial void OnCourseIdChanged(int value)
         {
-            Debug.WriteLine($"CourseId set via query: {value}");
+            InitializeDefaultNote(value);
+        }
 
+        private void InitializeDefaultNote(int courseId)
+        {
             if (NewNote == null)
             {
                 NewNote = new Note
                 {
                     Title = string.Empty,
                     Body = string.Empty,
-                    CourseId = value,
+                    CourseId = courseId,
                     DateAdded = DateTime.Today,
                     LastUpdated = DateTime.Today
                 };
             }
             else
             {
-                NewNote.CourseId = value;
+                NewNote.CourseId = courseId;
             }
         }
 
@@ -60,18 +63,20 @@ namespace c971_project.ViewModels
             {
                 IsBusy = true;
 
-                var isTaskValid = await ValidateNoteAsync();
-
-                if (!isTaskValid)
+                // validate -- if errors -- print and return
+                var errors = NoteValidator.ValidateNote(NewNote).ToString().Trim();
+                if (!string.IsNullOrWhiteSpace(errors))
+                {
+                    await Shell.Current.DisplayAlert("Validation Errors", errors, "OK");
                     return;
+                }
 
                 // Save to database
                 await _databaseService.SaveNoteAsync(NewNote);
 
-                // Optional: notify other viewmodels
+                // notify change
                 WeakReferenceMessenger.Default.Send(new NoteUpdatedMessage());
 
-                await Shell.Current.DisplayAlert("Success", "Note saved successfully.", "OK");
                 await Shell.Current.GoToAsync("..");
             }
             catch (Exception ex)
@@ -84,25 +89,5 @@ namespace c971_project.ViewModels
                 IsBusy = false;
             }
         }
-
-        private async Task<bool> ValidateNoteAsync()
-        {
-            NewNote.Validate();
-
-            if (NewNote.HasErrors)
-            {
-                var errorMessage = ValidationHelper.GetErrors(
-                    NewNote,
-                    nameof(Note.Title),
-                    nameof(Note.Body)
-
-                );
-
-                await Shell.Current.DisplayAlert("Validation Errors", errorMessage, "OK");
-                return false;
-            }
-            return true;
-        }
-
     }
 }

@@ -69,18 +69,20 @@ namespace c971_project.ViewModels
 
                 Note.LastUpdated = DateTime.Now;
 
-                var isTaskValid = await ValidateNoteAsync();
-
-                if (!isTaskValid)
+                // validate -- if errors -- print and return
+                var errors = NoteValidator.ValidateNote(Note).ToString().Trim();
+                if (!string.IsNullOrWhiteSpace(errors))
+                {
+                    await Shell.Current.DisplayAlert("Validation Errors", errors, "OK");
                     return;
+                }
 
                 // Save to database
                 await _databaseService.SaveNoteAsync(Note);
 
-                // Optional: notify other viewmodels
+                // notify change
                 WeakReferenceMessenger.Default.Send(new NoteUpdatedMessage());
 
-                await Shell.Current.DisplayAlert("Success", "Note saved successfully.", "OK");
                 await Shell.Current.GoToAsync("..");
             }
             catch (Exception ex)
@@ -93,25 +95,5 @@ namespace c971_project.ViewModels
                 IsBusy = false;
             }
         }
-
-        private async Task<bool> ValidateNoteAsync()
-        {
-            Note.Validate();
-
-            if (Note.HasErrors)
-            {
-                var errorMessage = ValidationHelper.GetErrors(
-                    Note,
-                    nameof(Note.Title),
-                    nameof(Note.Body)
-
-                );
-
-                await Shell.Current.DisplayAlert("Validation Errors", errorMessage, "OK");
-                return false;
-            }
-            return true;
-        }
-
     }
 }

@@ -24,30 +24,30 @@ namespace c971_project.Services
         }
 
         //handle validation for toolkit, custom, instructor, unique course etc.. 
-        public async Task<string> ValidateCourseFormAsync(int TermId, Course NewCourse, Instructor NewInstructor, bool isEdit)
+        public async Task<string> ValidateCourseFormAsync(int TermId, Course Course, Instructor Instructor, bool isEdit)
         {
             var errorBuilder = new StringBuilder();
 
             // toolkit validation for instructor and course model
-            NewCourse.Validate();
+            Course.Validate();
 
-            NewInstructor.Validate();
+            Instructor.Validate();
 
             // Course errors
             errorBuilder.AppendLine(ValidationHelper.GetErrors(
-                NewCourse, nameof(Course.Name), nameof(Course.CourseNum),
+                Course, nameof(Course.Name), nameof(Course.CourseNum),
                 nameof(Course.CuNum), nameof(Course.StartDate), nameof(Course.EndDate)));
 
-            // Custom rules
-            if (NewCourse.EndDate < NewCourse.StartDate)
-                errorBuilder.AppendLine("End date cannot be before start date.");
+            // Custom validation rules -- prevent time picker from picking dates in past + ensure past date is after start date
+            var pickerDatesErrorBuilder = ValidationHelper.ValidateStartAndEndDates(Course.StartDateTime, Course.EndDateTime);
+            errorBuilder.Append(pickerDatesErrorBuilder);
 
             // Instructor errors
             errorBuilder.AppendLine(ValidationHelper.GetErrors(
-                NewInstructor, nameof(Instructor.Name), nameof(Instructor.Phone), nameof(Instructor.Email)));
+                Instructor, nameof(Instructor.Name), nameof(Instructor.Phone), nameof(Instructor.Email)));
 
             // Check unique course number
-            var error = await ValidateUniqueCourseNumAsync(NewCourse, isEdit);
+            var error = await ValidateUniqueCourseNumAsync(Course, isEdit);
             if (!string.IsNullOrEmpty(error))
                 errorBuilder.AppendLine(error);
 
@@ -70,25 +70,10 @@ namespace c971_project.Services
             return "";
         }
 
-        //public async Task EnsureInstructorExistsAsync(Instructor NewInstructor)
-        //{
-        //    var searchInstructor = await _databaseService.GetInstructorByEmailAsync(NewInstructor.Email);
 
-        //    if (searchInstructor != null)
-        //    {
-        //        Debug.WriteLine($"Instructor already found -- set to {searchInstructor.Name}");
-        //        NewInstructor = searchInstructor;
-        //    }
-        //    else
-        //    {
-        //        Debug.WriteLine("New instructor created");
-        //        await _databaseService.SaveInstructorAsync(NewInstructor);
-        //    }
-        //}
-
-        public async Task<Instructor> EnsureInstructorExistsAsync(Instructor NewInstructor)
+        public async Task<Instructor> EnsureInstructorExistsAsync(Instructor Instructor)
         {
-            var searchInstructor = await _databaseService.GetInstructorByEmailAsync(NewInstructor.Email);
+            var searchInstructor = await _databaseService.GetInstructorByEmailAsync(Instructor.Email);
 
             if (searchInstructor != null)
             {
@@ -98,16 +83,16 @@ namespace c971_project.Services
             else
             {
                 Debug.WriteLine("New instructor created");
-                await _databaseService.SaveInstructorAsync(NewInstructor);
-                return NewInstructor;
+                await _databaseService.SaveInstructorAsync(Instructor);
+                return Instructor;
             }
         }
 
-        public async Task SaveCourseAsync(int TermId, Course NewCourse, Instructor NewInstructor)
+        public async Task SaveCourseAsync(int TermId, Course Course, Instructor Instructor)
         {
-            NewCourse.TermId = TermId;
-            NewCourse.InstructorId = NewInstructor.InstructorId;
-            await _databaseService.SaveCourseAsync(NewCourse);
+            Course.TermId = TermId;
+            Course.InstructorId = Instructor.InstructorId;
+            await _databaseService.SaveCourseAsync(Course);
         }
     }
 }

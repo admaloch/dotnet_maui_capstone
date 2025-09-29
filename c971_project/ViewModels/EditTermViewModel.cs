@@ -24,6 +24,16 @@ namespace c971_project.ViewModels
         [ObservableProperty]
         private Term _term;
 
+        public DateTime EarliestAllowedTermDate
+        {
+            get
+            {
+                var today = DateTime.Today;
+                // Always returns the 1st day of the next month
+                return new DateTime(today.Year, today.Month, 1).AddMonths(1);
+            }
+        }
+
         public EditTermViewModel(DatabaseService databaseService)
         {
             _databaseService = databaseService;
@@ -49,39 +59,11 @@ namespace c971_project.ViewModels
             {
                 IsBusy = true;
 
-                var errorBuilder = new StringBuilder();
+                //validate iinputs
+                TermValidator.SetInitialStartAndEndDates(Term);
 
-                // Ensure StartDate is always the first day of the month
-                if (Term.StartDate.Day != 1)
-                {
-                    Term.StartDate = new DateTime(
-                        Term.StartDate.Year,
-                        Term.StartDate.Month,
-                        1
-                    );
-                }
-                // Add 6 months
-                var endDate = Term.StartDate.AddMonths(6);
-
-                // Move back one day and set time to 23:59:59
-                Term.EndDate = new DateTime(
-                    endDate.Year,
-                    endDate.Month,
-                    endDate.Day,
-                    23, 59, 59
-                ).AddDays(-1);
-                Term.Validate();
-
-                // Term errors
-                errorBuilder.AppendLine(ValidationHelper.GetErrors(
-                    Term, nameof(Term.Name)));
-
-                // Custom rules
-                if (Term.EndDate < Term.StartDate)
-                    errorBuilder.AppendLine("End date cannot be before start date.");
-
-                var errors = errorBuilder.ToString().Trim();
-
+                //grab errors and disply message if any
+                var errors = TermValidator.ValidateTerm(Term).ToString().Trim();
                 //  print errors if any and return
                 if (!string.IsNullOrWhiteSpace(errors))
                 {
@@ -107,6 +89,5 @@ namespace c971_project.ViewModels
                 IsBusy = false;
             }
         }
-
     }
 }
