@@ -67,7 +67,7 @@ namespace c971_project.Services.Data
                 NotifyEndDate = true
             };
             await connection.InsertAsync(course1);
-            Debug.WriteLine($"Inserted courses: {course1.CourseId}");
+            Debug.WriteLine($"Inserted coursess: {course1.CourseId}");
 
 
 
