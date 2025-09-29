@@ -2,7 +2,7 @@
 using c971_project.Models;
 using System.Diagnostics;
 
-namespace c971_project.Services
+namespace c971_project.Services.Data
 {
     public class SeedDb
     {

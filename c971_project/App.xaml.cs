@@ -2,10 +2,10 @@
 
 
 using c971_project.Views;
-using c971_project.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Maui.Controls;
 using System.Diagnostics;
+using c971_project.Services.Data;
 
 namespace c971_project
 {

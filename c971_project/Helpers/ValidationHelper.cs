@@ -4,7 +4,7 @@ using System.Text;
 
 namespace c971_project.Helpers
 {
-
+    //generic validation methods for toolkit errors, and date validation etc..
     public static class ValidationHelper
     {
         public static string GetErrors<T>(T item, params string[] propertiesToCheck)
