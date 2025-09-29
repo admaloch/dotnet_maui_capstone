@@ -3,7 +3,7 @@ using Plugin.LocalNotification;
 using Plugin.LocalNotification.AndroidOption;
 using System.Diagnostics;
 
-namespace c971_project.Services;
+namespace c971_project.Services.Notifications;
 
 public class NotificationService : IScheduleNotificationService
 {
@@ -225,11 +225,11 @@ public class NotificationService : IScheduleNotificationService
 
     private int GenerateCourseNotificationId(int courseId, bool isStartDate)
     {
-        return (courseId * 100) + (isStartDate ? 1 : 2);
+        return courseId * 100 + (isStartDate ? 1 : 2);
     }
 
     private int GenerateAssessmentNotificationId(int assessmentId, bool isStartDate)
     {
-        return (assessmentId * 100) + (isStartDate ? 3 : 4);
+        return assessmentId * 100 + (isStartDate ? 3 : 4);
     }
 }

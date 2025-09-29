@@ -1,6 +1,5 @@
 ﻿using c971_project.Models;
 using c971_project.Views;
-using c971_project.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
@@ -9,6 +8,7 @@ using System.Threading.Tasks;
 using c971_project.ViewModels;
 using CommunityToolkit.Mvvm.Messaging;
 using c971_project.Messages;
+using c971_project.Services.Data;
 
 
 namespace c971_project.ViewModels

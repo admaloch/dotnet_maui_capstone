@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace c971_project.Services
+namespace c971_project.Services.Data
 {
     public static class DeleteDb
     {

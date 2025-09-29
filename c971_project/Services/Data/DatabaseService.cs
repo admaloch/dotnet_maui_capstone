@@ -2,14 +2,13 @@
 
 using SQLite;
 using c971_project.Models;
-using c971_project.Services;
 
 using System.IO;
 using System.Diagnostics;
 using System.ComponentModel;
 
 
-namespace c971_project.Services
+namespace c971_project.Services.Data
 {
     public class DatabaseService
     {
