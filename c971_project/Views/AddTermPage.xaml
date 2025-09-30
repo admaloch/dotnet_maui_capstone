@@ -4,6 +4,7 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:System="clr-namespace:System;assembly=mscorlib"
+    xmlns:system="clr-namespace:System;assembly=netstandard"
     Title="Add Term"
     BackgroundColor="{StaticResource Cream}">
     <Grid>
@@ -21,7 +22,7 @@
                 <Border
                     Padding="20"
                     BackgroundColor="White"
-                    HeightRequest="300"
+                    HeightRequest="400"
                     Stroke="{StaticResource Charcoal}"
                     StrokeShape="RoundRectangle 12"
                     StrokeThickness="3">
@@ -54,23 +55,41 @@
                             </Border>
                         </VerticalStackLayout>
 
+                        <!--  start date  -->
                         <VerticalStackLayout Spacing="5">
                             <Label
                                 Style="{StaticResource FieldLabel}"
                                 Text="Start Date"
                                 TextColor="{StaticResource DarkBlue}" />
-                            <Label
-                                FontSize="12"
-                                Text="Terms must start on the 1st of the month."
-                                TextColor="Gray" />
+
                             <Border
                                 Padding="10"
                                 BackgroundColor="White"
                                 StrokeShape="RoundRectangle 8">
                                 <DatePicker
+                                    x:Name="StartDatePicker"
                                     BackgroundColor="Transparent"
                                     Date="{Binding NewTerm.StartDate, Mode=TwoWay}"
-                                    MinimumDate="{Binding EarliestAllowedTermDate}" />
+                                    MinimumDate="{x:Static system:DateTime.Today}" />
+                            </Border>
+                        </VerticalStackLayout>
+
+                        <!--  //end date  -->
+                        <VerticalStackLayout Spacing="5">
+                            <Label
+                                Style="{StaticResource FieldLabel}"
+                                Text="End Date"
+                                TextColor="{StaticResource DarkBlue}" />
+
+                            <Border
+                                Padding="10"
+                                BackgroundColor="White"
+                                StrokeShape="RoundRectangle 8">
+                                <DatePicker
+                                    x:Name="EndDatePicker"
+                                    BackgroundColor="Transparent"
+                                    Date="{Binding NewTerm.EndDate, Mode=TwoWay}"
+                                    MinimumDate="{x:Static system:DateTime.Today}" />
                             </Border>
                         </VerticalStackLayout>
 

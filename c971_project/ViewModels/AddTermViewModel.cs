@@ -22,15 +22,7 @@ namespace c971_project.ViewModels
         [ObservableProperty]
         private Term _newTerm;
 
-        public DateTime EarliestAllowedTermDate
-        {
-            get
-            {
-                var today = DateTime.Today;
-                // Always returns the 1st day of the next month
-                return new DateTime(today.Year, today.Month, 1).AddMonths(1);
-            }
-        }
+
 
         public AddTermViewModel(DatabaseService databaseService)
         {
@@ -40,7 +32,7 @@ namespace c971_project.ViewModels
             NewTerm = new Term
             {
                 Name = string.Empty,
-                StartDate = DateTime.Today,
+                StartDate = DateTime.Today.AddDays(1),
                 EndDate = DateTime.Today.AddMonths(4) // default length
             };
         }
@@ -54,8 +46,8 @@ namespace c971_project.ViewModels
             {
                 IsBusy = true;
 
-                //validate iinputs
-                TermValidator.SetInitialStartAndEndDates(NewTerm);
+                //validate iinputs // code for 
+                //TermValidator.SetInitialStartAndEndDates(NewTerm);
 
                 //grab errors and disply message if any
                 var errors = TermValidator.ValidateTerm(NewTerm).ToString().Trim();

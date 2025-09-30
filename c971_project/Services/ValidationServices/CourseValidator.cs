@@ -33,7 +33,7 @@ namespace c971_project.Services.ValidationServices
 
             Instructor.Validate();
 
-            // Course errors
+            // toolkit errors
             errorBuilder.AppendLine(ValidationHelper.GetErrors(
                 Course, nameof(Course.Name), nameof(Course.CourseNum),
                 nameof(Course.CuNum), nameof(Course.StartDate), nameof(Course.EndDate)));

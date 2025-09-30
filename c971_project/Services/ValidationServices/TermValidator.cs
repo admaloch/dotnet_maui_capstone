@@ -16,12 +16,6 @@ namespace c971_project.Services.ValidationServices
 
     public class TermValidator
     {
-        private readonly DatabaseService _databaseService;
-
-        public TermValidator(DatabaseService databaseService)
-        {
-            _databaseService = databaseService;
-        }
 
         public static void SetInitialStartAndEndDates(Term term)
         {
@@ -49,6 +43,10 @@ namespace c971_project.Services.ValidationServices
             // term errors
             errorBuilder.AppendLine(ValidationHelper.GetErrors(
                 term, nameof(term.Name)));
+
+            // Custom validation rules -- prevent time picker from picking dates in past + ensure past date is after start date
+            var pickerDatesErrorBuilder = ValidationHelper.ValidateStartAndEndDates(term.StartDate, term.EndDate);
+            errorBuilder.Append(pickerDatesErrorBuilder);
 
             return errorBuilder;
         }
