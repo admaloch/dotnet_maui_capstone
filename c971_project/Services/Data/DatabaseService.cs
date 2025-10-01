@@ -39,6 +39,7 @@ namespace c971_project.Services.Data
 
                 // Initialize data after tables are created
                 await InitializeDataAsync();
+                //await DeleteDataAsync();
             }
             catch (Exception ex)
             {
@@ -68,6 +69,19 @@ namespace c971_project.Services.Data
             catch (Exception ex)
             {
                 Debug.WriteLine($"Error seeding data: {ex.Message}");
+                // Don't throw here - we want the app to continue even if seeding fails
+            }
+        }
+
+        private async Task DeleteDataAsync()
+        {
+            try
+            {
+                await DeleteDb.DeleteDatabaseAsync("app.db");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error deleted db: {ex.Message}");
                 // Don't throw here - we want the app to continue even if seeding fails
             }
         }
