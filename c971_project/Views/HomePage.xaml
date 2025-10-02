@@ -21,7 +21,7 @@
 
                 <!--  Student Info Card  -->
                 <Border
-                    Padding="15"
+                    Padding="15,0,0,15"
                     BackgroundColor="{StaticResource White}"
                     Stroke="{StaticResource Charcoal}"
                     StrokeShape="RoundRectangle 12"
@@ -40,52 +40,52 @@
 
                         <VerticalStackLayout Spacing="12">
                             <!--  Student ID  -->
-                            <HorizontalStackLayout Spacing="10">
+                            <HorizontalStackLayout Margin="0,15,0,0" Spacing="0">
                                 <Label
                                     FontAttributes="Bold"
-                                    Text="Student ID:"
+                                    Text="ID:"
                                     TextColor="{StaticResource MediumGray}"
-                                    WidthRequest="100" />
-                                <Label Text="{Binding CurrentStudent.StudentId}" TextColor="{StaticResource DarkBlue}" />
+                                    WidthRequest="55" />
+                                <Label Text="{Binding CurrentStudent.StudentIdNumber}" TextColor="{StaticResource DarkBlue}" />
                             </HorizontalStackLayout>
 
                             <!--  Name  -->
-                            <HorizontalStackLayout Spacing="10">
+                            <HorizontalStackLayout Spacing="0">
                                 <Label
                                     FontAttributes="Bold"
                                     Text="Name:"
                                     TextColor="{StaticResource MediumGray}"
-                                    WidthRequest="100" />
+                                    WidthRequest="55" />
                                 <Label Text="{Binding CurrentStudent.Name}" TextColor="{StaticResource DarkBlue}" />
                             </HorizontalStackLayout>
 
                             <!--  Email  -->
-                            <HorizontalStackLayout Spacing="10">
+                            <HorizontalStackLayout Spacing="0">
                                 <Label
                                     FontAttributes="Bold"
                                     Text="Email:"
                                     TextColor="{StaticResource MediumGray}"
-                                    WidthRequest="100" />
+                                    WidthRequest="55" />
                                 <Label Text="{Binding CurrentStudent.Email}" TextColor="{StaticResource DarkBlue}" />
                             </HorizontalStackLayout>
 
                             <!--  Status  -->
-                            <HorizontalStackLayout Spacing="10">
+                            <HorizontalStackLayout Spacing="0">
                                 <Label
                                     FontAttributes="Bold"
                                     Text="Status:"
                                     TextColor="{StaticResource MediumGray}"
-                                    WidthRequest="100" />
+                                    WidthRequest="55" />
                                 <Label Text="{Binding CurrentStudent.Status}" TextColor="{StaticResource DarkBlue}" />
                             </HorizontalStackLayout>
 
                             <!--  Major  -->
-                            <HorizontalStackLayout Spacing="10">
+                            <HorizontalStackLayout Spacing="0">
                                 <Label
                                     FontAttributes="Bold"
                                     Text="Major:"
                                     TextColor="{StaticResource MediumGray}"
-                                    WidthRequest="100" />
+                                    WidthRequest="55" />
                                 <Label Text="{Binding CurrentStudent.Major}" TextColor="{StaticResource DarkBlue}" />
                             </HorizontalStackLayout>
                         </VerticalStackLayout>
@@ -93,12 +93,12 @@
                         <!--  Floating Edit Icon in bottom right corner  -->
                         <Border
                             Margin="5,5,5,5"
-                            AbsoluteLayout.LayoutBounds="1,0,40,40"
+                            AbsoluteLayout.LayoutBounds="1,0,65,65"
                             AbsoluteLayout.LayoutFlags="PositionProportional"
                             BackgroundColor="{StaticResource MediumGray}"
-                            HeightRequest="40"
+                            HeightRequest="45"
                             StrokeShape="Ellipse"
-                            WidthRequest="40">
+                            WidthRequest="45">
 
                             <Border.Shadow>
                                 <!--  More realistic shadow  -->
@@ -131,66 +131,57 @@
                     Text="Academic Terms" />
 
                 <!--  Terms List  -->
-                <Grid RowDefinitions="Auto,*">
+                <Grid Margin="0,0,0,70" RowDefinitions="Auto,*">
                     <CollectionView
                         Grid.Row="1"
                         ItemsSource="{Binding Terms}"
-                        HeightRequest="300"
-                        VerticalOptions="FillAndExpand">
-
+                        MaximumHeightRequest="300"
+                        MinimumHeightRequest="200">
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
                                 <Border
                                     Margin="0,5"
-                                    Padding="20,15"
+                                    Padding="10,8"
                                     BackgroundColor="{StaticResource White}"
+                                    HeightRequest="80"
                                     Stroke="{StaticResource Charcoal}"
                                     StrokeShape="RoundRectangle 10"
                                     StrokeThickness="3">
-
                                     <Grid>
                                         <!--  Content  -->
-                                        <VerticalStackLayout Padding="0,0,40,0" Spacing="8">
-
+                                        <VerticalStackLayout VerticalOptions="Center">
                                             <Label
                                                 FontAttributes="Bold"
                                                 HorizontalOptions="Start"
-                                                MaximumWidthRequest="250"
                                                 Text="{Binding Name}"
                                                 TextColor="{StaticResource DarkBlue}" />
-
                                         </VerticalStackLayout>
-
                                         <!--  Icons container  -->
                                         <HorizontalStackLayout
                                             HorizontalOptions="End"
-                                            Spacing="10"
-                                            VerticalOptions="Start">
-
+                                            Spacing="0"
+                                            VerticalOptions="Center">
                                             <!--  Delete icon  -->
                                             <Image
-                                                HeightRequest="26"
+                                                Margin="0,0,10,0"
+                                                HeightRequest="40"
                                                 Source="trash_icon.svg"
-                                                WidthRequest="26">
+                                                WidthRequest="40">
                                                 <Image.GestureRecognizers>
                                                     <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeleteTermCommand}" CommandParameter="{Binding .}" />
                                                 </Image.GestureRecognizers>
                                             </Image>
-
                                             <!--  More / navigate icon  -->
                                             <Image
-                                                HeightRequest="26"
+                                                HeightRequest="35"
                                                 Source="more_icon.svg"
-                                                WidthRequest="26">
+                                                WidthRequest="35">
                                                 <Image.GestureRecognizers>
                                                     <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.TermPageCommand}" CommandParameter="{Binding .}" />
                                                 </Image.GestureRecognizers>
                                             </Image>
-
                                         </HorizontalStackLayout>
-
                                     </Grid>
-
                                 </Border>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
@@ -198,8 +189,9 @@
                         <!--  EmptyView with styled box  -->
                         <CollectionView.EmptyView>
                             <Border
-                                Padding="30"
+                                Padding="15"
                                 BackgroundColor="{StaticResource White}"
+                                HeightRequest="150"
                                 HorizontalOptions="Fill"
                                 Stroke="{StaticResource Charcoal}"
                                 StrokeShape="RoundRectangle 15"
@@ -208,10 +200,10 @@
 
                                 <VerticalStackLayout HorizontalOptions="Center" Spacing="15">
                                     <Image
-                                        HeightRequest="44"
+                                        HeightRequest="35"
                                         HorizontalOptions="Center"
                                         Source="search_icon.svg"
-                                        WidthRequest="44" />
+                                        WidthRequest="35" />
 
                                     <Label
                                         FontAttributes="Bold"

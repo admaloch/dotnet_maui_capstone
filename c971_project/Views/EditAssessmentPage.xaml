@@ -22,7 +22,7 @@
                 <Border
                     Margin="0,0,0,70"
                     Padding="20"
-                    BackgroundColor="White"
+                    BackgroundColor="{StaticResource LightGray}"
                     Stroke="{StaticResource Charcoal}"
                     StrokeShape="RoundRectangle 12"
                     StrokeThickness="3">
@@ -60,8 +60,10 @@
                                 TextColor="{StaticResource DarkBlue}" />
                             <Picker
                                 Title="Select type"
+                                BackgroundColor="{StaticResource White}"
                                 ItemsSource="{Binding TypeOptions}"
-                                SelectedItem="{Binding Assessment.Type, Mode=TwoWay}" />
+                                SelectedItem="{Binding Assessment.Type, Mode=TwoWay}"
+                                TextColor="{StaticResource DarkBlue}" />
                         </VerticalStackLayout>
 
                         <!--  Assessment Status  -->
@@ -72,8 +74,10 @@
                                 TextColor="{StaticResource DarkBlue}" />
                             <Picker
                                 Title="Select status"
+                                BackgroundColor="{StaticResource White}"
                                 ItemsSource="{Binding StatusOptions}"
-                                SelectedItem="{Binding Assessment.Status, Mode=TwoWay}" />
+                                SelectedItem="{Binding Assessment.Status, Mode=TwoWay}"
+                                TextColor="{StaticResource DarkBlue}" />
                         </VerticalStackLayout>
 
                         <!--  Start Date  -->
@@ -98,10 +102,11 @@
                                 <!--  DatePicker  -->
                                 <DatePicker
                                     Grid.Column="1"
+                                    BackgroundColor="{StaticResource White}"
                                     Date="{Binding Assessment.StartDate, Mode=TwoWay}"
                                     HorizontalOptions="Fill"
-                                    MinimumDate="{x:Static system:DateTime.Today}" />
-
+                                    MinimumDate="{x:Static system:DateTime.Today}"
+                                    TextColor="{StaticResource DarkBlue}" />
 
                                 <!--  Alarm Icon  -->
                                 <Image
@@ -114,7 +119,9 @@
                                 <!--  TimePicker  -->
                                 <TimePicker
                                     Grid.Column="3"
+                                    BackgroundColor="{StaticResource White}"
                                     HorizontalOptions="Fill"
+                                    TextColor="{StaticResource DarkBlue}"
                                     Time="{Binding Assessment.StartTime, Mode=TwoWay}" />
                             </Grid>
                         </VerticalStackLayout>
@@ -127,7 +134,7 @@
                                 ThumbColor="{StaticResource Cream}"
                                 VerticalOptions="Center" />
                             <Label
-                                Text="{Binding Assessment.StartDateTime, StringFormat='Notify me on Start Date ({0:MMM dd, yyyy h:mm tt})'}"
+                                Text="{Binding Assessment.StartDateTime, StringFormat='Notify me on Start Date'}"
                                 TextColor="{StaticResource DarkBlue}"
                                 VerticalOptions="Center" />
                         </HorizontalStackLayout>
@@ -154,10 +161,11 @@
                                 <!--  DatePicker  -->
                                 <DatePicker
                                     Grid.Column="1"
+                                    BackgroundColor="{StaticResource White}"
                                     Date="{Binding Assessment.EndDate, Mode=TwoWay}"
                                     HorizontalOptions="Fill"
-                                    MinimumDate="{x:Static system:DateTime.Today}" />
-
+                                    MinimumDate="{x:Static system:DateTime.Today}"
+                                    TextColor="{StaticResource DarkBlue}" />
 
                                 <!--  Alarm Icon  -->
                                 <Image
@@ -170,7 +178,9 @@
                                 <!--  TimePicker  -->
                                 <TimePicker
                                     Grid.Column="3"
+                                    BackgroundColor="{StaticResource White}"
                                     HorizontalOptions="Fill"
+                                    TextColor="{StaticResource DarkBlue}"
                                     Time="{Binding Assessment.EndTime, Mode=TwoWay}" />
                             </Grid>
                         </VerticalStackLayout>
@@ -183,7 +193,7 @@
                                 ThumbColor="{StaticResource Cream}"
                                 VerticalOptions="Center" />
                             <Label
-                                Text="{Binding Assessment.EndDateTime, StringFormat='Notify me on End Date '}"
+                                Text="{Binding Assessment.EndDateTime, StringFormat='Notify me on End Date'}"
                                 TextColor="{StaticResource DarkBlue}"
                                 VerticalOptions="Center" />
                         </HorizontalStackLayout>

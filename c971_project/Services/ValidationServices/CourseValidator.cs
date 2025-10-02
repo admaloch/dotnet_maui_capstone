@@ -39,7 +39,7 @@ namespace c971_project.Services.ValidationServices
                 nameof(Course.CuNum), nameof(Course.StartDate), nameof(Course.EndDate)));
 
             // Custom validation rules -- prevent time picker from picking dates in past + ensure past date is after start date
-            var pickerDatesErrorBuilder = ValidationHelper.ValidateStartAndEndDates(Course.StartDateTime, Course.EndDateTime);
+            var pickerDatesErrorBuilder = ValidationHelper.ValidateStartAndEndDates(Course.StartDate, Course.EndDate);
             errorBuilder.Append(pickerDatesErrorBuilder);
 
             // Instructor errors

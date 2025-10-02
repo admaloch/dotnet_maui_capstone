@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using System;
+using System.Diagnostics;
 using System.Text;
 
 namespace c971_project.Helpers
@@ -27,10 +28,10 @@ namespace c971_project.Helpers
                 : string.Empty;
         }
         //for adding dates -- date picker prevents past dates, but time picker doesn't prevent earlier in the day so it needs to be validated
-        public static string EnsureDateIsNotInPast(DateTime dateTime, String str)
+        public static string EnsureDateIsNotInPast(DateTime dateInput, String dateDescription)
         {
-            if (dateTime < DateTime.Now)
-                return $"{str} cannot be in the past.";
+            if (dateInput.Date < DateTime.Today)
+                return $"{dateDescription} cannot be in the past.";
             return "";
         }
 
@@ -52,6 +53,23 @@ namespace c971_project.Helpers
             errorBuilder.AppendLine(CheckEndTimeAfterStart(startTime, endTime));
 
             return errorBuilder;
+        }
+
+        //helper -- datepicker uses midnight as default, but if user selects today, we want to use current time instead
+        public static DateTime SetCurrentDateTimeIfToday(DateTime selectedDate)
+        {
+            if (selectedDate.Date == DateTime.Today)
+            {
+                Debug.WriteLine($"Set to same day -- use current date/time");
+
+                return DateTime.Now;  // Today - use current date/time
+            }
+            else
+            {
+                Debug.WriteLine($"Not same day -- set to midnight of input");
+
+                return selectedDate;  // Not today - keep original date/time
+            }
         }
 
     }

@@ -91,7 +91,7 @@ namespace c971_project.Services.Data
 
 
         //STUDENT 
-        public async Task<Student> GetStudentByIdAsync(string studentId)
+        public async Task<Student> GetStudentByIdAsync(int studentId)
         {
             await EnsureInitialized();
             return await _connection.Table<Student>()
@@ -109,9 +109,10 @@ namespace c971_project.Services.Data
         public async Task<int> SaveStudentAsync(Student student)
         {
             await EnsureInitialized();
-            if (string.IsNullOrEmpty(student.StudentId))
+            if (string.IsNullOrEmpty(student.StudentIdNumber))
                 return await _connection.InsertAsync(student);
             else
+                Debug.WriteLine("student edited and saved");
                 return await _connection.UpdateAsync(student);
         }
 

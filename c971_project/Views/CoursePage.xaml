@@ -40,23 +40,12 @@
 
                         <!--  Main content - REMOVE AbsoluteLayout properties  -->
                         <VerticalStackLayout Spacing="12">
-                            <!--  course name  -->
-                            <HorizontalStackLayout Spacing="10">
-                                <Label
-                                    FontAttributes="Bold"
-                                    Text="Course name:"
-                                    TextColor="{StaticResource MediumGray}"
-                                    WidthRequest="120" />
-                                <Label Text="{Binding Course.Name}" TextColor="{StaticResource DarkBlue}" />
-                            </HorizontalStackLayout>
-
                             <!--  course number  -->
                             <HorizontalStackLayout Spacing="10">
                                 <Label
                                     FontAttributes="Bold"
                                     Text="Course number:"
-                                    TextColor="{StaticResource MediumGray}"
-                                    WidthRequest="120" />
+                                    TextColor="{StaticResource MediumGray}" />
                                 <Label Text="{Binding Course.CourseNum}" TextColor="{StaticResource DarkBlue}" />
                             </HorizontalStackLayout>
 
@@ -65,8 +54,7 @@
                                 <Label
                                     FontAttributes="Bold"
                                     Text="Course units:"
-                                    TextColor="{StaticResource MediumGray}"
-                                    WidthRequest="120" />
+                                    TextColor="{StaticResource MediumGray}" />
                                 <Label Text="{Binding Course.CuNum}" TextColor="{StaticResource DarkBlue}" />
                             </HorizontalStackLayout>
 
@@ -75,9 +63,8 @@
                                 <Label
                                     FontAttributes="Bold"
                                     Text="Start date:"
-                                    TextColor="{StaticResource MediumGray}"
-                                    WidthRequest="120" />
-                                <Label Text="{Binding Course.StartDate}" TextColor="{StaticResource DarkBlue}" />
+                                    TextColor="{StaticResource MediumGray}" />
+                                <Label Text="{Binding Course.StartDate, StringFormat='{0:MM/dd/yyyy}'}" TextColor="{StaticResource DarkBlue}" />
                             </HorizontalStackLayout>
 
                             <!--  end date  -->
@@ -85,9 +72,8 @@
                                 <Label
                                     FontAttributes="Bold"
                                     Text="End date:"
-                                    TextColor="{StaticResource MediumGray}"
-                                    WidthRequest="120" />
-                                <Label Text="{Binding Course.EndDate}" TextColor="{StaticResource DarkBlue}" />
+                                    TextColor="{StaticResource MediumGray}" />
+                                <Label Text="{Binding Course.EndDate, StringFormat='{0:MM/dd/yyyy}'}" TextColor="{StaticResource DarkBlue}" />
                             </HorizontalStackLayout>
 
                             <!--  instructor name  -->
@@ -95,8 +81,7 @@
                                 <Label
                                     FontAttributes="Bold"
                                     Text="Instructor:"
-                                    TextColor="{StaticResource MediumGray}"
-                                    WidthRequest="120" />
+                                    TextColor="{StaticResource MediumGray}" />
                                 <Label Text="{Binding Instructor.Name}" TextColor="{StaticResource DarkBlue}" />
                             </HorizontalStackLayout>
 
@@ -105,9 +90,11 @@
                                 <Label
                                     FontAttributes="Bold"
                                     Text="Email:"
-                                    TextColor="{StaticResource MediumGray}"
-                                    WidthRequest="120" />
-                                <Label Text="{Binding Instructor.Email}" TextColor="{StaticResource DarkBlue}" />
+                                    TextColor="{StaticResource MediumGray}" />
+                                <Label
+                                    Text="{Binding Instructor.Email}"
+                                    TextColor="{StaticResource DarkBlue}"
+                                    WidthRequest="230" />
                             </HorizontalStackLayout>
 
                             <!--  Instructor Phone  -->
@@ -115,8 +102,7 @@
                                 <Label
                                     FontAttributes="Bold"
                                     Text="Phone:"
-                                    TextColor="{StaticResource MediumGray}"
-                                    WidthRequest="120" />
+                                    TextColor="{StaticResource MediumGray}" />
                                 <Label Text="{Binding Instructor.Phone}" TextColor="{StaticResource DarkBlue}" />
                             </HorizontalStackLayout>
 
@@ -126,12 +112,12 @@
                         <!--  Floating Edit Icon in bottom right corner  -->
                         <Border
                             Margin="5,5,5,5"
-                            AbsoluteLayout.LayoutBounds="1,0,36,36"
+                            AbsoluteLayout.LayoutBounds="1,0,50,45"
                             AbsoluteLayout.LayoutFlags="PositionProportional"
                             BackgroundColor="{StaticResource MediumGray}"
-                            HeightRequest="36"
+                            HeightRequest="45"
                             StrokeShape="Ellipse"
-                            WidthRequest="36">
+                            WidthRequest="45">
 
                             <Border.Shadow>
                                 <!--  More realistic shadow  -->
@@ -143,11 +129,11 @@
                             </Border.Shadow>
 
                             <Image
-                                HeightRequest="20"
+                                HeightRequest="25"
                                 HorizontalOptions="Center"
                                 Source="edit_icon.svg"
                                 VerticalOptions="Center"
-                                WidthRequest="20">
+                                WidthRequest="25">
                                 <Image.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding EditCourseCommand}" />
                                 </Image.GestureRecognizers>
@@ -163,12 +149,12 @@
                     Style="{StaticResource HeaderLabel}"
                     Text="Assessments" />
 
-                <CollectionView HeightRequest="250" ItemsSource="{Binding Assessments}">
+                <CollectionView MinimumHeightRequest="130" ItemsSource="{Binding Assessments}">
 
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <Border
-                                Margin="0,5"
+                                Margin="0,7"
                                 Padding="15"
                                 BackgroundColor="{StaticResource White}"
                                 Stroke="{StaticResource Charcoal}"
@@ -178,78 +164,84 @@
 
                                 <Grid>
                                     <!--  Content  -->
-                                    <VerticalStackLayout Spacing="8">
+                                    <VerticalStackLayout>
                                         <!--  Assessment Name  -->
                                         <Label
                                             FontAttributes="Bold"
                                             FontSize="16"
                                             HorizontalOptions="Start"
-                                            MaximumWidthRequest="250"
                                             Text="{Binding Name}"
                                             TextColor="{StaticResource DarkBlue}" />
 
-                                        <!--  Assessment Type and Status  -->
-                                        <HorizontalStackLayout Spacing="20">
-                                            <Label
-                                                FontAttributes="Bold"
-                                                Text="Type:"
-                                                TextColor="{StaticResource MediumGray}" />
-                                            <Label Text="{Binding Type}" TextColor="{StaticResource DarkBlue}" />
+                                        <!--  Assessment Type  -->
+                                        <VerticalStackLayout Margin="0,10,0,0">
+                                            <HorizontalStackLayout Spacing="10">
+                                                <Label
+                                                    FontAttributes="Bold"
+                                                    Text="Type:"
+                                                    TextColor="{StaticResource MediumGray}" />
+                                                <Label Text="{Binding Type}" TextColor="{StaticResource DarkBlue}" />
+                                            </HorizontalStackLayout>
 
-                                            <Label
-                                                FontAttributes="Bold"
-                                                Text="Status:"
-                                                TextColor="{StaticResource MediumGray}" />
-                                            <Label Text="{Binding Status}" TextColor="{StaticResource DarkBlue}" />
-                                        </HorizontalStackLayout>
+                                            <!--  Assessment status  -->
+                                            <HorizontalStackLayout Spacing="10">
+                                                <Label
+                                                    FontAttributes="Bold"
+                                                    Text="Status:"
+                                                    TextColor="{StaticResource MediumGray}" />
+                                                <Label Text="{Binding Status}" TextColor="{StaticResource DarkBlue}" />
+                                            </HorizontalStackLayout>
+                                        </VerticalStackLayout>
 
                                         <!--  Start and End Dates  -->
-                                        <HorizontalStackLayout Spacing="20">
-                                            <Label
-                                                FontAttributes="Bold"
-                                                Text="Start:"
-                                                TextColor="{StaticResource MediumGray}" />
-                                            <Label Text="{Binding StartDate, StringFormat='{0:MM/dd/yyyy}'}" TextColor="{StaticResource DarkBlue}" />
+                                        <VerticalStackLayout>
+                                            <HorizontalStackLayout Spacing="10">
+                                                <Label
+                                                    FontAttributes="Bold"
+                                                    Text="Start:"
+                                                    TextColor="{StaticResource MediumGray}" />
+                                                <Label Text="{Binding StartDateTime, StringFormat='{0:MM/dd/yyyy h:mm tt}'}" TextColor="{StaticResource DarkBlue}" />
+                                            </HorizontalStackLayout>
 
-                                            <Label
-                                                FontAttributes="Bold"
-                                                Text="End:"
-                                                TextColor="{StaticResource MediumGray}" />
-                                            <Label Text="{Binding EndDate, StringFormat='{0:MM/dd/yyyy}'}" TextColor="{StaticResource DarkBlue}" />
-                                        </HorizontalStackLayout>
-
-
+                                            <HorizontalStackLayout Spacing="10">
+                                                <Label
+                                                    FontAttributes="Bold"
+                                                    Text="End:"
+                                                    TextColor="{StaticResource MediumGray}" />
+                                                <Label Text="{Binding EndDateTime, StringFormat='{0:MM/dd/yyyy h:mm tt}'}" TextColor="{StaticResource DarkBlue}" />
+                                            </HorizontalStackLayout>
+                                        </VerticalStackLayout>
                                     </VerticalStackLayout>
 
                                     <!--  Icons container  -->
                                     <HorizontalStackLayout
                                         HorizontalOptions="End"
                                         Spacing="10"
-                                        VerticalOptions="Start">
+                                        VerticalOptions="Center">
 
                                         <!--  Delete icon  -->
                                         <Image
-                                            HeightRequest="26"
+                                            HeightRequest="40"
                                             Source="trash_icon.svg"
-                                            WidthRequest="26">
+                                            WidthRequest="40">
                                             <Image.GestureRecognizers>
                                                 <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeleteAssessmentCommand}" CommandParameter="{Binding .}" />
                                             </Image.GestureRecognizers>
                                         </Image>
 
-                                        <!--  More / navigate icon  -->
+                                        <!--  Edit icon  -->
                                         <Image
-                                            HeightRequest="26"
+                                            HeightRequest="40"
                                             Source="edit2_icon.svg"
-                                            WidthRequest="26">
+                                            WidthRequest="40">
                                             <Image.GestureRecognizers>
                                                 <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.EditAssessmentCommand}" CommandParameter="{Binding .}" />
                                             </Image.GestureRecognizers>
                                         </Image>
-
                                     </HorizontalStackLayout>
-
                                 </Grid>
+
+
 
                             </Border>
                         </DataTemplate>
@@ -259,6 +251,7 @@
                         <Border
                             Padding="30,20"
                             BackgroundColor="{StaticResource White}"
+                            HeightRequest="130"
                             HorizontalOptions="Fill"
                             Stroke="{StaticResource Charcoal}"
                             StrokeShape="RoundRectangle 15"
@@ -291,7 +284,6 @@
                     </CollectionView.EmptyView>
                 </CollectionView>
 
-                <!--  Floating Add Assessment Button with Label  -->
                 <!--  Floating Add Term Button with Label  -->
                 <HorizontalStackLayout
                     Padding="16"
@@ -341,7 +333,7 @@
                     Style="{StaticResource HeaderLabel}"
                     Text="Notes" />
 
-                <CollectionView HeightRequest="300" ItemsSource="{Binding Notes}">
+                <CollectionView MaximumHeightRequest="450" MinimumHeightRequest="130" ItemsSource="{Binding Notes}">
 
 
                     <CollectionView.ItemTemplate>
@@ -350,6 +342,7 @@
                                 Margin="0,5"
                                 Padding="15"
                                 BackgroundColor="{StaticResource White}"
+                              
                                 Stroke="{StaticResource Charcoal+}"
                                 StrokeShape="RoundRectangle 10"
                                 StrokeThickness="3">
@@ -363,13 +356,13 @@
                                             FontAttributes="Bold"
                                             FontSize="16"
                                             HorizontalOptions="Start"
-                                            MaximumWidthRequest="250"
                                             Text="{Binding Title}"
-                                            TextColor="{StaticResource DarkBlue}" />
+                                            TextColor="{StaticResource DarkBlue}"
+                                            WidthRequest="200" />
 
 
                                         <!--  Last updated  -->
-                                        <HorizontalStackLayout Spacing="20">
+                                        <HorizontalStackLayout Spacing="5">
                                             <Label
                                                 FontAttributes="Bold"
                                                 Text="Last updated:"
@@ -382,13 +375,13 @@
                                     <HorizontalStackLayout
                                         HorizontalOptions="End"
                                         Spacing="10"
-                                        VerticalOptions="Start">
+                                        VerticalOptions="Center">
 
                                         <!--  Delete icon  -->
                                         <Image
-                                            HeightRequest="26"
+                                            HeightRequest="40"
                                             Source="trash_icon.svg"
-                                            WidthRequest="26">
+                                            WidthRequest="40">
                                             <Image.GestureRecognizers>
                                                 <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeleteNoteCommand}" CommandParameter="{Binding .}" />
                                             </Image.GestureRecognizers>
@@ -396,9 +389,9 @@
 
                                         <!--  More / navigate icon  -->
                                         <Image
-                                            HeightRequest="26"
+                                            HeightRequest="40"
                                             Source="more_icon.svg"
-                                            WidthRequest="26">
+                                            WidthRequest="40">
                                             <Image.GestureRecognizers>
                                                 <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.NotePageCommand}" CommandParameter="{Binding .}" />
                                             </Image.GestureRecognizers>
@@ -415,6 +408,7 @@
                         <Border
                             Padding="30,20"
                             BackgroundColor="{StaticResource White}"
+                            HeightRequest="130"
                             HorizontalOptions="Fill"
                             Stroke="{StaticResource Charcoal}"
                             StrokeShape="RoundRectangle 15"

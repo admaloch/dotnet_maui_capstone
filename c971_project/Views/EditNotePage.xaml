@@ -20,8 +20,8 @@
                 <!--  Card container  -->
                 <Border
                     Padding="20"
-                    BackgroundColor="White"
-                    HeightRequest="550"
+                    BackgroundColor="{StaticResource LightGray}"
+                    HeightRequest="400"
                     Stroke="{StaticResource Charcoal}"
                     StrokeShape="RoundRectangle 12"
                     StrokeThickness="3">
@@ -54,7 +54,6 @@
 
                             <Border Style="{StaticResource FieldBorder}">
                                 <Editor
-                                    HeightRequest="300"
                                     MaxLength="1000"
                                     Placeholder="Enter note body"
                                     Style="{StaticResource FieldEditor}"

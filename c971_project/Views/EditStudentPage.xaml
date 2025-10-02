@@ -3,7 +3,7 @@
     x:Class="c971_project.Views.EditStudentPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    Title="Edit Student"
+    Title="Edit Students"
     BackgroundColor="{StaticResource Cream}">
 
     <Grid>
@@ -20,8 +20,9 @@
 
                 <!--  Student Info Form  -->
                 <Border
+                    Margin="0,0,0,70"
                     Padding="20"
-                    BackgroundColor="{StaticResource White}"
+                    BackgroundColor="#f5f3f4"
                     Stroke="{StaticResource Charcoal}"
                     StrokeShape="RoundRectangle 12"
                     StrokeThickness="3"
@@ -46,7 +47,7 @@
                             <Entry
                                 Placeholder="Enter student ID"
                                 PlaceholderColor="{StaticResource LightBrown}"
-                                Text="{Binding Student.StudentId, Mode=TwoWay}"
+                                Text="{Binding Student.StudentIdNumber, Mode=TwoWay}"
                                 TextColor="{StaticResource DarkBlue}" />
                         </VerticalStackLayout>
 
@@ -85,8 +86,10 @@
                                 TextColor="{StaticResource DarkBlue}" />
                             <Picker
                                 Title="Select Status"
+                                BackgroundColor="{StaticResource White}"
                                 ItemsSource="{Binding StatusOptions}"
-                                SelectedItem="{Binding Student.Status, Mode=TwoWay}" />
+                                SelectedItem="{Binding Student.Status, Mode=TwoWay}"
+                                TextColor="{StaticResource DarkBlue}" />
                         </VerticalStackLayout>
 
                         <!--  Major  -->

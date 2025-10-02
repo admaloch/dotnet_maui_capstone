@@ -63,8 +63,6 @@ namespace c971_project.ViewModels
                 CuNum = 3, // default credit units
                 StartDate = DateTime.Today,
                 EndDate = DateTime.Today.AddMonths(2), // default course length
-                StartTime = new TimeSpan(9, 0, 0),  // 9:00 AM default
-                EndTime = new TimeSpan(17, 0, 0),   // 5:00 PM default
                 DateAdded = DateTime.Now,
                 InstructorId = 0,   // will be selected later
                 TermId = termId,     // links this course to the current Term
@@ -90,23 +88,23 @@ namespace c971_project.ViewModels
             {
                 IsBusy = true;
 
-                // 1. Validate everything
+                //  Validate everything
                 var errors = await _courseValidator.ValidateCourseFormAsync(TermId, NewCourse, NewInstructor, isEdit);
 
-                // 2. print errors if any and return
+                //  print errors if any and return
                 if (!string.IsNullOrWhiteSpace(errors))
                 {
                     await Shell.Current.DisplayAlert("Validation Errors", errors, "OK");
                     return;
                 }
 
-                // 3. Resolve instructor - if new create new db item - else grab current item
+                //  Resolve instructor - if new create new db item - else grab current item
                 NewInstructor = await _courseValidator.EnsureInstructorExistsAsync(NewInstructor);
 
-                // 4. Save course
+                //  Save course
                 await _courseValidator.SaveCourseAsync(TermId, NewCourse, NewInstructor);
 
-                // 5. Schedule notifications - UPDATED THIS SECTION
+                //  Schedule notifications - UPDATED THIS SECTION
                 var notificationSuccess = await _notificationService.ScheduleCourseNotificationsAsync(NewCourse);
 
                 if (!notificationSuccess)

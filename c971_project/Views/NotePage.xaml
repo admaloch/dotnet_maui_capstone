@@ -22,7 +22,7 @@
                 <Border
                     Padding="15"
                     BackgroundColor="{StaticResource White}"
-                    HeightRequest="525"
+                    HeightRequest="375"
                     Stroke="{StaticResource Charcoal}"
                     StrokeShape="RoundRectangle 12"
                     StrokeThickness="3">
@@ -42,13 +42,11 @@
 
 
                         <!--  body  -->
-                        <VerticalStackLayout Padding="0,10,0,10" VerticalOptions="FillAndExpand">
+                        <VerticalStackLayout Padding="0,10,0,10">
                             <Label
-                                HorizontalOptions="FillAndExpand"
                                 LineBreakMode="WordWrap"
                                 Text="{Binding Note.Body}"
-                                TextColor="{StaticResource DarkBlue}"
-                                VerticalOptions="FillAndExpand" />
+                                TextColor="{StaticResource DarkBlue}" />
                         </VerticalStackLayout>
 
 

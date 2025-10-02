@@ -1,4 +1,5 @@
 ﻿using c971_project.Messages;
+using c971_project.Helpers;
 using c971_project.Models;
 using c971_project.Services.Data;
 using c971_project.Services.Notifications;
@@ -46,7 +47,7 @@ namespace c971_project.ViewModels
 
         partial void OnCourseIdChanged(int value)
         {
-            LoadCourseAsync(value); // call async fire-and-forget
+            _= LoadCourseAsync(value); // call async fire-and-forget
         }
 
         private async Task LoadCourseAsync(int courseId)
@@ -64,23 +65,23 @@ namespace c971_project.ViewModels
             {
                 IsBusy = true;
 
-                // 1. Validate everything
+                //  Validate everything
                 var errors = await _courseValidator.ValidateCourseFormAsync(Course.TermId, Course, Instructor, isEdit);
 
-                // 2. print errors if any and return
+                //  print errors if any and return
                 if (!string.IsNullOrWhiteSpace(errors))
                 {
                     await Shell.Current.DisplayAlert("Validation Errors", errors, "OK");
                     return;
                 }
 
-                // 3. Resolve instructor - if new create new db item - else grab current item
+                //  Resolve instructor - if new create new db item - else grab current item
                 Instructor = await _courseValidator.EnsureInstructorExistsAsync(Instructor);
 
-                // 4. Save course
+                //  Save course
                 await _courseValidator.SaveCourseAsync(Course.TermId, Course, Instructor);
 
-                // 5. Schedule notifications for the UPDATED course - ADDED THIS
+                //  Schedule notifications for the UPDATED course - ADDED THIS
                 var notificationSuccess = await _notificationService.ScheduleCourseNotificationsAsync(Course);
 
                 if (!notificationSuccess)
@@ -89,7 +90,7 @@ namespace c971_project.ViewModels
                     Debug.WriteLine("Course saved but notifications failed to update");
                 }
 
-                // 6. Notify & navigate
+                //  Notify & navigate
                 WeakReferenceMessenger.Default.Send(new CourseUpdatedMessage());
 
                 await Shell.Current.GoToAsync("..");

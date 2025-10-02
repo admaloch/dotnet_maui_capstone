@@ -7,9 +7,10 @@ namespace c971_project.Models
 {
     public class Student: ObservableValidator
     {
-        [PrimaryKey]
+        [PrimaryKey, AutoIncrement]
+        public int StudentId { get; set; }
         [Required(ErrorMessage = "Student Id is required.")]
-        public string StudentId { get; set; } = string.Empty; 
+        public string StudentIdNumber { get; set; } = string.Empty; 
 
         [Required(ErrorMessage = "Name is required.")]
         public string Name { get; set; } = string.Empty;

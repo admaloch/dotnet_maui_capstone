@@ -15,7 +15,7 @@ namespace c971_project.ViewModels
     {
 
         [ObservableProperty]
-        private string studentId;
+        private int studentId;
 
         [ObservableProperty]
         private Student _student;
@@ -36,19 +36,15 @@ namespace c971_project.ViewModels
         }
 
         // This runs when student id changes
-        partial void OnStudentIdChanged(string value)
+        partial void OnStudentIdChanged(int value)
         {
-            LoadStudentDataAsync(value);
+            _= LoadStudentDataAsync(value);
         }
 
-        private async Task LoadStudentDataAsync(string studentId)
+        private async Task LoadStudentDataAsync(int studentId)
         {
             Student = await _databaseService.GetStudentByIdAsync(StudentId);
         }
-
-
-
-
 
         [RelayCommand]
         private async Task SaveStudentAsync()

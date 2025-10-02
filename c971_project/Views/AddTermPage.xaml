@@ -21,7 +21,7 @@
                 <!--  Card container  -->
                 <Border
                     Padding="20"
-                    BackgroundColor="White"
+                    BackgroundColor="{StaticResource LightGray}"
                     HeightRequest="400"
                     Stroke="{StaticResource Charcoal}"
                     StrokeShape="RoundRectangle 12"
@@ -70,7 +70,9 @@
                                     x:Name="StartDatePicker"
                                     BackgroundColor="Transparent"
                                     Date="{Binding NewTerm.StartDate, Mode=TwoWay}"
-                                    MinimumDate="{x:Static system:DateTime.Today}" />
+                                    MinimumDate="{x:Static system:DateTime.Today}"
+                                    TextColor="{StaticResource DarkBlue}" />
+
                             </Border>
                         </VerticalStackLayout>
 
@@ -89,7 +91,8 @@
                                     x:Name="EndDatePicker"
                                     BackgroundColor="Transparent"
                                     Date="{Binding NewTerm.EndDate, Mode=TwoWay}"
-                                    MinimumDate="{x:Static system:DateTime.Today}" />
+                                    MinimumDate="{x:Static system:DateTime.Today}"
+                                    TextColor="{StaticResource DarkBlue}" />
                             </Border>
                         </VerticalStackLayout>
 

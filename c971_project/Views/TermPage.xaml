@@ -13,7 +13,7 @@
 
                 <!--  Header  -->
                 <Label
-                    Margin="0,20,0,0"
+                    Margin="20,0"
                     HorizontalOptions="Center"
                     Style="{StaticResource HeaderLabel}"
                     Text="{Binding Term.Name}" />
@@ -35,22 +35,10 @@
                     </Border.Shadow>
 
                     <!--  Use AbsoluteLayout to position content + floating icon  -->
-                    <!--  Use AbsoluteLayout to position content + floating icon  -->
                     <AbsoluteLayout>
 
                         <!--  Main content - REMOVE AbsoluteLayout properties  -->
                         <VerticalStackLayout Spacing="12">
-                            <!--  name  -->
-                            <HorizontalStackLayout Spacing="10">
-                                <Label
-                                    FontAttributes="Bold"
-                                    Text="Term name:"
-                                    TextColor="{StaticResource MediumGray}"
-                                    WidthRequest="100" />
-                                <Label Text="{Binding Term.Name}" TextColor="{StaticResource DarkBlue}" />
-                            </HorizontalStackLayout>
-
-
 
                             <!--  start date  -->
                             <HorizontalStackLayout Spacing="10">
@@ -58,30 +46,29 @@
                                     FontAttributes="Bold"
                                     Text="Start date:"
                                     TextColor="{StaticResource MediumGray}"
-                                    WidthRequest="100" />
-                                <Label Text="{Binding Term.StartDate}" TextColor="{StaticResource DarkBlue}" />
+                                    WidthRequest="78" />
+                                <Label Text="{Binding Term.StartDate, StringFormat='{0:d}'}" TextColor="{StaticResource DarkBlue}" />
                             </HorizontalStackLayout>
 
                             <!--  end date  -->
                             <HorizontalStackLayout Spacing="10">
                                 <Label
                                     FontAttributes="Bold"
-                                    Text="End name:"
+                                    Text="End date:"
                                     TextColor="{StaticResource MediumGray}"
-                                    WidthRequest="100" />
-                                <Label Text="{Binding Term.EndDate}" TextColor="{StaticResource DarkBlue}" />
+                                    WidthRequest="78" />
+                                <Label Text="{Binding Term.EndDate, StringFormat='{0:d}'}" TextColor="{StaticResource DarkBlue}" />
                             </HorizontalStackLayout>
 
                         </VerticalStackLayout>
                         <!--  Floating Edit Icon in bottom right corner  -->
                         <Border
-                            Margin="5,5,5,5"
-                            AbsoluteLayout.LayoutBounds="1,0,40,40"
+                            AbsoluteLayout.LayoutBounds="1,0,50,50"
                             AbsoluteLayout.LayoutFlags="PositionProportional"
                             BackgroundColor="{StaticResource MediumGray}"
-                            HeightRequest="40"
+                            HeightRequest="45"
                             StrokeShape="Ellipse"
-                            WidthRequest="40">
+                            WidthRequest="45">
 
                             <Border.Shadow>
                                 <!--  More realistic shadow  -->
@@ -113,69 +100,59 @@
                     Style="{StaticResource HeaderLabel}"
                     Text="Courses" />
 
-                <CollectionView HeightRequest="300" ItemsSource="{Binding Courses}">
-                    <CollectionView.ItemTemplate>
+                <CollectionView MinimumHeightRequest="200"  ItemsSource="{Binding Courses}">
+                    <CollectionView.ItemTemplate >
                         <DataTemplate>
                             <Border
+                                HeightRequest="70"
                                 Margin="0,5"
-                                Padding="25,15"
+                                Padding="10,8"
                                 BackgroundColor="{StaticResource White}"
                                 Stroke="{StaticResource Charcoal}"
                                 StrokeShape="RoundRectangle 10"
                                 StrokeThickness="3">
-
-
                                 <Grid>
                                     <!--  Content  -->
-                                    <VerticalStackLayout Padding="0,0,40,0" Spacing="8">
-
+                                    <VerticalStackLayout VerticalOptions="Center">
                                         <Label
                                             FontAttributes="Bold"
                                             HorizontalOptions="Start"
-                                            MaximumWidthRequest="250"
                                             Text="{Binding Name}"
                                             TextColor="{StaticResource DarkBlue}" />
-
-
-
                                     </VerticalStackLayout>
-
                                     <!--  Icons container  -->
                                     <HorizontalStackLayout
                                         HorizontalOptions="End"
-                                        Spacing="10"
-                                        VerticalOptions="Start">
-
+                                        Spacing="0"
+                                        VerticalOptions="Center">
                                         <!--  Delete icon  -->
                                         <Image
-                                            HeightRequest="26"
+                                            Margin="0,0,10,0"
+                                            HeightRequest="40"
                                             Source="trash_icon.svg"
-                                            WidthRequest="26">
+                                            WidthRequest="40">
                                             <Image.GestureRecognizers>
                                                 <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeleteCourseCommand}" CommandParameter="{Binding .}" />
                                             </Image.GestureRecognizers>
                                         </Image>
-
                                         <!--  More / navigate icon  -->
                                         <Image
-                                            HeightRequest="26"
+                                            HeightRequest="35"
                                             Source="more_icon.svg"
-                                            WidthRequest="26">
+                                            WidthRequest="35">
                                             <Image.GestureRecognizers>
                                                 <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.CoursePageCommand}" CommandParameter="{Binding .}" />
                                             </Image.GestureRecognizers>
                                         </Image>
-
                                     </HorizontalStackLayout>
-
                                 </Grid>
-
                             </Border>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                     <CollectionView.EmptyView>
                         <Border
                             Padding="30"
+                            HeightRequest="200"
                             BackgroundColor="{StaticResource White}"
                             HorizontalOptions="Fill"
                             Stroke="{StaticResource Charcoal}"

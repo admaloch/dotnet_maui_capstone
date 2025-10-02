@@ -21,7 +21,7 @@ namespace c971_project.Services.Data
             var student = new Student
             {
                 Name = "Brock Johnson",
-                StudentId = "03829483938",
+                StudentIdNumber = "03829483938",
                 Email = "brockjohnson03@fakeemail.com",
                 Status = "Currently Enrolled",
                 Major = "Computer Science"
@@ -33,9 +33,9 @@ namespace c971_project.Services.Data
             // 2. Terms
             var term1 = new Term
             {
-                Name = "Spring 2024",
-                StartDate = DateTime.Now.AddMonths(-6),
-                EndDate = DateTime.Now
+                Name = "Fall 2025",
+                StartDate = DateTime.Now.AddMonths(2),
+                EndDate = DateTime.Now.AddMonths(8)
             };
             await connection.InsertAsync(term1);
             Debug.WriteLine($"Inserted term: {term1.Name}");
@@ -59,10 +59,8 @@ namespace c971_project.Services.Data
                 InstructorId = instructor1.InstructorId,
                 TermId = term1.TermId,
                 StartDate = term1.StartDate,
-                EndDate = term1.StartDate.AddMonths(2),
-                // ADD THESE TIME PROPERTIES:
-                StartTime = new TimeSpan(9, 0, 0),  // 9:00 AM
-                EndTime = new TimeSpan(17, 0, 0),   // 5:00 PM
+                EndDate = term1.StartDate.AddMonths(3),
+
                 NotifyStartDate = true,
                 NotifyEndDate = true
             };
@@ -78,11 +76,11 @@ namespace c971_project.Services.Data
                 Name = "Programming Exam 1",
                 Type = "Objective",
                 Status = "In progress",
-                StartDate = term1.StartDate.AddDays(60),
-                EndDate = term1.StartDate.AddDays(60),
+                StartDate = course1.StartDate.AddDays(30),
+                EndDate = course1.StartDate.AddDays(30),
                 // ADD TIME PROPERTIES:
-                StartTime = new TimeSpan(9, 0, 0),  // 9:00 AM
-                EndTime = new TimeSpan(17, 0, 0),   // 5:00 PM
+                StartTime = new TimeSpan(14, 0, 0),  // 2:00 pM
+                EndTime = new TimeSpan(16, 0, 0),   // 4:00 PM
                 NotifyStartDate = true,
                 NotifyEndDate = true
             };
@@ -93,11 +91,11 @@ namespace c971_project.Services.Data
                 Name = "Demonstrate Programming Fundamentals",
                 Type = "Performance",  // ❌ CHANGE FROM "Practical" TO "Performance"
                 Status = "Not started",
-                StartDate = term1.StartDate,
-                EndDate = term1.StartDate.AddDays(30),
+                StartDate = course1.StartDate.AddDays(30),
+                EndDate = course1.EndDate.AddDays(-3),
                 // ADD TIME PROPERTIES:
-                StartTime = new TimeSpan(9, 0, 0),  // 9:00 AM
-                EndTime = new TimeSpan(17, 0, 0),   // 5:00 PM
+                StartTime = new TimeSpan(0, 0, 0),  // 12:00 AM
+                EndTime = new TimeSpan(0, 0, 0),   // 12:00 aM
                 NotifyStartDate = true,
                 NotifyEndDate = true
             };

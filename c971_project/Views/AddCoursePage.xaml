@@ -19,9 +19,9 @@
 
                 <!--  Card container  -->
                 <Border
-                    Margin="0,0,0,100"
+                    Margin="0,0,0,60"
                     Padding="20"
-                    BackgroundColor="White"
+                    BackgroundColor="{StaticResource LightGray}"
                     Stroke="{StaticResource Charcoal}"
                     StrokeShape="RoundRectangle 12"
                     StrokeThickness="3">
@@ -82,7 +82,8 @@
                                 <Picker
                                     Title="Select credit units"
                                     ItemsSource="{Binding CreditUnitOptions}"
-                                    SelectedItem="{Binding NewCourse.CuNum, Mode=TwoWay}">
+                                    SelectedItem="{Binding NewCourse.CuNum, Mode=TwoWay}"
+                                    TextColor="{StaticResource DarkBlue}">
                                     <Picker.ItemDisplayBinding>
                                         <Binding Path="." />
                                     </Picker.ItemDisplayBinding>
@@ -112,23 +113,13 @@
                                 <!--  DatePicker  -->
                                 <DatePicker
                                     Grid.Column="1"
+                                    BackgroundColor="White"
                                     Date="{Binding NewCourse.StartDate, Mode=TwoWay}"
                                     HorizontalOptions="Fill"
-                                    MinimumDate="{x:Static system:DateTime.Today}" />
+                                    MinimumDate="{x:Static system:DateTime.Today}"
+                                    TextColor="{StaticResource DarkBlue}" />
 
-                                <!--  Alarm Icon  -->
-                                <Image
-                                    Grid.Column="2"
-                                    HeightRequest="20"
-                                    Source="alarm_icon.svg"
-                                    VerticalOptions="Center"
-                                    WidthRequest="20" />
 
-                                <!--  TimePicker  -->
-                                <TimePicker
-                                    Grid.Column="3"
-                                    HorizontalOptions="Fill"
-                                    Time="{Binding NewCourse.StartTime, Mode=TwoWay}" />
                             </Grid>
                         </VerticalStackLayout>
 
@@ -140,7 +131,7 @@
                                 ThumbColor="{StaticResource Cream}"
                                 VerticalOptions="Center" />
                             <Label
-                                Text="{Binding NewCourse.StartDateTime, StringFormat='Notify me on Start Date'}"
+                                Text="{Binding NewCourse.StartDate, StringFormat='Notify me on Start Date'}"
                                 TextColor="{StaticResource DarkBlue}"
                                 VerticalOptions="Center" />
                         </HorizontalStackLayout>
@@ -167,23 +158,13 @@
                                 <!--  DatePicker  -->
                                 <DatePicker
                                     Grid.Column="1"
+                                    BackgroundColor="White"
                                     Date="{Binding NewCourse.EndDate, Mode=TwoWay}"
                                     HorizontalOptions="Fill"
-                                    MinimumDate="{x:Static system:DateTime.Today}" />
+                                    MinimumDate="{x:Static system:DateTime.Today}"
+                                    TextColor="{StaticResource DarkBlue}" />
 
-                                <!--  Alarm Icon  -->
-                                <Image
-                                    Grid.Column="2"
-                                    HeightRequest="20"
-                                    Source="alarm_icon.svg"
-                                    VerticalOptions="Center"
-                                    WidthRequest="20" />
 
-                                <!--  TimePicker  -->
-                                <TimePicker
-                                    Grid.Column="3"
-                                    HorizontalOptions="Fill"
-                                    Time="{Binding NewCourse.EndTime, Mode=TwoWay}" />
                             </Grid>
                         </VerticalStackLayout>
 
@@ -195,14 +176,14 @@
                                 ThumbColor="{StaticResource Cream}"
                                 VerticalOptions="Center" />
                             <Label
-                                Text="{Binding NewCourse.EndDateTime, StringFormat='Notify me on End Date'}"
+                                Text="{Binding NewCourse.EndDate, StringFormat='Notify me on End Date'}"
                                 TextColor="{StaticResource DarkBlue}"
                                 VerticalOptions="Center" />
                         </HorizontalStackLayout>
 
                         <!--  INSTRUCTOR INFORMATION SECTION  -->
                         <Label
-                            Margin="0,40,0,10"
+                            Margin="0,20,0,10"
                             FontAttributes="Bold"
                             FontSize="18"
                             Text="Instructor Information"
