@@ -88,6 +88,10 @@ namespace c971_project.ViewModels
             {
                 IsBusy = true;
 
+                // picker defaults to midnight -- set to current time if today
+                NewCourse.StartDate = ValidationHelper.SetCurrentDateTimeIfToday(NewCourse.StartDate);
+                NewCourse.EndDate = ValidationHelper.SetCurrentDateTimeIfToday(NewCourse.EndDate);
+               
                 //  Validate everything
                 var errors = await _courseValidator.ValidateCourseFormAsync(TermId, NewCourse, NewInstructor, isEdit);
 
@@ -128,5 +132,7 @@ namespace c971_project.ViewModels
                 IsBusy = false;
             }
         }
+
+       
     }
 }

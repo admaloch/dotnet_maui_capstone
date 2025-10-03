@@ -65,6 +65,10 @@ namespace c971_project.ViewModels
             {
                 IsBusy = true;
 
+                // picker defaults to midnight -- set to current time if today
+                Course.StartDate = ValidationHelper.SetCurrentDateTimeIfToday(Course.StartDate);
+                Course.EndDate = ValidationHelper.SetCurrentDateTimeIfToday(Course.EndDate);
+
                 //  Validate everything
                 var errors = await _courseValidator.ValidateCourseFormAsync(Course.TermId, Course, Instructor, isEdit);
 
