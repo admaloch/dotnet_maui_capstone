@@ -33,13 +33,13 @@ namespace c971_project.Services.ValidationServices
 
             Instructor.Validate();
 
-            // toolkit errors
+            // Course errors
             errorBuilder.AppendLine(ValidationHelper.GetErrors(
                 Course, nameof(Course.Name), nameof(Course.CourseNum),
                 nameof(Course.CuNum), nameof(Course.StartDate), nameof(Course.EndDate)));
 
             // Custom validation rules -- prevent time picker from picking dates in past + ensure past date is after start date
-            var pickerDatesErrorBuilder = ValidationHelper.ValidateStartAndEndDates(Course.StartDate, Course.EndDate);
+            var pickerDatesErrorBuilder = ValidationHelper.ValidateStartAndEndDates(Course.StartDateTime, Course.EndDateTime);
             errorBuilder.Append(pickerDatesErrorBuilder);
 
             // Instructor errors

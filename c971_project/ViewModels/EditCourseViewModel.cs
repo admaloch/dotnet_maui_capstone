@@ -1,5 +1,4 @@
 ﻿using c971_project.Messages;
-using c971_project.Helpers;
 using c971_project.Models;
 using c971_project.Services.Data;
 using c971_project.Services.Notifications;
@@ -47,7 +46,7 @@ namespace c971_project.ViewModels
 
         partial void OnCourseIdChanged(int value)
         {
-            _= LoadCourseAsync(value); // call async fire-and-forget
+            LoadCourseAsync(value); // call async fire-and-forget
         }
 
         private async Task LoadCourseAsync(int courseId)
@@ -65,27 +64,23 @@ namespace c971_project.ViewModels
             {
                 IsBusy = true;
 
-                // picker defaults to midnight -- set to current time if today
-                Course.StartDate = ValidationHelper.SetCurrentDateTimeIfToday(Course.StartDate);
-                Course.EndDate = ValidationHelper.SetCurrentDateTimeIfToday(Course.EndDate);
-
-                //  Validate everything
+                // 1. Validate everything
                 var errors = await _courseValidator.ValidateCourseFormAsync(Course.TermId, Course, Instructor, isEdit);
 
-                //  print errors if any and return
+                // 2. print errors if any and return
                 if (!string.IsNullOrWhiteSpace(errors))
                 {
                     await Shell.Current.DisplayAlert("Validation Errors", errors, "OK");
                     return;
                 }
 
-                //  Resolve instructor - if new create new db item - else grab current item
+                // 3. Resolve instructor - if new create new db item - else grab current item
                 Instructor = await _courseValidator.EnsureInstructorExistsAsync(Instructor);
 
-                //  Save course
+                // 4. Save course
                 await _courseValidator.SaveCourseAsync(Course.TermId, Course, Instructor);
 
-                //  Schedule notifications for the UPDATED course - ADDED THIS
+                // 5. Schedule notifications for the UPDATED course - ADDED THIS
                 var notificationSuccess = await _notificationService.ScheduleCourseNotificationsAsync(Course);
 
                 if (!notificationSuccess)
@@ -94,7 +89,7 @@ namespace c971_project.ViewModels
                     Debug.WriteLine("Course saved but notifications failed to update");
                 }
 
-                //  Notify & navigate
+                // 6. Notify & navigate
                 WeakReferenceMessenger.Default.Send(new CourseUpdatedMessage());
 
                 await Shell.Current.GoToAsync("..");

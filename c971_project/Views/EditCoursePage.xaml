@@ -4,7 +4,7 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:system="clr-namespace:System;assembly=netstandard"
-    Title="Edit Course"
+    Title="Add Course"
     BackgroundColor="{StaticResource Cream}">
     <Grid>
         <ScrollView>
@@ -15,7 +15,7 @@
                     Margin="0,20,0,0"
                     HorizontalOptions="Center"
                     Style="{StaticResource HeaderLabel}"
-                    Text="{Binding Course.Name}" />
+                    Text="New Course" />
 
                 <!--  Card container  -->
                 <Border
@@ -113,13 +113,27 @@
                                 <!--  DatePicker  -->
                                 <DatePicker
                                     Grid.Column="1"
-                                    BackgroundColor="White"
+                                    BackgroundColor="{StaticResource White}"
                                     Date="{Binding Course.StartDate, Mode=TwoWay}"
                                     HorizontalOptions="Fill"
                                     MinimumDate="{x:Static system:DateTime.Today}"
                                     TextColor="{StaticResource DarkBlue}" />
 
+                                <!--  Alarm Icon  -->
+                                <Image
+                                    Grid.Column="2"
+                                    HeightRequest="20"
+                                    Source="alarm_icon.svg"
+                                    VerticalOptions="Center"
+                                    WidthRequest="20" />
 
+                                <!--  TimePicker  -->
+                                <TimePicker
+                                    Grid.Column="3"
+                                    BackgroundColor="{StaticResource White}"
+                                    HorizontalOptions="Fill"
+                                    TextColor="{StaticResource DarkBlue}"
+                                    Time="{Binding Course.StartTime, Mode=TwoWay}" />
                             </Grid>
                         </VerticalStackLayout>
 
@@ -158,13 +172,27 @@
                                 <!--  DatePicker  -->
                                 <DatePicker
                                     Grid.Column="1"
-                                    BackgroundColor="White"
+                                    BackgroundColor="{StaticResource White}"
                                     Date="{Binding Course.EndDate, Mode=TwoWay}"
                                     HorizontalOptions="Fill"
                                     MinimumDate="{x:Static system:DateTime.Today}"
                                     TextColor="{StaticResource DarkBlue}" />
 
+                                <!--  Alarm Icon  -->
+                                <Image
+                                    Grid.Column="2"
+                                    HeightRequest="20"
+                                    Source="alarm_icon.svg"
+                                    VerticalOptions="Center"
+                                    WidthRequest="20" />
 
+                                <!--  TimePicker  -->
+                                <TimePicker
+                                    Grid.Column="3"
+                                    BackgroundColor="{StaticResource White}"
+                                    HorizontalOptions="Fill"
+                                    TextColor="{StaticResource DarkBlue}"
+                                    Time="{Binding Course.EndTime, Mode=TwoWay}" />
                             </Grid>
                         </VerticalStackLayout>
 
@@ -220,7 +248,6 @@
                             </Border>
                         </VerticalStackLayout>
 
-                        
                         <!--  Instructor Phone  -->
                         <VerticalStackLayout Spacing="1">
                             <Label

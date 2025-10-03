@@ -63,6 +63,8 @@ namespace c971_project.ViewModels
                 CuNum = 3, // default credit units
                 StartDate = DateTime.Today,
                 EndDate = DateTime.Today.AddMonths(2), // default course length
+                StartTime = new TimeSpan(9, 0, 0),  // 9:00 AM default
+                EndTime = new TimeSpan(17, 0, 0),   // 5:00 PM default
                 DateAdded = DateTime.Now,
                 InstructorId = 0,   // will be selected later
                 TermId = termId,     // links this course to the current Term
@@ -88,27 +90,23 @@ namespace c971_project.ViewModels
             {
                 IsBusy = true;
 
-                // picker defaults to midnight -- set to current time if today
-                NewCourse.StartDate = ValidationHelper.SetCurrentDateTimeIfToday(NewCourse.StartDate);
-                NewCourse.EndDate = ValidationHelper.SetCurrentDateTimeIfToday(NewCourse.EndDate);
-               
-                //  Validate everything
+                // 1. Validate everything
                 var errors = await _courseValidator.ValidateCourseFormAsync(TermId, NewCourse, NewInstructor, isEdit);
 
-                //  print errors if any and return
+                // 2. print errors if any and return
                 if (!string.IsNullOrWhiteSpace(errors))
                 {
                     await Shell.Current.DisplayAlert("Validation Errors", errors, "OK");
                     return;
                 }
 
-                //  Resolve instructor - if new create new db item - else grab current item
+                // 3. Resolve instructor - if new create new db item - else grab current item
                 NewInstructor = await _courseValidator.EnsureInstructorExistsAsync(NewInstructor);
 
-                //  Save course
+                // 4. Save course
                 await _courseValidator.SaveCourseAsync(TermId, NewCourse, NewInstructor);
 
-                //  Schedule notifications - UPDATED THIS SECTION
+                // 5. Schedule notifications - UPDATED THIS SECTION
                 var notificationSuccess = await _notificationService.ScheduleCourseNotificationsAsync(NewCourse);
 
                 if (!notificationSuccess)
@@ -132,7 +130,5 @@ namespace c971_project.ViewModels
                 IsBusy = false;
             }
         }
-
-       
     }
 }

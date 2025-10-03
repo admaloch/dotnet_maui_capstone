@@ -113,13 +113,27 @@
                                 <!--  DatePicker  -->
                                 <DatePicker
                                     Grid.Column="1"
-                                    BackgroundColor="White"
+                                    BackgroundColor="{StaticResource White}"
                                     Date="{Binding NewCourse.StartDate, Mode=TwoWay}"
                                     HorizontalOptions="Fill"
                                     MinimumDate="{x:Static system:DateTime.Today}"
                                     TextColor="{StaticResource DarkBlue}" />
 
+                                <!--  Alarm Icon  -->
+                                <Image
+                                    Grid.Column="2"
+                                    HeightRequest="20"
+                                    Source="alarm_icon.svg"
+                                    VerticalOptions="Center"
+                                    WidthRequest="20" />
 
+                                <!--  TimePicker  -->
+                                <TimePicker
+                                    Grid.Column="3"
+                                    BackgroundColor="{StaticResource White}"
+                                    HorizontalOptions="Fill"
+                                    TextColor="{StaticResource DarkBlue}"
+                                    Time="{Binding NewCourse.StartTime, Mode=TwoWay}" />
                             </Grid>
                         </VerticalStackLayout>
 
@@ -158,13 +172,27 @@
                                 <!--  DatePicker  -->
                                 <DatePicker
                                     Grid.Column="1"
-                                    BackgroundColor="White"
+                                    BackgroundColor="{StaticResource White}"
                                     Date="{Binding NewCourse.EndDate, Mode=TwoWay}"
                                     HorizontalOptions="Fill"
                                     MinimumDate="{x:Static system:DateTime.Today}"
                                     TextColor="{StaticResource DarkBlue}" />
 
+                                <!--  Alarm Icon  -->
+                                <Image
+                                    Grid.Column="2"
+                                    HeightRequest="20"
+                                    Source="alarm_icon.svg"
+                                    VerticalOptions="Center"
+                                    WidthRequest="20" />
 
+                                <!--  TimePicker  -->
+                                <TimePicker
+                                    Grid.Column="3"
+                                    BackgroundColor="{StaticResource White}"
+                                    HorizontalOptions="Fill"
+                                    TextColor="{StaticResource DarkBlue}"
+                                    Time="{Binding NewCourse.EndTime, Mode=TwoWay}" />
                             </Grid>
                         </VerticalStackLayout>
 

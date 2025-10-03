@@ -32,6 +32,15 @@ namespace c971_project.Models
         // Existing date properties
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
+
+        // NEW: Add these time propertieso
+        public TimeSpan StartTime { get; set; } // Default to 9:00 AM
+        public TimeSpan EndTime { get; set; }   // Default to 5:00 PM
+
+        // NEW: Computed properties that combine date + time
+        public DateTime StartDateTime => StartDate.Add(StartTime);
+        public DateTime EndDateTime => EndDate.Add(EndTime);
+
         // Your existing notification properties
         public bool NotifyStartDate { get; set; } = true;
         public bool NotifyEndDate { get; set; } = true;
