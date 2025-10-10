@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "814975153915",
+    "project_id": "wgu-cloud-planner",
+    "storage_bucket": "wgu-cloud-planner.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:814975153915:android:5d68dd7d6db5ec3e2e225e",
+        "android_client_info": {
+          "package_name": "com.companyname.c971_project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "814975153915-615f8vkrmj678p8h9ft1qnhfdj6r8ng9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDyvCzaynVSUc45mswyrZInbGhpoKksr_A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "814975153915-615f8vkrmj678p8h9ft1qnhfdj6r8ng9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

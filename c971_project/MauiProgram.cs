@@ -3,6 +3,7 @@ using c971_project.Services.Notifications;
 using c971_project.Services.ValidationServices;
 using c971_project.ViewModels;
 using c971_project.Views;
+using c971_project.Services.Firebase;
 using Microsoft.Extensions.Logging;
 using Plugin.LocalNotification;
 
@@ -29,6 +30,7 @@ namespace c971_project
             builder.Services.AddSingleton<CourseValidator>();
             builder.Services.AddSingleton<IScheduleNotificationService, NotificationService>();
 
+            builder.Services.AddSingleton<AuthService>();
 
             builder.Services.AddTransient<HomePage>();
             builder.Services.AddTransient<HomeViewModel>();
