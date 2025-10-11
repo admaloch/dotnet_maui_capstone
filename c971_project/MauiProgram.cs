@@ -32,6 +32,9 @@ namespace c971_project
 
             builder.Services.AddSingleton<AuthService>();
 
+            builder.Services.AddTransient<LoginViewModel>();
+            builder.Services.AddTransient<LoginPage>();
+
             builder.Services.AddTransient<HomePage>();
             builder.Services.AddTransient<HomeViewModel>();
 

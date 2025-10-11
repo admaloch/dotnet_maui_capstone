@@ -1,37 +1,46 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using SQLite;
+using Firebase.Auth;
 using System.ComponentModel.DataAnnotations;
-using MaxLengthAttribute = System.ComponentModel.DataAnnotations.MaxLengthAttribute;
 
 namespace c971_project.Models
 {
-    public class Student: ObservableValidator
+    public partial class Student : ObservableValidator
     {
-        [PrimaryKey, AutoIncrement]
-        public int StudentId { get; set; }
-        [Required(ErrorMessage = "Student Id is required.")]
-        public string StudentIdNumber { get; set; } = string.Empty; 
+        public Student()
+        {
+            id = Guid.NewGuid().ToString();
+        }
 
+        [ObservableProperty]
+        private string id; // Firebase UID (primary key in Firestore)
+
+        [ObservableProperty]
+        [Required(ErrorMessage = "Student ID number is required.")]
+        private string studentIdNumber = string.Empty;
+
+        [ObservableProperty]
         [Required(ErrorMessage = "Name is required.")]
-        public string Name { get; set; } = string.Empty;
+        private string name = string.Empty;
 
+        [ObservableProperty]
         [Required(ErrorMessage = "Email address is required")]
         [EmailAddress(ErrorMessage = "Please enter a valid email address")]
-        [MaxLength(100, ErrorMessage = "Email cannot exceed 100 characters")] public string Email { get; set; } = string.Empty;
+        [MaxLength(100, ErrorMessage = "Email cannot exceed 100 characters")]
+        private string email = string.Empty;
 
-        public string Status { get; set; } = "Currently Enrolled";
+        [ObservableProperty]
+        private string status = "Currently Enrolled";
 
+        [ObservableProperty]
         [Required(ErrorMessage = "Major is required.")]
-        public string Major { get; set; } = string.Empty;
+        private string major = string.Empty;
 
-        public DateTime DateAdded { get; set; } = DateTime.Now;
-
+        [ObservableProperty]
+        private DateTime dateAdded = DateTime.Now;
 
         public void Validate()
         {
             ValidateAllProperties();
         }
     }
-
-
 }
