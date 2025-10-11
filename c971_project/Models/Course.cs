@@ -5,45 +5,59 @@ using MaxLengthAttribute = System.ComponentModel.DataAnnotations.MaxLengthAttrib
 
 namespace c971_project.Models
 {
-    public class Course : ObservableValidator
+    public partial class Course : ObservableValidator
     {
-        [PrimaryKey, AutoIncrement]
-        public int CourseId { get; set; }
+        public Course()
+        {
+            id = Guid.NewGuid().ToString();
+        }
 
+        [ObservableProperty]
+        private string id;
+
+        [ObservableProperty]
+        private string termId = string.Empty;
+
+        [ObservableProperty]
+        private string instructorId = string.Empty;
+
+        [ObservableProperty]
         [Required(ErrorMessage = "Course name is required.")]
         [MaxLength(100, ErrorMessage = "Course name cannot exceed 100 characters.")]
-        public string Name { get; set; } = string.Empty;
+        private string name = string.Empty;
 
+        [ObservableProperty]
         [Required(ErrorMessage = "Course number is required.")]
         [MaxLength(20, ErrorMessage = "Course number cannot exceed 20 characters.")]
-        public string CourseNum { get; set; } = string.Empty;
+        private string courseNum = string.Empty;
 
+        [ObservableProperty]
         [Range(1, 10, ErrorMessage = "Credit units must be between 1 and 10.")]
-        public int CuNum { get; set; } = 3;
-        public DateTime DateAdded { get; set; } = DateTime.Now;
+        private int cuNum = 3;
 
-        [Required(ErrorMessage = "Instructor is required.")]
-        [Range(1, int.MaxValue, ErrorMessage = "Please select a valid instructor.")]
-        public int InstructorId { get; set; }
+        [ObservableProperty]
+        private DateTime dateAdded = DateTime.Now;
 
-        [Required(ErrorMessage = "Term is required.")]
-        [Range(1, int.MaxValue, ErrorMessage = "Please select a valid term.")]
-        public int TermId { get; set; }
-        // Existing date properties
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
+        [ObservableProperty]
+        private DateTime startDate;
 
-        // NEW: Add these time propertieso
-        public TimeSpan StartTime { get; set; } // Default to 9:00 AM
-        public TimeSpan EndTime { get; set; }   // Default to 5:00 PM
+        [ObservableProperty]
+        private DateTime endDate;
 
-        // NEW: Computed properties that combine date + time
+        [ObservableProperty]
+        private TimeSpan startTime = new TimeSpan(9, 0, 0);
+
+        [ObservableProperty]
+        private TimeSpan endTime = new TimeSpan(17, 0, 0);
+
+        [ObservableProperty]
+        private bool notifyStartDate = true;
+
+        [ObservableProperty]
+        private bool notifyEndDate = true;
+
         public DateTime StartDateTime => StartDate.Add(StartTime);
         public DateTime EndDateTime => EndDate.Add(EndTime);
-
-        // Your existing notification properties
-        public bool NotifyStartDate { get; set; } = true;
-        public bool NotifyEndDate { get; set; } = true;
 
         public void Validate()
         {

@@ -1,37 +1,43 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage x:Class="c971_project.Views.LoginPage"
-             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             Title="Login">
+<ContentPage
+    x:Class="c971_project.Views.LoginPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Login">
 
     <ScrollView>
-        <VerticalStackLayout Spacing="20" Padding="30">
+        <VerticalStackLayout Padding="30" Spacing="20">
 
-            <Label Text="WGU Cloud Planner" 
-                   FontSize="32" 
-                   HorizontalOptions="Center" 
-                   FontAttributes="Bold" />
+            <Label
+                FontAttributes="Bold"
+                FontSize="32"
+                HorizontalOptions="Center"
+                Text="WGU Cloud Planner" />
 
             <Frame>
                 <VerticalStackLayout Spacing="15">
 
-                    <Entry Placeholder="Email" 
-                           Text="{Binding Email}"
-                           Keyboard="Email" />
+                    <Entry
+                        Keyboard="Email"
+                        Placeholder="Email"
+                        Text="{Binding Email}" />
 
-                    <Entry Placeholder="Password" 
-                           Text="{Binding Password}" 
-                           IsPassword="True" />
+                    <Entry
+                        IsPassword="True"
+                        Placeholder="Password"
+                        Text="{Binding Password}" />
 
-                    <Button Text="Login" 
-                            Command="{Binding LoginCommand}" 
-                            IsEnabled="{Binding IsNotBusy}" />
+                    <Button
+                        Command="{Binding LoginCommand}"
+                        IsEnabled="{Binding IsNotBusy}"
+                        Text="Login" />
 
-                    <Button Text="Create Account" 
-                            Command="{Binding RegisterCommand}" 
-                            IsEnabled="{Binding IsNotBusy}"
-                            BackgroundColor="Transparent" 
-                            TextColor="{StaticResource Primary}" />
+                    <Button
+                        BackgroundColor="Transparent"
+                        Command="{Binding RegisterCommand}"
+                        IsEnabled="{Binding IsNotBusy}"
+                        Text="Create Account"
+                        TextColor="{StaticResource Primary}" />
 
                 </VerticalStackLayout>
             </Frame>
