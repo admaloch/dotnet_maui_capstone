@@ -1,5 +1,6 @@
 ﻿using Firebase.Auth;
 using Firebase.Auth.Providers;
+using System.Diagnostics;
 
 namespace c971_project.Services.Firebase
 {
@@ -31,8 +32,8 @@ namespace c971_project.Services.Firebase
             }
             catch (Exception ex)
             {
-                await Shell.Current.DisplayAlert("Login Error", ex.Message, "OK");
-                return false;
+                Debug.WriteLine($"AUTH LOGIN ERROR: {ex.Message}");
+                throw; // Re-throw to let ViewModel handle it
             }
         }
 
@@ -45,8 +46,8 @@ namespace c971_project.Services.Firebase
             }
             catch (Exception ex)
             {
-                await Shell.Current.DisplayAlert("Registration Error", ex.Message, "OK");
-                return false;
+                Debug.WriteLine($"AUTH REGISTER ERROR: {ex.Message}");
+                throw; // Re-throw to let ViewModel handle it
             }
         }
 

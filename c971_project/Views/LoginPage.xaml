@@ -28,12 +28,13 @@
                         Text="{Binding Password}" />
 
                     <Button
+                        BackgroundColor="{StaticResource DarkBlue}"
                         Command="{Binding LoginCommand}"
                         IsEnabled="{Binding IsNotBusy}"
                         Text="Login" />
 
                     <Button
-                        BackgroundColor="Transparent"
+                        BackgroundColor="{StaticResource DarkBlue}"
                         Command="{Binding RegisterCommand}"
                         IsEnabled="{Binding IsNotBusy}"
                         Text="Create Account"

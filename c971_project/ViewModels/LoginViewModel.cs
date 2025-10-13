@@ -2,6 +2,8 @@
 using CommunityToolkit.Mvvm.Input;
 using c971_project.Services.Firebase;
 using c971_project.Models;
+using System.Diagnostics;
+
 
 namespace c971_project.ViewModels
 {
@@ -41,9 +43,19 @@ namespace c971_project.ViewModels
                 var success = await _authService.LoginAsync(Email, Password);
                 if (success)
                 {
-                    // Navigate to main app
                     await Shell.Current.GoToAsync("//HomePage");
                 }
+                else
+                {
+                    await Shell.Current.DisplayAlert("Login Failed", "Invalid email or password", "OK");
+                }
+            }
+            catch (Exception ex)
+            {
+                // Show detailed error
+                await Shell.Current.DisplayAlert("Login Error",
+                    $"Failed to login: {ex.Message}\n\nStack: {ex.StackTrace}", "OK");
+                Debug.WriteLine($"LOGIN ERROR: {ex}");
             }
             finally
             {
@@ -67,17 +79,21 @@ namespace c971_project.ViewModels
                 var success = await _authService.RegisterAsync(Email, Password);
                 if (success)
                 {
-                    // CREATE STUDENT PROFILE AFTER SUCCESSFUL REGISTRATION
                     await CreateStudentProfile();
-
-                    // AUTO-LOGIN AND NAVIGATE TO HOME
                     await Shell.Current.DisplayAlert("Success", "Account created successfully!", "OK");
                     await Shell.Current.GoToAsync("//HomePage");
+                }
+                else
+                {
+                    await Shell.Current.DisplayAlert("Registration Failed", "Failed to create account", "OK");
                 }
             }
             catch (Exception ex)
             {
-                await Shell.Current.DisplayAlert("Registration Error", ex.Message, "OK");
+                // Show detailed error
+                await Shell.Current.DisplayAlert("Registration Error",
+                    $"Failed to register: {ex.Message}\n\nStack: {ex.StackTrace}", "OK");
+                Debug.WriteLine($"REGISTRATION ERROR: {ex}");
             }
             finally
             {
@@ -104,7 +120,7 @@ namespace c971_project.ViewModels
                 await _firestoreDataService.SaveStudentAsync(student);
 
                 // Removed the alert here - let Register handle the success message
-            }
+            }  
             catch (Exception ex)
             {
                 await Shell.Current.DisplayAlert("Error",
