@@ -8,6 +8,7 @@ namespace c971_project.ViewModels
     public partial class LoginViewModel : ObservableObject
     {
         private readonly AuthService _authService;
+        private readonly IFirestoreDataService _firestoreDataService;
 
         [ObservableProperty]
         private string email;
@@ -18,9 +19,10 @@ namespace c971_project.ViewModels
         [ObservableProperty]
         private bool isNotBusy = true;
 
-        public LoginViewModel(AuthService authService)
+        public LoginViewModel(AuthService authService, IFirestoreDataService firestoreDataService)
         {
             _authService = authService;
+            _firestoreDataService = firestoreDataService;
         }
 
         [RelayCommand]
@@ -78,27 +80,30 @@ namespace c971_project.ViewModels
 
         private async Task CreateStudentProfile()
         {
-            var student = new Student
+            try
             {
-                // Don't set Id here - it's set in constructor
-                // We'll override it with the Firebase UID
-            };
+                var student = new Student();
 
-            // Override the generated ID with Firebase UID
-            student.Id = _authService.CurrentUserId;
+                // Override the generated ID with Firebase UID
+                student.Id = _authService.CurrentUserId;
 
-            student.Email = Email;
-            student.Name = Email.Split('@')[0];
-            student.StudentIdNumber = GenerateStudentId();
-            student.Major = "Undeclared";
-            student.Status = "Currently Enrolled";
+                student.Email = Email;
+                student.Name = Email.Split('@')[0];
+                student.StudentIdNumber = GenerateStudentId();
+                student.Major = "Undeclared";
+                student.Status = "Currently Enrolled";
 
-            // TODO: Save to Firestore when we implement data service
-            System.Diagnostics.Debug.WriteLine($"Student profile created for: {student.Name}");
+                // NOW SAVE TO FIRESTORE
+                await _firestoreDataService.SaveStudentAsync(student);
 
-            // For now, show a message
-            await Shell.Current.DisplayAlert("Profile Created",
-                $"Student profile created for {student.Name}. Please complete your details in the app.", "OK");
+                await Shell.Current.DisplayAlert("Success",
+                    $"Student profile created for {student.Name}!", "OK");
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Error",
+                    $"Failed to create student profile: {ex.Message}", "OK");
+            }
         }
 
         private string GenerateStudentId()
