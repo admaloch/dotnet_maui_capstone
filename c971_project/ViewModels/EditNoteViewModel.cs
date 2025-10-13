@@ -9,44 +9,44 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using c971_project.Services.ValidationServices;
-using c971_project.Services.Data;
+using c971_project.Services.Firebase;
 
 namespace c971_project.ViewModels
 {
     [QueryProperty(nameof(NoteId), "NoteId")]
     public partial class EditNoteViewModel : BaseViewModel
     {
-        private readonly DatabaseService _databaseService;
+        private readonly IFirestoreDataService _firestoreDataService;
 
         [ObservableProperty]
-        private int noteId;
+        private string noteId;
 
         [ObservableProperty]
         private Note _note;
 
-        public EditNoteViewModel(DatabaseService databaseService)
+        public EditNoteViewModel(IFirestoreDataService firestoreDataService)
         {
-            _databaseService = databaseService;
+            _firestoreDataService = firestoreDataService;
         }
 
-        partial void OnNoteIdChanged(int value)
+        partial void OnNoteIdChanged(string value)
         {
             _ = LoadDataAsync(value);
         }
 
-        private async Task LoadDataAsync(int noteId)
+        private async Task LoadDataAsync(string noteId)
         {
             await LoadNoteAsync(noteId);
         }
 
         //load data
-        private async Task LoadNoteAsync(int id)
+        private async Task LoadNoteAsync(string id)
         {
             if (IsBusy) return;
             try
             {
                 IsBusy = true;
-                Note = await _databaseService.GetNoteByIdAsync(id);
+                Note = await _firestoreDataService.GetNoteAsync(id);
             }
             catch (Exception ex)
             {
@@ -78,7 +78,7 @@ namespace c971_project.ViewModels
                 }
 
                 // Save to database
-                await _databaseService.SaveNoteAsync(Note);
+                await _firestoreDataService.SaveNoteAsync(Note);
 
                 // notify change
                 WeakReferenceMessenger.Default.Send(new NoteUpdatedMessage());

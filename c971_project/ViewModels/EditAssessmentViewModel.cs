@@ -1,7 +1,7 @@
 ﻿using c971_project.Helpers;
 using c971_project.Messages;
 using c971_project.Models;
-using c971_project.Services.Data;
+using c971_project.Services.Firebase;
 using c971_project.Services.Notifications;
 using c971_project.Services.ValidationServices;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -18,11 +18,11 @@ namespace c971_project.ViewModels
     [QueryProperty(nameof(AssessmentId), "AssessmentId")]
     public partial class EditAssessmentViewModel : BaseViewModel
     {
-        private readonly DatabaseService _databaseService;
+        private readonly IFirestoreDataService _firestoreDataService;
         private readonly IScheduleNotificationService _notificationService;
 
         [ObservableProperty]
-        private int assessmentId;
+        private string assessmentId;
 
         [ObservableProperty]
         private Assessment _assessment;
@@ -38,19 +38,19 @@ namespace c971_project.ViewModels
            "Not started", "In progress", "Completed"
         };
 
-        public EditAssessmentViewModel(DatabaseService databaseService,
+        public EditAssessmentViewModel(IFirestoreDataService firestoreDataService,
                                      IScheduleNotificationService notificationService)
         {
-            _databaseService = databaseService;
+            _firestoreDataService = firestoreDataService;
             _notificationService = notificationService;
         }
 
-        partial void OnAssessmentIdChanged(int value)
+        partial void OnAssessmentIdChanged(string value)
         {
             _ = LoadAssessmentDataAsync(value);
         }
 
-        private async Task LoadAssessmentDataAsync(int assessmentId)
+        private async Task LoadAssessmentDataAsync(string assessmentId)
         {
             await LoadAssessmentAsync(assessmentId);
             if (Assessment == null) return;
@@ -64,13 +64,13 @@ namespace c971_project.ViewModels
             OnPropertyChanged(nameof(TypeOptions));
         }
 
-        private async Task LoadAssessmentAsync(int assessmentId)
+        private async Task LoadAssessmentAsync(string assessmentId)
         {
             if (IsBusy) return;
             try
             {
                 IsBusy = true;
-                Assessment = await _databaseService.GetAssessmentByIdAsync(assessmentId);
+                Assessment = await _firestoreDataService.GetAssessmentAsync(assessmentId);
             }
             catch (Exception ex)
             {
@@ -82,7 +82,7 @@ namespace c971_project.ViewModels
             }
         }
 
-        private async Task LoadCourseAssessmentsAsync(int courseId)
+        private async Task LoadCourseAssessmentsAsync(string courseId)
         {
             if (IsBusy) return;
 
@@ -90,9 +90,9 @@ namespace c971_project.ViewModels
             {
                 IsBusy = true;
 
-                if (courseId <= 0) return;
+                if (string.IsNullOrEmpty(courseId)) return;
 
-                var assessmentList = await _databaseService.GetAssessmentsByCourseIdAsync(courseId);
+                var assessmentList = await _firestoreDataService.GetAssessmentsByCourseIdAsync(courseId);
 
                 Assessments.Clear();
                 foreach (var assessment in assessmentList)
@@ -126,7 +126,7 @@ namespace c971_project.ViewModels
                 }
 
                 // Save to database
-                await _databaseService.SaveAssessmentAsync(Assessment);
+                await _firestoreDataService.SaveAssessmentAsync(Assessment);
 
                 // Schedule notifications for the new assessment - ADDED THIS
                 var notificationSuccess = await _notificationService.ScheduleAssessmentNotificationsAsync(Assessment);

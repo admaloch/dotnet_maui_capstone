@@ -1,7 +1,7 @@
 ﻿using c971_project.Helpers;
 using c971_project.Messages;
 using c971_project.Models;
-using c971_project.Services.Data;
+using c971_project.Services.Firebase;
 using c971_project.Services.Notifications;
 using c971_project.Services.ValidationServices;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -19,11 +19,11 @@ namespace c971_project.ViewModels
     [QueryProperty(nameof(CourseId), "CourseId")]
     public partial class AddAssessmentViewModel : BaseViewModel
     {
-        private readonly DatabaseService _databaseService;
+        private readonly IFirestoreDataService _firestoreDataService;
         private readonly IScheduleNotificationService _notificationService; // Added
 
         [ObservableProperty]
-        private int courseId;
+        private string courseId;
 
         [ObservableProperty]
         private Assessment _newAssessment;
@@ -62,10 +62,10 @@ namespace c971_project.ViewModels
         };
 
         // Updated constructor with notification service
-        public AddAssessmentViewModel(DatabaseService databaseService,
+        public AddAssessmentViewModel(IFirestoreDataService firestoreDataService,
                                     IScheduleNotificationService notificationService) 
         {
-            _databaseService = databaseService;
+            _firestoreDataService = firestoreDataService;
             _notificationService = notificationService;
 
             // Update dropdown when assessments collection changes
@@ -75,7 +75,7 @@ namespace c971_project.ViewModels
             };
         }
 
-        partial void OnCourseIdChanged(int value)
+        partial void OnCourseIdChanged(string value)
         {
 
             SetDefaultAssessmentItem(value);
@@ -83,7 +83,7 @@ namespace c971_project.ViewModels
 
         }
 
-        private void SetDefaultAssessmentItem(int courseId)
+        private void SetDefaultAssessmentItem(string courseId)
         {
             if (NewAssessment == null)
             {
@@ -109,15 +109,14 @@ namespace c971_project.ViewModels
         }
 
         //load course assessments
-        private async Task LoadCourseAssessmentsAsync(int courseId)
+        private async Task LoadCourseAssessmentsAsync(string courseId)
         {
             if (IsBusy) return;
             try
             {
                 IsBusy = true;
-                if (CourseId <= 0)
-                    return;
-                var assessmentList = await _databaseService.GetAssessmentsByCourseIdAsync(CourseId);
+
+                var assessmentList = await _firestoreDataService.GetAssessmentsByCourseIdAsync(CourseId);
                 Assessments.Clear();
                 foreach (var assessment in assessmentList)
                     Assessments.Add(assessment); 
@@ -148,7 +147,7 @@ namespace c971_project.ViewModels
                     return;
                 }
                 // Save to database
-                await _databaseService.SaveAssessmentAsync(NewAssessment);
+                await _firestoreDataService.SaveAssessmentAsync(NewAssessment);
                 // Schedule notifications for the new assessment - ADDED THIS
                 var notificationSuccess = await _notificationService.ScheduleAssessmentNotificationsAsync(NewAssessment);
                 // notify update

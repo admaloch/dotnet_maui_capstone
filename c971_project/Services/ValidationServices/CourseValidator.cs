@@ -1,7 +1,7 @@
 ﻿using c971_project.Helpers;
 using c971_project.Messages;
 using c971_project.Models;
-using c971_project.Services.Data;
+using c971_project.Services.Firebase;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
@@ -16,15 +16,15 @@ namespace c971_project.Services.ValidationServices
 
     public class CourseValidator
     {
-        private readonly DatabaseService _databaseService;
+        private readonly IFirestoreDataService _firestoreDataService;
 
-        public CourseValidator(DatabaseService databaseService)
+        public CourseValidator(IFirestoreDataService firestoreDataService)
         {
-            _databaseService = databaseService;
+            _firestoreDataService = firestoreDataService;
         }
 
         //handle validation for toolkit, custom, instructor, unique course etc.. 
-        public async Task<string> ValidateCourseFormAsync(int TermId, Course Course, Instructor Instructor, bool isEdit)
+        public async Task<string> ValidateCourseFormAsync(string TermId, Course Course, Instructor Instructor, bool isEdit)
         {
             var errorBuilder = new StringBuilder();
 
@@ -57,12 +57,12 @@ namespace c971_project.Services.ValidationServices
 
         public async Task<string> ValidateUniqueCourseNumAsync(Course course, bool isEdit = false)
         {
-            var existingCourse = await _databaseService.GetCourseByCourseNumAsync(course.CourseNum);
+            var existingCourse = await _firestoreDataService.GetCourseByCourseNumAsync(course.CourseNum);
 
             if (existingCourse != null)
             {
                 // If editing, allow the same course to keep its number
-                if (isEdit && existingCourse.CourseId == course.CourseId)
+                if (isEdit && existingCourse.Id == course.Id)
                     return "";
 
                 return "A course with this course number already exists.";
@@ -73,7 +73,7 @@ namespace c971_project.Services.ValidationServices
 
         public async Task<Instructor> EnsureInstructorExistsAsync(Instructor Instructor)
         {
-            var searchInstructor = await _databaseService.GetInstructorByEmailAsync(Instructor.Email);
+            var searchInstructor = await _firestoreDataService.GetInstructorByEmailAsync(Instructor.Email);
 
             if (searchInstructor != null)
             {
@@ -83,16 +83,16 @@ namespace c971_project.Services.ValidationServices
             else
             {
                 Debug.WriteLine("New instructor created");
-                await _databaseService.SaveInstructorAsync(Instructor);
+                await _firestoreDataService.SaveInstructorAsync(Instructor);
                 return Instructor;
             }
         }
 
-        public async Task SaveCourseAsync(int TermId, Course Course, Instructor Instructor)
+        public async Task SaveCourseAsync(string TermId, Course Course, Instructor Instructor)
         {
             Course.TermId = TermId;
-            Course.InstructorId = Instructor.InstructorId;
-            await _databaseService.SaveCourseAsync(Course);
+            Course.InstructorId = Instructor.Id;
+            await _firestoreDataService.SaveCourseAsync(Course);
         }
     }
 }

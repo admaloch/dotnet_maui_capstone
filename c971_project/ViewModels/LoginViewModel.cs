@@ -69,8 +69,15 @@ namespace c971_project.ViewModels
                 {
                     // CREATE STUDENT PROFILE AFTER SUCCESSFUL REGISTRATION
                     await CreateStudentProfile();
-                    await Shell.Current.DisplayAlert("Success", "Account created! Please login.", "OK");
+
+                    // AUTO-LOGIN AND NAVIGATE TO HOME
+                    await Shell.Current.DisplayAlert("Success", "Account created successfully!", "OK");
+                    await Shell.Current.GoToAsync("//HomePage");
                 }
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Registration Error", ex.Message, "OK");
             }
             finally
             {
@@ -93,16 +100,16 @@ namespace c971_project.ViewModels
                 student.Major = "Undeclared";
                 student.Status = "Currently Enrolled";
 
-                // NOW SAVE TO FIRESTORE
+                // SAVE TO FIRESTORE
                 await _firestoreDataService.SaveStudentAsync(student);
 
-                await Shell.Current.DisplayAlert("Success",
-                    $"Student profile created for {student.Name}!", "OK");
+                // Removed the alert here - let Register handle the success message
             }
             catch (Exception ex)
             {
                 await Shell.Current.DisplayAlert("Error",
                     $"Failed to create student profile: {ex.Message}", "OK");
+                throw; // Re-throw so Register knows it failed
             }
         }
 

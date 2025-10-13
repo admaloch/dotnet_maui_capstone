@@ -1,6 +1,6 @@
 ﻿using c971_project.Messages;
 using c971_project.Models;
-using c971_project.Services.Data;
+using c971_project.Services.Firebase;
 using c971_project.ViewModels;
 using c971_project.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -18,10 +18,10 @@ namespace c971_project.ViewModels
     [QueryProperty(nameof(NoteId), "NoteId")]
     public partial class NoteViewModel : BaseViewModel
     {
-        private readonly DatabaseService _databaseService;
+        private readonly IFirestoreDataService _firestoreDataService;
 
         [ObservableProperty]
-        private int noteId;
+        private string noteId;
 
         [ObservableProperty]
         private Note note;
@@ -31,9 +31,9 @@ namespace c971_project.ViewModels
 
 
 
-        public NoteViewModel(DatabaseService databaseService)
+        public NoteViewModel(IFirestoreDataService firestoreDataService)
         {
-            _databaseService = databaseService;
+            _firestoreDataService = firestoreDataService;
 
             WeakReferenceMessenger.Default.Register<NoteUpdatedMessage>(this, async (r, m) =>
             {
@@ -41,12 +41,12 @@ namespace c971_project.ViewModels
             });
         }
 
-        partial void OnNoteIdChanged(int value)
+        partial void OnNoteIdChanged(string value)
         {
             _ = LoadDataAsync(value);
         }
 
-        private async Task LoadDataAsync(int noteId)
+        private async Task LoadDataAsync(string noteId)
         {
             await LoadNoteAsync(noteId);
             await LoadCourseAsync();
@@ -54,13 +54,13 @@ namespace c971_project.ViewModels
 
 
         //load note data
-        private async Task LoadNoteAsync(int id)
+        private async Task LoadNoteAsync(string id)
         {
             if (IsBusy) return;
             try
             {
                 IsBusy = true;
-                Note = await _databaseService.GetNoteByIdAsync(id);
+                Note = await _firestoreDataService.GetNoteAsync(id);
             }
             catch (Exception ex)
             {
@@ -79,7 +79,7 @@ namespace c971_project.ViewModels
             try
             {
                 IsBusy = true;
-                Course = await _databaseService.GetCourseByIdAsync(Note.CourseId);
+                Course = await _firestoreDataService.GetCourseAsync(Note.CourseId);
             }
             catch (Exception ex)
             {

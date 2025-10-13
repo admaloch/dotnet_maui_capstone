@@ -13,7 +13,7 @@ public class NotificationService : IScheduleNotificationService
         {
             Debug.WriteLine($"=== Scheduling course notifications for: {course.Name} ===");
             Debug.WriteLine($"Current time: {DateTime.Now}");
-            Debug.WriteLine($"Course ID: {course.CourseId}");
+            Debug.WriteLine($"Course ID: {course.Id}");
             Debug.WriteLine($"StartDate: {course.StartDate} | StartDateTime: {course.StartDateTime}");
             Debug.WriteLine($"EndDate: {course.EndDate} | EndDateTime: {course.EndDateTime}");
             Debug.WriteLine($"NotifyStart: {course.NotifyStartDate} | NotifyEnd: {course.NotifyEndDate}");
@@ -22,7 +22,7 @@ public class NotificationService : IScheduleNotificationService
             Debug.WriteLine($"StartDateTime > Now: {course.StartDateTime > DateTime.Now}");
             Debug.WriteLine($"EndDateTime > Now: {course.EndDateTime > DateTime.Now}");
             // Cancel any existing notifications for this course first
-            await CancelCourseNotificationsAsync(course.CourseId);
+            await CancelCourseNotificationsAsync(course.Id);
 
             var results = new List<bool>();
 
@@ -31,7 +31,7 @@ public class NotificationService : IScheduleNotificationService
             {
                 var startNotification = new NotificationRequest
                 {
-                    NotificationId = GenerateCourseNotificationId(course.CourseId, isStartDate: true),
+                    NotificationId = GenerateCourseNotificationId(course.Id, isStartDate: true),
                     Title = "Course Starting Soon!",
                     Description = $"{course.Name} starts on {course.StartDateTime:MMM dd, yyyy 'at' h:mm tt}",  // Updated
                     Schedule = new NotificationRequestSchedule
@@ -55,7 +55,7 @@ public class NotificationService : IScheduleNotificationService
             {
                 var endNotification = new NotificationRequest
                 {
-                    NotificationId = GenerateCourseNotificationId(course.CourseId, isStartDate: false),
+                    NotificationId = GenerateCourseNotificationId(course.Id, isStartDate: false),
                     Title = "Course Ending Soon!",
                     Description = $"{course.Name} ends on {course.EndDateTime:MMM dd, yyyy 'at' h:mm tt}",  // Updated
                     Schedule = new NotificationRequestSchedule
@@ -99,7 +99,7 @@ public class NotificationService : IScheduleNotificationService
         try
         {
             Debug.WriteLine($"=== Scheduling assessment notifications for: {assessment.Name} ===");
-            Debug.WriteLine($"Assessment ID: {assessment.AssessmentId}");
+            Debug.WriteLine($"Assessment ID: {assessment.Id}");
             Debug.WriteLine($"StartDate: {assessment.StartDate} | StartDateTime: {assessment.StartDateTime}");
             Debug.WriteLine($"EndDate: {assessment.EndDate} | EndDateTime: {assessment.EndDateTime}");
             Debug.WriteLine($"NotifyStart: {assessment.NotifyStartDate} | NotifyEnd: {assessment.NotifyEndDate}");
@@ -109,7 +109,7 @@ public class NotificationService : IScheduleNotificationService
             Debug.WriteLine($"StartDateTime > Now: {assessment.StartDateTime > DateTime.Now}");
             Debug.WriteLine($"EndDateTime > Now: {assessment.EndDateTime > DateTime.Now}");
 
-            await CancelAssessmentNotificationsAsync(assessment.AssessmentId);
+            await CancelAssessmentNotificationsAsync(assessment.Id);
 
             var results = new List<bool>();
 
@@ -120,7 +120,7 @@ public class NotificationService : IScheduleNotificationService
 
                 var startNotification = new NotificationRequest
                 {
-                    NotificationId = GenerateAssessmentNotificationId(assessment.AssessmentId, isStartDate: true),
+                    NotificationId = GenerateAssessmentNotificationId(assessment.Id, isStartDate: true),
                     Title = "Assessment Available!",
                     Description = $"{assessment.Name} starts on {assessment.StartDate:MMM dd, yyyy}",
                     Schedule = new NotificationRequestSchedule
@@ -152,7 +152,7 @@ public class NotificationService : IScheduleNotificationService
 
                 var endNotification = new NotificationRequest
                 {
-                    NotificationId = GenerateAssessmentNotificationId(assessment.AssessmentId, isStartDate: false),
+                    NotificationId = GenerateAssessmentNotificationId(assessment.Id, isStartDate: false),
                     Title = "Assessment Due Soon!",
                     Description = $"{assessment.Name} is due on {assessment.EndDate:MMM dd, yyyy}",
                     Schedule = new NotificationRequestSchedule
@@ -195,7 +195,7 @@ public class NotificationService : IScheduleNotificationService
             return false;
         }
     }
-    private async Task CancelCourseNotificationsAsync(int courseId)
+    private async Task CancelCourseNotificationsAsync(string courseId)
     {
         try
         {
@@ -209,7 +209,7 @@ public class NotificationService : IScheduleNotificationService
         }
     }
 
-    private async Task CancelAssessmentNotificationsAsync(int assessmentId)
+    private async Task CancelAssessmentNotificationsAsync(string assessmentId)
     {
         try
         {
@@ -223,13 +223,21 @@ public class NotificationService : IScheduleNotificationService
         }
     }
 
-    private int GenerateCourseNotificationId(int courseId, bool isStartDate)
+    private int GenerateNotificationId(string entityId, int typeCode)
     {
-        return courseId * 100 + (isStartDate ? 1 : 2);
+        // Generate consistent integer ID from string + type code
+        return (entityId.GetHashCode() & 0x7FFFFFFF) * 100 + typeCode;
     }
 
-    private int GenerateAssessmentNotificationId(int assessmentId, bool isStartDate)
+    private int GenerateCourseNotificationId(string courseId, bool isStartDate)
     {
-        return assessmentId * 100 + (isStartDate ? 3 : 4);
+        int typeCode = isStartDate ? 1 : 2;
+        return GenerateNotificationId(courseId, typeCode);
+    }
+
+    private int GenerateAssessmentNotificationId(string assessmentId, bool isStartDate)
+    {
+        int typeCode = isStartDate ? 3 : 4;
+        return GenerateNotificationId(assessmentId, typeCode);
     }
 }

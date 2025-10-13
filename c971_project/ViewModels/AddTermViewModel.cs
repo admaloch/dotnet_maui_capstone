@@ -1,7 +1,7 @@
 ﻿using c971_project.Helpers;
 using c971_project.Messages;
 using c971_project.Models;
-using c971_project.Services.Data;
+using c971_project.Services.Firebase;
 using c971_project.Services.ValidationServices;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -17,16 +17,15 @@ namespace c971_project.ViewModels
 {
     public partial class AddTermViewModel : BaseViewModel
     {
-        private readonly DatabaseService _databaseService;
+        private readonly IFirestoreDataService _firestoreDataService;
 
         [ObservableProperty]
         private Term _newTerm;
 
 
-
-        public AddTermViewModel(DatabaseService databaseService)
+        public AddTermViewModel(IFirestoreDataService firestoreDataService)
         {
-            _databaseService = databaseService;
+            _firestoreDataService = firestoreDataService;
 
             // Initialize the new term
             NewTerm = new Term
@@ -59,7 +58,7 @@ namespace c971_project.ViewModels
                 }
 
                 // Save to database
-                await _databaseService.SaveTermAsync(NewTerm);
+                await _firestoreDataService.SaveTermAsync(NewTerm);
 
                 // Optional: notify other viewmodels
                 WeakReferenceMessenger.Default.Send(new TermUpdatedMessage());

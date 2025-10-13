@@ -5,7 +5,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using System.Diagnostics;
-using c971_project.Services.Data;
+using c971_project.Services.Firebase;
 
 
 namespace c971_project.ViewModels
@@ -15,12 +15,12 @@ namespace c971_project.ViewModels
     {
 
         [ObservableProperty]
-        private int studentId;
+        private string studentId;
 
         [ObservableProperty]
         private Student _student;
 
-        private readonly DatabaseService _databaseService;
+        private readonly IFirestoreDataService _firestoreDataService;
 
         public List<string> StatusOptions { get; } = new()
         {
@@ -30,20 +30,20 @@ namespace c971_project.ViewModels
             "Graduated"
         };
 
-        public EditStudentViewModel(DatabaseService databaseService)
+        public EditStudentViewModel(IFirestoreDataService firestoreDataService)
         {
-            _databaseService = databaseService;
+            _firestoreDataService = firestoreDataService;
         }
 
         // This runs when student id changes
-        partial void OnStudentIdChanged(int value)
+        partial void OnStudentIdChanged(string value)
         {
             _= LoadStudentDataAsync(value);
         }
 
-        private async Task LoadStudentDataAsync(int studentId)
+        private async Task LoadStudentDataAsync(string studentId)
         {
-            Student = await _databaseService.GetStudentByIdAsync(StudentId);
+            Student = await _firestoreDataService.GetStudentAsync(studentId);
         }
 
         [RelayCommand]
@@ -61,7 +61,7 @@ namespace c971_project.ViewModels
                     return;
 
                 // Save to database
-                await _databaseService.SaveStudentAsync(Student);
+                await _firestoreDataService.SaveStudentAsync(Student);
 
                 // Optional: notify other viewmodels
                 WeakReferenceMessenger.Default.Send(new StudentUpdatedMessage());
@@ -87,7 +87,7 @@ namespace c971_project.ViewModels
             {
                 var errorMessage = ValidationHelper.GetErrors(
                     Student,
-                    nameof(Student.StudentId),
+                    nameof(Student.Id),
                     nameof(Student.Name),
                     nameof(Student.Email),
                     nameof(Student.Major)

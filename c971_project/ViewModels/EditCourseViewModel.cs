@@ -1,6 +1,6 @@
 ﻿using c971_project.Messages;
 using c971_project.Models;
-using c971_project.Services.Data;
+using c971_project.Services.Firebase;
 using c971_project.Services.Notifications;
 using c971_project.Services.ValidationServices;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -14,12 +14,12 @@ namespace c971_project.ViewModels
     [QueryProperty(nameof(CourseId), "CourseId")]
     public partial class EditCourseViewModel : BaseViewModel
     {
-        private readonly DatabaseService _databaseService;
+        private readonly IFirestoreDataService _firestoreDataService;
         private readonly CourseValidator _courseValidator;
         private readonly IScheduleNotificationService _notificationService; // Added
 
         [ObservableProperty]
-        private int courseId;
+        private string courseId;
 
         [ObservableProperty]
         private Course _course;
@@ -35,24 +35,24 @@ namespace c971_project.ViewModels
         };
 
         // Updated constructor with notification service
-        public EditCourseViewModel(DatabaseService databaseService,
+        public EditCourseViewModel(IFirestoreDataService firestoreDataService,
                                  CourseValidator courseValidator,
                                  IScheduleNotificationService notificationService) // Added parameter
         {
-            _databaseService = databaseService;
+            _firestoreDataService = firestoreDataService;
             _courseValidator = courseValidator;
             _notificationService = notificationService; // Added
         }
 
-        partial void OnCourseIdChanged(int value)
+        partial void OnCourseIdChanged(string value)
         {
             LoadCourseAsync(value); // call async fire-and-forget
         }
 
-        private async Task LoadCourseAsync(int courseId)
+        private async Task LoadCourseAsync(string courseId)
         {
-            Course = await _databaseService.GetCourseByIdAsync(courseId);
-            Instructor = await _databaseService.GetInstructorByIdAsync(Course.InstructorId);
+            Course = await _firestoreDataService.GetCourseAsync(courseId);
+            Instructor = await _firestoreDataService.GetInstructorAsync(Course.InstructorId);
         }
 
         [RelayCommand]

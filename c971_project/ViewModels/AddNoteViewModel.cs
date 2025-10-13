@@ -9,33 +9,33 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using c971_project.Services.ValidationServices;
-using c971_project.Services.Data;
+using c971_project.Services.Firebase;
 
 namespace c971_project.ViewModels
 {
     [QueryProperty(nameof(CourseId), "CourseId")]
     public partial class AddNoteViewModel : BaseViewModel
     {
-        private readonly DatabaseService _databaseService;
+        private readonly IFirestoreDataService _firestoreDataService;
 
         [ObservableProperty]
-        private int courseId;
+        private string courseId;
 
         [ObservableProperty]
         private Note _newNote;
 
-        public AddNoteViewModel(DatabaseService databaseService)
+        public AddNoteViewModel(IFirestoreDataService firestoreDataService)
         {
-            _databaseService = databaseService;
+            _firestoreDataService = firestoreDataService;
         }
 
         // This runs when CourseId is assigned by Shell after navigation
-        partial void OnCourseIdChanged(int value)
+        partial void OnCourseIdChanged(string value)
         {
             InitializeDefaultNote(value);
         }
 
-        private void InitializeDefaultNote(int courseId)
+        private void InitializeDefaultNote(string courseId)
         {
             if (NewNote == null)
             {
@@ -72,7 +72,7 @@ namespace c971_project.ViewModels
                 }
 
                 // Save to database
-                await _databaseService.SaveNoteAsync(NewNote);
+                await _firestoreDataService.SaveNoteAsync(NewNote);
 
                 // notify change
                 WeakReferenceMessenger.Default.Send(new NoteUpdatedMessage());

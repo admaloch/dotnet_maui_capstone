@@ -16,7 +16,7 @@ namespace c971_project.Services.Firebase
         Task DeleteTermAsync(string termId);
 
         // COURSE METHODS
-        Task<List<Course>> GetCoursesAsync(string termId);
+        Task<List<Course>> GetCoursesByTermIdAsync(string termId);
         Task<Course> GetCourseAsync(string courseId);
         Task<Course> GetCourseByCourseNumAsync(string courseNum);
         Task SaveCourseAsync(Course course);
@@ -28,14 +28,14 @@ namespace c971_project.Services.Firebase
         Task SaveInstructorAsync(Instructor instructor);
 
         // ASSESSMENT METHODS
-        Task<List<Assessment>> GetAssessmentsAsync(string courseId);
+        Task<List<Assessment>> GetAssessmentsByCourseIdAsync(string courseId);
         Task<Assessment> GetAssessmentAsync(string assessmentId);
         Task SaveAssessmentAsync(Assessment assessment);
         Task DeleteAssessmentAsync(string assessmentId);
         Task DeleteAssessmentsByCourseIdAsync(string courseId);
 
         // NOTE METHODS
-        Task<List<Note>> GetNotesAsync(string courseId);
+        Task<List<Note>> GetNotesByCourseIdAsync(string courseId);
         Task<Note> GetNoteAsync(string noteId);
         Task SaveNoteAsync(Note note);
         Task DeleteNoteAsync(string noteId);
@@ -89,7 +89,7 @@ namespace c971_project.Services.Firebase
         }
 
         // COURSE METHODS
-        public async Task<List<Course>> GetCoursesAsync(string termId)
+        public async Task<List<Course>> GetCoursesByTermIdAsync(string termId)
         {
             var query = _firestoreDb.Collection("courses").WhereEqualTo("TermId", termId);
             var snapshot = await query.GetSnapshotAsync();
@@ -139,7 +139,7 @@ namespace c971_project.Services.Firebase
         }
 
         // ASSESSMENT METHODS
-        public async Task<List<Assessment>> GetAssessmentsAsync(string courseId)
+        public async Task<List<Assessment>> GetAssessmentsByCourseIdAsync(string courseId)
         {
             var query = _firestoreDb.Collection("assessments").WhereEqualTo("CourseId", courseId);
             var snapshot = await query.GetSnapshotAsync();
@@ -164,7 +164,7 @@ namespace c971_project.Services.Firebase
 
         public async Task DeleteAssessmentsByCourseIdAsync(string courseId)
         {
-            var assessments = await GetAssessmentsAsync(courseId);
+            var assessments = await GetAssessmentsByCourseIdAsync(courseId);
             var batch = _firestoreDb.StartBatch();
 
             foreach (var assessment in assessments)
@@ -176,7 +176,7 @@ namespace c971_project.Services.Firebase
         }
 
         // NOTE METHODS
-        public async Task<List<Note>> GetNotesAsync(string courseId)
+        public async Task<List<Note>> GetNotesByCourseIdAsync(string courseId)
         {
             var query = _firestoreDb.Collection("notes").WhereEqualTo("CourseId", courseId);
             var snapshot = await query.GetSnapshotAsync();
@@ -201,7 +201,7 @@ namespace c971_project.Services.Firebase
 
         public async Task DeleteNotesByCourseIdAsync(string courseId)
         {
-            var notes = await GetNotesAsync(courseId);
+            var notes = await GetNotesByCourseIdAsync(courseId);
             var batch = _firestoreDb.StartBatch();
 
             foreach (var note in notes)

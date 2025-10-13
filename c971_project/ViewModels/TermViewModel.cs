@@ -1,6 +1,6 @@
 ﻿using c971_project.Messages;
 using c971_project.Models;
-using c971_project.Services.Data;
+using c971_project.Services.Firebase;
 using c971_project.ViewModels;
 using c971_project.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -17,10 +17,10 @@ namespace c971_project.ViewModels
     [QueryProperty(nameof(TermId), "TermId")]
     public partial class TermViewModel : BaseViewModel
     {
-        private readonly DatabaseService _databaseService;
+        private readonly IFirestoreDataService _firestoreDataService;
 
         [ObservableProperty]
-        private int termId;
+        private string termId;
 
         [ObservableProperty]
         private Term term;
@@ -29,9 +29,9 @@ namespace c971_project.ViewModels
         private ObservableCollection<Course> _courses = new();
         public bool CanAddMoreCourses => Courses.Count < 6;
 
-        public TermViewModel(DatabaseService databaseService)
+        public TermViewModel(IFirestoreDataService firestoreDataService)
         {
-            _databaseService = databaseService;
+            _firestoreDataService = firestoreDataService;
 
             // Notify when Courses collection changes
             Courses.CollectionChanged += (s, e) =>
@@ -50,25 +50,25 @@ namespace c971_project.ViewModels
 
         }
 
-        partial void OnTermIdChanged(int value)
+        partial void OnTermIdChanged(string value)
         {
             _ = LoadDataAsync(value);
         }
 
-        private async Task LoadDataAsync(int termId)
+        private async Task LoadDataAsync(string termId)
         {
             await LoadTermAsync(termId);
             await LoadCoursesAsync();
         }
 
-        private async Task LoadTermAsync(int id)
+        private async Task LoadTermAsync(string id)
         {
             if (IsBusy) return;
 
             try
             {
                 IsBusy = true;
-                Term = await _databaseService.GetTermByIdAsync(id);
+                Term = await _firestoreDataService.GetTermAsync(id);
             }
             catch (Exception ex)
             {
@@ -87,10 +87,9 @@ namespace c971_project.ViewModels
             {
                 IsBusy = true;
 
-                if (TermId <= 0)
-                    return;
+                if (string.IsNullOrEmpty(TermId)) return;
 
-                var courseList = await _databaseService.GetCoursesByTermIdAsync(TermId);
+                var courseList = await _firestoreDataService.GetCoursesByTermIdAsync(TermId);
 
                 Courses.Clear();
                 foreach (var course in courseList)
@@ -98,7 +97,7 @@ namespace c971_project.ViewModels
 
                 Debug.WriteLine($"Total courses in DB: {Courses.Count}");
                 foreach (var c in Courses)
-                    Debug.WriteLine($"Course: {c.CourseId}, {c.Name}, TermId={c.TermId}");
+                    Debug.WriteLine($"Course: {c.Id}, {c.Name}, TermId={c.TermId}");
             }
             catch (Exception ex)
             {
@@ -139,7 +138,7 @@ namespace c971_project.ViewModels
                 {
                     IsBusy = true;
                     await Shell.Current.GoToAsync(nameof(AddCoursePage),
-                        new Dictionary<string, object> { { "TermId", Term.TermId } });
+                        new Dictionary<string, object> { { "TermId", Term.Id } });
                 }
                 finally { IsBusy = false; }
             }
@@ -161,9 +160,9 @@ namespace c971_project.ViewModels
             {
                 IsBusy = true;
                 //delete course and corresponding notes and assessments
-                await _databaseService.DeleteAssessmentsByCourseIdAsync(course.CourseId);
-                await _databaseService.DeleteNotesByCourseIdAsync(course.CourseId);
-                await _databaseService.DeleteCourseAsync(course);
+                await _firestoreDataService.DeleteAssessmentsByCourseIdAsync(course.Id);
+                await _firestoreDataService.DeleteNotesByCourseIdAsync(course.Id);
+                await _firestoreDataService.DeleteCourseAsync(course.Id);
                 Courses.Remove(course);
             }
             catch (Exception ex)
@@ -181,7 +180,7 @@ namespace c971_project.ViewModels
             {
                 IsBusy = true;
                 await Shell.Current.GoToAsync(nameof(CoursePage),
-                    new Dictionary<string, object> { { "CourseId", course.CourseId } });
+                    new Dictionary<string, object> { { "CourseId", course.Id } });
             }
             finally { IsBusy = false; }
         }

@@ -1,7 +1,7 @@
 ﻿using c971_project.Helpers;
 using c971_project.Messages;
 using c971_project.Models;
-using c971_project.Services.Data;
+using c971_project.Services.Firebase;
 using c971_project.Services.ValidationServices;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -17,28 +17,28 @@ namespace c971_project.ViewModels
     [QueryProperty(nameof(TermId), "TermId")]
     public partial class EditTermViewModel : BaseViewModel
     {
-        private readonly DatabaseService _databaseService;
+        private readonly IFirestoreDataService _firestoreDataService;
 
         [ObservableProperty]
-        private int termId;
+        private string termId;
 
         [ObservableProperty]
         private Term _term;
 
-        public EditTermViewModel(DatabaseService databaseService)
+        public EditTermViewModel(IFirestoreDataService firestoreDataService)
         {
-            _databaseService = databaseService;
+            _firestoreDataService = firestoreDataService;
         }
 
         // This runs when term id changes
-        partial void OnTermIdChanged(int value)
+        partial void OnTermIdChanged(string value)
         {
-            LoadTermDataAsync(value);
+            _ = LoadTermDataAsync(value);
         }
 
-        private async Task LoadTermDataAsync(int termId)
+        private async Task LoadTermDataAsync(string termId)
         {
-            Term = await _databaseService.GetTermByIdAsync(TermId);
+            Term = await _firestoreDataService.GetTermAsync(termId);
         }
 
         [RelayCommand]
@@ -63,7 +63,7 @@ namespace c971_project.ViewModels
                 }
 
                 // Save to database
-                await _databaseService.SaveTermAsync(Term);
+                await _firestoreDataService.SaveTermAsync(Term);
 
                 // Optional: notify other viewmodels
                 WeakReferenceMessenger.Default.Send(new TermUpdatedMessage());

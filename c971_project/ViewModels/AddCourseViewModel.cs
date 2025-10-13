@@ -1,7 +1,7 @@
 ﻿using c971_project.Helpers;
 using c971_project.Messages;
 using c971_project.Models;
-using c971_project.Services.Data;
+using c971_project.Services.Firebase;
 using c971_project.Services.Notifications;
 using c971_project.Services.ValidationServices;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -18,12 +18,12 @@ namespace c971_project.ViewModels
     [QueryProperty(nameof(TermId), "TermId")]
     public partial class AddCourseViewModel : BaseViewModel
     {
-        private readonly DatabaseService _databaseService;
+        private readonly IFirestoreDataService _firestoreDataService;
         private readonly CourseValidator _courseValidator;
         private readonly IScheduleNotificationService _notificationService; // Added
 
         [ObservableProperty]
-        private int termId;
+        private string termId;
 
         [ObservableProperty]
         private Course _newCourse;
@@ -39,21 +39,21 @@ namespace c971_project.ViewModels
         };
 
         // Updated constructor with notification service injection
-        public AddCourseViewModel(DatabaseService databaseService,
+        public AddCourseViewModel(IFirestoreDataService firestoreDataService,
                                 CourseValidator courseValidator,
                                 IScheduleNotificationService notificationService) // Added parameter
         {
-            _databaseService = databaseService;
+            _firestoreDataService = firestoreDataService;
             _courseValidator = courseValidator;
             _notificationService = notificationService; // Added
         }
 
-        partial void OnTermIdChanged(int value)
+        partial void OnTermIdChanged(string value)
         {
             InitializeDefaultCourse(value);
         }
 
-        private void InitializeDefaultCourse(int termId)
+        private void InitializeDefaultCourse(string termId)
         {
             // Initialize the new course
             NewCourse = new Course
@@ -66,7 +66,7 @@ namespace c971_project.ViewModels
                 StartTime = new TimeSpan(9, 0, 0),  // 9:00 AM default
                 EndTime = new TimeSpan(17, 0, 0),   // 5:00 PM default
                 DateAdded = DateTime.Now,
-                InstructorId = 0,   // will be selected later
+                InstructorId = "0",   // will be selected later
                 TermId = termId,     // links this course to the current Term
                 NotifyStartDate = true, // Default to true
                 NotifyEndDate = true    // Default to true

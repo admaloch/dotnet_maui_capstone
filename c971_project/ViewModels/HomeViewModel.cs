@@ -8,14 +8,17 @@ using System.Threading.Tasks;
 using c971_project.ViewModels;
 using CommunityToolkit.Mvvm.Messaging;
 using c971_project.Messages;
-using c971_project.Services.Data;
+using c971_project.Services.Firebase;
 
 
 namespace c971_project.ViewModels
 {
     public partial class HomeViewModel : BaseViewModel
     {
-        private readonly DatabaseService _databaseService;
+        private readonly IFirestoreDataService _firestoreDataService;
+        private readonly AuthService _authService;
+        private string _currentUserId;
+
 
         [ObservableProperty]
         private Student _currentStudent;
@@ -26,9 +29,11 @@ namespace c971_project.ViewModels
         // Computed property for button state
         public bool CanAddMoreTerms => Terms.Count < 6;
 
-        public HomeViewModel(DatabaseService databaseService)
+        public HomeViewModel(IFirestoreDataService firestoreDataService, AuthService authService)
         {
-            _databaseService = databaseService;
+            _firestoreDataService = firestoreDataService;
+            _authService = authService;
+            _currentUserId = _authService.CurrentUserId;
 
             _ = LoadDataAsync();
 
@@ -59,7 +64,7 @@ namespace c971_project.ViewModels
         {
             try
             {
-                CurrentStudent = await _databaseService.GetCurrentStudentAsync();
+                CurrentStudent = await _firestoreDataService.GetStudentAsync(_currentUserId); //need user id
             }
             catch (Exception ex)
             {
@@ -73,8 +78,7 @@ namespace c971_project.ViewModels
         {
             try
             {
-                var terms = await _databaseService.GetTermsAsync();
-
+                var terms = await _firestoreDataService.GetTermsAsync(_currentUserId); //user id
                 Terms.Clear();
                 foreach (var term in terms)
                 {
@@ -125,14 +129,14 @@ namespace c971_project.ViewModels
             {
                 IsBusy = true;
                 //also delete courses - notes - assessments
-                var courses = await _databaseService.GetCoursesByTermIdAsync(term.TermId);
+                var courses = await _firestoreDataService.GetCoursesByTermIdAsync(term.Id);
                 foreach (var course in courses)
                 {
-                    await _databaseService.DeleteAssessmentsByCourseIdAsync(course.CourseId);
-                    await _databaseService.DeleteNotesByCourseIdAsync(course.CourseId);
-                    await _databaseService.DeleteCourseAsync(course);
+                    await _firestoreDataService.DeleteAssessmentsByCourseIdAsync(course.Id);
+                    await _firestoreDataService.DeleteNotesByCourseIdAsync(course.Id);
+                    await _firestoreDataService.DeleteCourseAsync(course.Id);
                 }
-                await _databaseService.DeleteTermAsync(term);
+                await _firestoreDataService.DeleteTermAsync(term.Id);
                 Terms.Remove(term);
 
             }
@@ -152,7 +156,7 @@ namespace c971_project.ViewModels
             {
                 IsBusy = true;
                 await Shell.Current.GoToAsync(nameof(EditStudentPage),
-                    new Dictionary<string, object> { { "StudentId", CurrentStudent.StudentId } });
+                    new Dictionary<string, object> { { "StudentId", CurrentStudent.Id } });
 
             }
             finally { IsBusy = false; }
@@ -166,7 +170,7 @@ namespace c971_project.ViewModels
             {
                 IsBusy = true;
                 await Shell.Current.GoToAsync(nameof(TermPage),
-                    new Dictionary<string, object> { { "TermId", term.TermId } });
+                    new Dictionary<string, object> { { "TermId", term.Id } });
             }
             finally { IsBusy = false; }
         }

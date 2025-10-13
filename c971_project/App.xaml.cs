@@ -4,8 +4,10 @@
 using c971_project.Views;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Maui.Controls;
-using System.Diagnostics;
-using c971_project.Services.Data;
+using c971_project.Services.Firebase;
+
+using c971_project.Services.Firebase;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace c971_project
 {
@@ -34,11 +36,7 @@ namespace c971_project
         {
             try
             {
-                // Get the database service and wait for it to initialize
-                var dbService = serviceProvider.GetRequiredService<DatabaseService>();
-                await dbService.EnsureInitialized(); // Properly wait for DB to be ready
-
-                // Switch to main app
+                // Switch to main app immediately - Firebase will handle errors at service level
                 MainPage = new AppShell();
             }
             catch (Exception ex)
