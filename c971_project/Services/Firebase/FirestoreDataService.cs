@@ -1,5 +1,7 @@
-﻿using Google.Cloud.Firestore;
+﻿using Firebase.Database;
+using Firebase.Database.Query;
 using c971_project.Models;
+using Newtonsoft.Json;
 
 namespace c971_project.Services.Firebase
 {
@@ -10,7 +12,7 @@ namespace c971_project.Services.Firebase
         Task SaveStudentAsync(Student student);
 
         // TERM METHODS  
-        Task<List<Term>> GetTermsAsync(string userId);
+        Task<List<Term>> GetTermsByUserIdAsync(string userId);
         Task<Term> GetTermAsync(string termId);
         Task SaveTermAsync(Term term);
         Task DeleteTermAsync(string termId);
@@ -44,172 +46,238 @@ namespace c971_project.Services.Firebase
 
     public class FirestoreDataService : IFirestoreDataService
     {
-        private readonly FirestoreDb _firestoreDb;
-        private const string ProjectId = "wgu-cloud-planner"; // Your firebase Project ID from console
+        private readonly FirebaseClient _firebaseClient;
+
+        // Use your Realtime Database URL from Firebase Console
+        private const string FirebaseUrl = "https://wgu-cloud-planner-default-rtdb.firebaseio.com/";
 
         public FirestoreDataService()
         {
-            _firestoreDb = FirestoreDb.Create(ProjectId);
+            _firebaseClient = new FirebaseClient(FirebaseUrl);
         }
 
         // STUDENT METHODS
         public async Task<Student> GetStudentAsync(string studentId)
         {
-            var snapshot = await _firestoreDb.Collection("students").Document(studentId).GetSnapshotAsync();
-            return snapshot.Exists ? snapshot.ConvertTo<Student>() : null;
+            var result = await _firebaseClient
+                .Child("students")
+                .Child(studentId)
+                .OnceSingleAsync<Student>();
+            return result;
         }
 
         public async Task SaveStudentAsync(Student student)
         {
-            await _firestoreDb.Collection("students").Document(student.Id).SetAsync(student);
+            await _firebaseClient
+                .Child("students")
+                .Child(student.Id)
+                .PutAsync(student);
         }
 
         // TERM METHODS
-        public async Task<List<Term>> GetTermsAsync(string userId)
+        public async Task<List<Term>> GetTermsByUserIdAsync(string userId)
         {
-            var query = _firestoreDb.Collection("terms").WhereEqualTo("UserId", userId);
-            var snapshot = await query.GetSnapshotAsync();
-            return snapshot.Documents.Select(doc => doc.ConvertTo<Term>()).ToList();
+            var terms = await _firebaseClient
+                .Child("terms")
+                .OrderBy("UserId")
+                .EqualTo(userId)
+                .OnceAsync<Term>();
+
+            return terms.Select(item => item.Object).ToList();
         }
 
         public async Task<Term> GetTermAsync(string termId)
         {
-            var snapshot = await _firestoreDb.Collection("terms").Document(termId).GetSnapshotAsync();
-            return snapshot.Exists ? snapshot.ConvertTo<Term>() : null;
+            var term = await _firebaseClient
+                .Child("terms")
+                .Child(termId)
+                .OnceSingleAsync<Term>();
+            return term;
         }
 
         public async Task SaveTermAsync(Term term)
         {
-            await _firestoreDb.Collection("terms").Document(term.Id).SetAsync(term);
+            await _firebaseClient
+                .Child("terms")
+                .Child(term.Id)
+                .PutAsync(term);
         }
 
         public async Task DeleteTermAsync(string termId)
         {
-            await _firestoreDb.Collection("terms").Document(termId).DeleteAsync();
+            await _firebaseClient
+                .Child("terms")
+                .Child(termId)
+                .DeleteAsync();
         }
 
         // COURSE METHODS
         public async Task<List<Course>> GetCoursesByTermIdAsync(string termId)
         {
-            var query = _firestoreDb.Collection("courses").WhereEqualTo("TermId", termId);
-            var snapshot = await query.GetSnapshotAsync();
-            return snapshot.Documents.Select(doc => doc.ConvertTo<Course>()).ToList();
+            var courses = await _firebaseClient
+                .Child("courses")
+                .OrderBy("TermId")
+                .EqualTo(termId)
+                .OnceAsync<Course>();
+
+            return courses.Select(item => item.Object).ToList();
         }
 
         public async Task<Course> GetCourseAsync(string courseId)
         {
-            var snapshot = await _firestoreDb.Collection("courses").Document(courseId).GetSnapshotAsync();
-            return snapshot.Exists ? snapshot.ConvertTo<Course>() : null;
+            var course = await _firebaseClient
+                .Child("courses")
+                .Child(courseId)
+                .OnceSingleAsync<Course>();
+            return course;
         }
 
         public async Task<Course> GetCourseByCourseNumAsync(string courseNum)
         {
-            var query = _firestoreDb.Collection("courses").WhereEqualTo("CourseNum", courseNum);
-            var snapshot = await query.GetSnapshotAsync();
-            return snapshot.Documents.FirstOrDefault()?.ConvertTo<Course>();
+            var courses = await _firebaseClient
+                .Child("courses")
+                .OrderBy("CourseNum")
+                .EqualTo(courseNum)
+                .OnceAsync<Course>();
+
+            return courses.FirstOrDefault()?.Object;
         }
 
         public async Task SaveCourseAsync(Course course)
         {
-            await _firestoreDb.Collection("courses").Document(course.Id).SetAsync(course);
+            await _firebaseClient
+                .Child("courses")
+                .Child(course.Id)
+                .PutAsync(course);
         }
 
         public async Task DeleteCourseAsync(string courseId)
         {
-            await _firestoreDb.Collection("courses").Document(courseId).DeleteAsync();
+            await _firebaseClient
+                .Child("courses")
+                .Child(courseId)
+                .DeleteAsync();
         }
 
         // INSTRUCTOR METHODS
         public async Task<Instructor> GetInstructorAsync(string instructorId)
         {
-            var snapshot = await _firestoreDb.Collection("instructors").Document(instructorId).GetSnapshotAsync();
-            return snapshot.Exists ? snapshot.ConvertTo<Instructor>() : null;
+            var instructor = await _firebaseClient
+                .Child("instructors")
+                .Child(instructorId)
+                .OnceSingleAsync<Instructor>();
+            return instructor;
         }
 
         public async Task<Instructor> GetInstructorByEmailAsync(string email)
         {
-            var query = _firestoreDb.Collection("instructors").WhereEqualTo("Email", email);
-            var snapshot = await query.GetSnapshotAsync();
-            return snapshot.Documents.FirstOrDefault()?.ConvertTo<Instructor>();
+            var instructors = await _firebaseClient
+                .Child("instructors")
+                .OrderBy("Email")
+                .EqualTo(email)
+                .OnceAsync<Instructor>();
+
+            return instructors.FirstOrDefault()?.Object;
         }
 
         public async Task SaveInstructorAsync(Instructor instructor)
         {
-            await _firestoreDb.Collection("instructors").Document(instructor.Id).SetAsync(instructor);
+            await _firebaseClient
+                .Child("instructors")
+                .Child(instructor.Id)
+                .PutAsync(instructor);
         }
 
         // ASSESSMENT METHODS
         public async Task<List<Assessment>> GetAssessmentsByCourseIdAsync(string courseId)
         {
-            var query = _firestoreDb.Collection("assessments").WhereEqualTo("CourseId", courseId);
-            var snapshot = await query.GetSnapshotAsync();
-            return snapshot.Documents.Select(doc => doc.ConvertTo<Assessment>()).ToList();
+            var assessments = await _firebaseClient
+                .Child("assessments")
+                .OrderBy("CourseId")
+                .EqualTo(courseId)
+                .OnceAsync<Assessment>();
+
+            return assessments.Select(item => item.Object).ToList();
         }
 
         public async Task<Assessment> GetAssessmentAsync(string assessmentId)
         {
-            var snapshot = await _firestoreDb.Collection("assessments").Document(assessmentId).GetSnapshotAsync();
-            return snapshot.Exists ? snapshot.ConvertTo<Assessment>() : null;
+            var assessment = await _firebaseClient
+                .Child("assessments")
+                .Child(assessmentId)
+                .OnceSingleAsync<Assessment>();
+            return assessment;
         }
 
         public async Task SaveAssessmentAsync(Assessment assessment)
         {
-            await _firestoreDb.Collection("assessments").Document(assessment.Id).SetAsync(assessment);
+            await _firebaseClient
+                .Child("assessments")
+                .Child(assessment.Id)
+                .PutAsync(assessment);
         }
 
         public async Task DeleteAssessmentAsync(string assessmentId)
         {
-            await _firestoreDb.Collection("assessments").Document(assessmentId).DeleteAsync();
+            await _firebaseClient
+                .Child("assessments")
+                .Child(assessmentId)
+                .DeleteAsync();
         }
 
         public async Task DeleteAssessmentsByCourseIdAsync(string courseId)
         {
             var assessments = await GetAssessmentsByCourseIdAsync(courseId);
-            var batch = _firestoreDb.StartBatch();
-
             foreach (var assessment in assessments)
             {
-                batch.Delete(_firestoreDb.Collection("assessments").Document(assessment.Id));
+                await DeleteAssessmentAsync(assessment.Id);
             }
-
-            await batch.CommitAsync();
         }
 
         // NOTE METHODS
         public async Task<List<Note>> GetNotesByCourseIdAsync(string courseId)
         {
-            var query = _firestoreDb.Collection("notes").WhereEqualTo("CourseId", courseId);
-            var snapshot = await query.GetSnapshotAsync();
-            return snapshot.Documents.Select(doc => doc.ConvertTo<Note>()).ToList();
+            var notes = await _firebaseClient
+                .Child("notes")
+                .OrderBy("CourseId")
+                .EqualTo(courseId)
+                .OnceAsync<Note>();
+
+            return notes.Select(item => item.Object).ToList();
         }
 
         public async Task<Note> GetNoteAsync(string noteId)
         {
-            var snapshot = await _firestoreDb.Collection("notes").Document(noteId).GetSnapshotAsync();
-            return snapshot.Exists ? snapshot.ConvertTo<Note>() : null;
+            var note = await _firebaseClient
+                .Child("notes")
+                .Child(noteId)
+                .OnceSingleAsync<Note>();
+            return note;
         }
 
         public async Task SaveNoteAsync(Note note)
         {
-            await _firestoreDb.Collection("notes").Document(note.Id).SetAsync(note);
+            await _firebaseClient
+                .Child("notes")
+                .Child(note.Id)
+                .PutAsync(note);
         }
 
         public async Task DeleteNoteAsync(string noteId)
         {
-            await _firestoreDb.Collection("notes").Document(noteId).DeleteAsync();
+            await _firebaseClient
+                .Child("notes")
+                .Child(noteId)
+                .DeleteAsync();
         }
 
         public async Task DeleteNotesByCourseIdAsync(string courseId)
         {
             var notes = await GetNotesByCourseIdAsync(courseId);
-            var batch = _firestoreDb.StartBatch();
-
             foreach (var note in notes)
             {
-                batch.Delete(_firestoreDb.Collection("notes").Document(note.Id));
+                await DeleteNoteAsync(note.Id);
             }
-
-            await batch.CommitAsync();
         }
     }
 }

@@ -78,7 +78,7 @@ namespace c971_project.ViewModels
         {
             try
             {
-                var terms = await _firestoreDataService.GetTermsAsync(_currentUserId); //user id
+                var terms = await _firestoreDataService.GetTermsByUserIdAsync(_currentUserId); //user id
                 Terms.Clear();
                 foreach (var term in terms)
                 {
