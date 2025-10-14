@@ -100,7 +100,6 @@ namespace c971_project.ViewModels
                 if (success)
                 {
                     await CreateStudentProfile();
-                    await Shell.Current.DisplayAlert("Success", "Account created successfully!", "OK");
                     await Shell.Current.GoToAsync("//HomePage");
                 }
                 else

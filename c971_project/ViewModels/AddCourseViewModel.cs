@@ -60,16 +60,16 @@ namespace c971_project.ViewModels
             {
                 Name = string.Empty,
                 CourseNum = string.Empty,
-                CuNum = 3, // default credit units
+                CuNum = 3, 
                 StartDate = DateTime.Today,
-                EndDate = DateTime.Today.AddMonths(2), // default course length
+                EndDate = DateTime.Today.AddMonths(2), 
                 StartTime = new TimeSpan(9, 0, 0),  // 9:00 AM default
                 EndTime = new TimeSpan(17, 0, 0),   // 5:00 PM default
                 DateAdded = DateTime.Now,
-                InstructorId = "0",   // will be selected later
-                TermId = termId,     // links this course to the current Term
-                NotifyStartDate = true, // Default to true
-                NotifyEndDate = true    // Default to true
+                InstructorId = "0",  
+                TermId = termId,     
+                NotifyStartDate = true, 
+                NotifyEndDate = true    
             };
 
             // Initialize the new course

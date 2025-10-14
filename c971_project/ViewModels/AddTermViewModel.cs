@@ -18,21 +18,25 @@ namespace c971_project.ViewModels
     public partial class AddTermViewModel : BaseViewModel
     {
         private readonly IFirestoreDataService _firestoreDataService;
+        private readonly AuthService _authService;
+
 
         [ObservableProperty]
         private Term _newTerm;
 
-
-        public AddTermViewModel(IFirestoreDataService firestoreDataService)
+        public AddTermViewModel(IFirestoreDataService firestoreDataService, AuthService authService)
         {
             _firestoreDataService = firestoreDataService;
+            _authService = authService;
 
             // Initialize the new term
             NewTerm = new Term
             {
                 Name = string.Empty,
                 StartDate = DateTime.Today.AddDays(1),
-                EndDate = DateTime.Today.AddMonths(4) // default length
+                EndDate = DateTime.Today.AddMonths(4), // default length
+                UserId = _authService.CurrentUserId // Set the UserId
+
             };
         }
 
@@ -44,6 +48,9 @@ namespace c971_project.ViewModels
             try
             {
                 IsBusy = true;
+
+                // Ensure UserId is set (in case it wasn't set in constructor)
+                NewTerm.UserId = _authService.CurrentUserId;
 
                 //validate iinputs // code for 
                 //TermValidator.SetInitialStartAndEndDates(NewTerm);
