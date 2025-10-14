@@ -7,6 +7,7 @@ namespace c971_project.Services.Firebase
 {
     public interface IFirestoreDataService
     {
+        Task<Dictionary<string, string>> GetMajorsAsync();
         // STUDENT METHODS
         Task<Student> GetStudentAsync(string studentId);
         Task SaveStudentAsync(Student student);
@@ -54,6 +55,16 @@ namespace c971_project.Services.Firebase
         public FirestoreDataService()
         {
             _firebaseClient = new FirebaseClient(FirebaseUrl);
+        }
+
+
+        //maintain all majors in firestore
+        public async Task<Dictionary<string, string>> GetMajorsAsync()
+        {
+                var majors = await _firebaseClient
+                    .Child("majors")
+                    .OnceSingleAsync<Dictionary<string, string>>();
+                return majors;
         }
 
         // STUDENT METHODS

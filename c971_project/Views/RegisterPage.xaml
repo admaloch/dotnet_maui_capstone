@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage
-    x:Class="c971_project.Views.LoginPage"
+    x:Class="c971_project.Views.RegisterPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:system="clr-namespace:System;assembly=netstandard"
-    Title="Login"
+    Title="Register"
     BackgroundColor="{StaticResource Cream}">
     <Grid>
         <ScrollView>
             <VerticalStackLayout Padding="20" Spacing="15">
                 <Label
+                    Margin="0,0,0,0"
                     FontAttributes="Bold"
                     FontSize="32"
                     HorizontalOptions="Center"
-                    Text="WGU Cloud Planner" />
+                    Style="{StaticResource HeaderLabel}"
+                    Text="Create account" />
 
 
 
@@ -39,10 +41,10 @@
                             Margin="0,20,0,10"
                             FontAttributes="Bold"
                             FontSize="18"
-                            Text="Account login"
+                            Text="Account Register"
                             TextColor="{StaticResource DarkBlue}" />
 
-                        <!--  Login Name  -->
+                        <!--  Register Name  -->
                         <VerticalStackLayout Spacing="1">
                             <Entry
                                 Keyboard="Email"
@@ -53,21 +55,47 @@
                                 IsPassword="True"
                                 Placeholder="Password"
                                 Text="{Binding Password}" />
+
+                            <Entry
+                                IsPassword="True"
+                                Placeholder="Confirm Password"
+                                Text="{Binding ConfirmPassword}" />
+
+                            <!--  Student Information  -->
+                            <Label
+                                Margin="0,10,0,0"
+                                FontAttributes="Bold"
+                                Text="Student Information" />
+
+                            <Entry Placeholder="WGU Student ID" Text="{Binding StudentIdNumber}" />
+
+                            <Entry Placeholder="Full Name" Text="{Binding FullName}" />
+
+                            <Label
+                                Style="{StaticResource FieldLabel}"
+                                Text="Select major"
+                                TextColor="{StaticResource DarkBlue}" />
+                            <Picker
+                                Title="Select Your Major"
+                                BackgroundColor="{StaticResource White}"
+                                ItemsSource="{Binding MajorDisplayNames}"
+                                SelectedItem="{Binding SelectedMajorDisplayName}"
+                                TextColor="{StaticResource DarkBlue}" />
                             <Button
-                                Margin="5,10,5,5"
+                                Margin="5,20,5,5"
                                 BackgroundColor="{StaticResource DarkBlue}"
-                                Command="{Binding LoginCommand}"
+                                Command="{Binding RegisterCommand}"
                                 IsEnabled="{Binding IsNotBusy}"
-                                Text="Login" />
+                                Text="Register new account" />
 
                             <Button
                                 Margin="5"
                                 BackgroundColor="{StaticResource DarkBlue}"
-                                Command="{Binding RegisterPageCommand}"
+                                Command="{Binding LoginPageCommand}"
                                 ContentLayout="right"
                                 ImageSource="more_icon2.svg"
                                 IsEnabled="{Binding IsNotBusy}"
-                                Text="Create Account"
+                                Text="Login to existing account"
                                 TextColor="{StaticResource Primary}" />
 
                         </VerticalStackLayout>

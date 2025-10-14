@@ -1,13 +1,14 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
+﻿using c971_project.Models;
 using c971_project.Services.Firebase;
-using c971_project.Models;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using System.Diagnostics;
+using c971_project.Views;
 
 
 namespace c971_project.ViewModels
 {
-    public partial class LoginViewModel : ObservableObject
+    public partial class LoginViewModel : BaseViewModel
     {
         private readonly AuthService _authService;
         private readonly IFirestoreDataService _firestoreDataService;
@@ -64,75 +65,15 @@ namespace c971_project.ViewModels
         }
 
         [RelayCommand]
-        private async Task Register()
+        private async Task OnRegisterPageAsync()
         {
-            if (string.IsNullOrWhiteSpace(Email) || string.IsNullOrWhiteSpace(Password))
-            {
-                await Shell.Current.DisplayAlert("Error", "Please enter both email and password", "OK");
-                return;
-            }
-
-            IsNotBusy = false;
-
+            if (IsBusy) return;
             try
             {
-                var success = await _authService.RegisterAsync(Email, Password);
-                if (success)
-                {
-                    await CreateStudentProfile();
-                    await Shell.Current.DisplayAlert("Success", "Account created successfully!", "OK");
-                    await Shell.Current.GoToAsync("//HomePage");
-                }
-                else
-                {
-                    await Shell.Current.DisplayAlert("Registration Failed", "Failed to create account", "OK");
-                }
+                IsBusy = true;
+                await Shell.Current.GoToAsync(nameof(RegisterPage));
             }
-            catch (Exception ex)
-            {
-                // Show detailed error
-                await Shell.Current.DisplayAlert("Registration Error",
-                    $"Failed to register: {ex.Message}\n\nStack: {ex.StackTrace}", "OK");
-                Debug.WriteLine($"REGISTRATION ERROR: {ex}");
-            }
-            finally
-            {
-                IsNotBusy = true;
-            }
-        }
-
-        private async Task CreateStudentProfile()
-        {
-            try
-            {
-                var student = new Student();
-
-                // Override the generated ID with Firebase UID
-                student.Id = _authService.CurrentUserId;
-
-                student.Email = Email;
-                student.Name = Email.Split('@')[0];
-                student.StudentIdNumber = GenerateStudentId();
-                student.Major = "Undeclared";
-                student.Status = "Currently Enrolled";
-
-                // SAVE TO FIRESTORE
-                await _firestoreDataService.SaveStudentAsync(student);
-
-                // Removed the alert here - let Register handle the success message
-            }  
-            catch (Exception ex)
-            {
-                await Shell.Current.DisplayAlert("Error",
-                    $"Failed to create student profile: {ex.Message}", "OK");
-                throw; // Re-throw so Register knows it failed
-            }
-        }
-
-        private string GenerateStudentId()
-        {
-            // Simple temporary ID generation
-            return $"WGU{DateTime.Now:yyyyMMddHHmmss}";
+            finally { IsBusy = false; }
         }
     }
 }

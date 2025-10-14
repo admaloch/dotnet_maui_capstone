@@ -9,6 +9,10 @@ namespace c971_project
         {
             InitializeComponent();
 
+            Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage));
+            Routing.RegisterRoute(nameof(RegisterPage), typeof(RegisterPage));
+
+
             Routing.RegisterRoute(nameof(EditStudentPage), typeof(EditStudentPage));
 
             Routing.RegisterRoute(nameof(TermPage), typeof(TermPage));
