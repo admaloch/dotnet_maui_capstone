@@ -96,12 +96,13 @@
                         <VerticalStackLayout Spacing="5">
                             <Label
                                 Style="{StaticResource FieldLabel}"
-                                Text="Major"
+                                Text="Select major"
                                 TextColor="{StaticResource DarkBlue}" />
-                            <Entry
-                                Placeholder="Enter major"
-                                PlaceholderColor="{StaticResource LightBrown}"
-                                Text="{Binding Student.Major, Mode=TwoWay}"
+                            <Picker
+                                Title="Select Your Major"
+                                BackgroundColor="{StaticResource White}"
+                                ItemsSource="{Binding MajorDisplayNames}"
+                                SelectedItem="{Binding SelectedMajorDisplayName}"
                                 TextColor="{StaticResource DarkBlue}" />
                         </VerticalStackLayout>
 
