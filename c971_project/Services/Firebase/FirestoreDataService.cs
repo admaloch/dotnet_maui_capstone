@@ -12,6 +12,8 @@ namespace c971_project.Services.Firebase
         Task<Student> GetStudentAsync(string studentId);
         Task SaveStudentAsync(Student student);
 
+        Task DeleteStudentAsync(string userId);
+
         // TERM METHODS  
         Task<List<Term>> GetTermsByUserIdAsync(string userId);
         Task<Term> GetTermAsync(string termId);
@@ -68,11 +70,11 @@ namespace c971_project.Services.Firebase
         }
 
         // STUDENT METHODS
-        public async Task<Student> GetStudentAsync(string studentId)
+        public async Task<Student> GetStudentAsync(string userId)
         {
             var result = await _firebaseClient
                 .Child("students")
-                .Child(studentId)
+                .Child(userId)
                 .OnceSingleAsync<Student>();
             return result;
         }
@@ -83,6 +85,13 @@ namespace c971_project.Services.Firebase
                 .Child("students")
                 .Child(student.Id)
                 .PutAsync(student);
+        }
+        public async Task DeleteStudentAsync(string userId)
+        {
+            await _firebaseClient
+                .Child("students")
+                .Child(userId)
+                .DeleteAsync();
         }
 
         // TERM METHODS

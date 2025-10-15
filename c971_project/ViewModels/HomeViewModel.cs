@@ -1,14 +1,14 @@
-﻿using c971_project.Models;
+﻿using c971_project.Messages;
+using c971_project.Models;
+using c971_project.Services.Firebase;
+using c971_project.ViewModels;
 using c971_project.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using c971_project.ViewModels;
-using CommunityToolkit.Mvvm.Messaging;
-using c971_project.Messages;
-using c971_project.Services.Firebase;
 
 
 namespace c971_project.ViewModels
@@ -70,7 +70,6 @@ namespace c971_project.ViewModels
             {
                 CurrentStudent = null;
                 await Shell.Current.DisplayAlert("Error", ex.Message, "OK");
-
             }
         }
 
@@ -93,6 +92,58 @@ namespace c971_project.ViewModels
             }
             // update on add courses
             OnPropertyChanged(nameof(CanAddMoreTerms));
+        }
+
+        [RelayCommand]
+        private async Task OnDeleteStudentAsync(Term term)
+        {
+            if (IsBusy || term == null) return;
+
+            bool finalConfirm = await Shell.Current.DisplayAlert(
+                "Delete account",
+                "Warning: This will permanently delete ALL your data and cannot be undone!",
+                "DELETE EVERYTHING",
+                "Cancel");
+
+            if (!finalConfirm) return;
+
+            try
+            {
+                IsBusy = true;
+                //also delete terms - courses - notes - assessments
+                // Delete all terms, courses, assessments, and notes
+                var terms = await _firestoreDataService.GetTermsByUserIdAsync(_currentUserId);
+
+                foreach (var currTerm in terms)
+                {
+                    var courses = await _firestoreDataService.GetCoursesByTermIdAsync(currTerm.Id);
+
+                    foreach (var currCourse in courses)
+                    {
+                        // Delete assessments and notes first (dependencies)
+                        await _firestoreDataService.DeleteAssessmentsByCourseIdAsync(currCourse.Id);
+                        await _firestoreDataService.DeleteNotesByCourseIdAsync(currCourse.Id);
+                        // Then delete the course
+                        await _firestoreDataService.DeleteCourseAsync(currCourse.Id);
+                    }
+
+                    // Delete the term after all its courses are deleted
+                    await _firestoreDataService.DeleteTermAsync(term.Id);
+                }
+
+                // Finally delete the student
+                await _firestoreDataService.DeleteStudentAsync(_currentUserId);
+
+                // Logout user and navigate
+                _authService.Logout();
+                await Shell.Current.GoToAsync($"//{nameof(RegisterPage)}");
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Error", ex.Message, "OK");
+            }
+            finally { IsBusy = false; }
+
         }
 
         [RelayCommand]
