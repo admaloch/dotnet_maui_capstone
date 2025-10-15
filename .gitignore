@@ -1,4 +1,4 @@
-  # Build results
+# Build results
 bin/
 obj/
 [Bb]uild/
@@ -55,4 +55,11 @@ Thumbs.db
 *.db-wal
 *.db-shm
 
+# ========== SECURITY ADDITIONS ==========
 
+# Firebase/API Keys and Secrets
+Constants.cs                 # Your actual constants file
+FirebaseConstants.cs         # Any Firebase constants
+
+# Example/Template files (these CAN be committed)
+Constants.example.cs        # Template for constants
