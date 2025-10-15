@@ -7,6 +7,37 @@
     BackgroundColor="{StaticResource Cream}">
 
     <Grid>
+        <!-- Delete Icon at Top Right of Page -->
+        <Border
+            Grid.Row="0"
+            Margin="0,10,10,0"
+            HorizontalOptions="End"
+            VerticalOptions="Start"
+            BackgroundColor="{StaticResource LightRed}"
+            HeightRequest="55"
+            StrokeShape="Ellipse"
+            WidthRequest="55"
+            ZIndex="999">
+
+            <Border.Shadow>
+                <Shadow
+                    Brush="#40000000"
+                    Opacity="0.24"
+                    Radius="8"
+                    Offset="0,4" />
+            </Border.Shadow>
+
+            <Image
+                HeightRequest="30"
+                HorizontalOptions="Center"
+                Source="trash_icon.svg"
+                VerticalOptions="Center"
+                WidthRequest="30">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding DeleteStudentCommand}" />
+                </Image.GestureRecognizers>
+            </Image>
+        </Border>
         <!--  Main scrollable content  -->
         <ScrollView>
             <VerticalStackLayout Padding="20" Spacing="20">

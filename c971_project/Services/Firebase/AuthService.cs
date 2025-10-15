@@ -14,8 +14,8 @@ namespace c971_project.Services.Firebase
         {
             var config = new FirebaseAuthConfig
             {
-                ApiKey = FirebaseConstants.ApiKey,
-                AuthDomain = FirebaseConstants.AuthDomain,
+                ApiKey = "AIzaSyDyvCzaynVSUc45mswyrZInbGhpoKksr_A",
+                AuthDomain = "wgu-cloud-planner.firebaseapp.com",
                 Providers = new FirebaseAuthProvider[]
                 {
             new EmailProvider()

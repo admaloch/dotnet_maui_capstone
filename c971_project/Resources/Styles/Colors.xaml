@@ -8,6 +8,8 @@
     <Color x:Key="LightBrown">#C9ADA7</Color>
     <Color x:Key="Cream">#F2E9E4</Color>
     <Color x:Key="LightGray">#f5f3f4</Color>
+    <Color x:Key="LightRed">#FF5252</Color>
+
     <!--  Your rgba(0, 34, 255, 0.06)  -->
 
     <Color x:Key="White">#FFFFFF</Color>
