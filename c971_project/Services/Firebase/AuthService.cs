@@ -1,6 +1,8 @@
 ﻿using Firebase.Auth;
 using Firebase.Auth.Providers;
 using System.Diagnostics;
+using c971_project;
+
 
 namespace c971_project.Services.Firebase
 {
@@ -12,14 +14,13 @@ namespace c971_project.Services.Firebase
         {
             var config = new FirebaseAuthConfig
             {
-                ApiKey = "AIzaSyA08iMZxu5NZWCquBPGqyNxBDWVNCg-1rQ", // old key -- no longer valid
-                AuthDomain = "wgu-cloud-planner.firebaseapp.com", // From Firebase Console
+                ApiKey = FirebaseConstants.ApiKey,
+                AuthDomain = FirebaseConstants.AuthDomain,
                 Providers = new FirebaseAuthProvider[]
                 {
-                    new EmailProvider() // Enable email/password auth
+            new EmailProvider()
                 }
             };
-
             _authClient = new FirebaseAuthClient(config);
         }
 
