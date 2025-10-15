@@ -59,7 +59,6 @@ namespace c971_project.ViewModels
             await LoadStudentAsync();
             await LoadTermAsync();
         }
-
         public async Task LoadStudentAsync()
         {
             try
@@ -72,7 +71,6 @@ namespace c971_project.ViewModels
                 await Shell.Current.DisplayAlert("Error", ex.Message, "OK");
             }
         }
-
         public async Task LoadTermAsync()
         {
             try
@@ -93,11 +91,10 @@ namespace c971_project.ViewModels
             // update on add courses
             OnPropertyChanged(nameof(CanAddMoreTerms));
         }
-
         [RelayCommand]
-        private async Task OnDeleteStudentAsync(Term term)
+        private async Task OnDeleteStudentAsync()
         {
-            if (IsBusy || term == null) return;
+            if (IsBusy || CurrentStudent == null) return;
 
             bool finalConfirm = await Shell.Current.DisplayAlert(
                 "Delete account",
@@ -128,15 +125,47 @@ namespace c971_project.ViewModels
                     }
 
                     // Delete the term after all its courses are deleted
-                    await _firestoreDataService.DeleteTermAsync(term.Id);
+                    await _firestoreDataService.DeleteTermAsync(currTerm.Id);
                 }
 
-                // Finally delete the student
+                //  delete the student
                 await _firestoreDataService.DeleteStudentAsync(_currentUserId);
+
+                //delete firebase user
+                await _authService.DeleteUserAsync();
+
 
                 // Logout user and navigate
                 _authService.Logout();
-                await Shell.Current.GoToAsync($"//{nameof(RegisterPage)}");
+                await Shell.Current.GoToAsync($"//{nameof(LoginPage)}");
+
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Error", ex.Message, "OK");
+            }
+            finally { IsBusy = false; }
+        }
+        [RelayCommand]
+        private async Task OnLogoutAsync()
+        {
+            if (IsBusy || CurrentStudent == null) return;
+
+            bool confirm = await Shell.Current.DisplayAlert(
+                "Logout",
+                "Are you sure you want to logout?",
+                "Yes",
+                "No");
+
+            if (!confirm) return;
+
+            try
+            {
+                IsBusy = true;
+                // Logout user and navigate
+                _authService.Logout();
+
+                await Shell.Current.GoToAsync($"//{nameof(LoginPage)}");
             }
             catch (Exception ex)
             {
@@ -145,7 +174,18 @@ namespace c971_project.ViewModels
             finally { IsBusy = false; }
 
         }
+        [RelayCommand]
+        private async Task TestLogout()
+        {
+            _authService.Logout();
 
+            // Check the state immediately
+            var state = _authService.GetAuthState();
+            await Shell.Current.DisplayAlert("Logout Test", state, "OK");
+
+            // Try to navigate to a protected page to see if it blocks access
+            await Shell.Current.GoToAsync(nameof(HomePage));
+        }
         [RelayCommand]
         private async Task OnAddTermAsync()
         {
@@ -162,7 +202,6 @@ namespace c971_project.ViewModels
             }
             finally { IsBusy = false; }
         }
-
         [RelayCommand]
         private async Task OnDeleteTermAsync(Term term)
         {
@@ -229,3 +268,5 @@ namespace c971_project.ViewModels
 
     }
 }
+
+

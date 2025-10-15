@@ -26,6 +26,11 @@ namespace c971_project.ViewModels
         {
             _authService = authService;
             _firestoreDataService = firestoreDataService;
+#if DEBUG
+            // Only pre-fill in debug mode
+            email = "admaloch91@gmail.com";
+            password = "pass12345";
+#endif
         }
 
         [RelayCommand]

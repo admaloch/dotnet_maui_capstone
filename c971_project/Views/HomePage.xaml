@@ -30,11 +30,11 @@
             <Image
                 HeightRequest="30"
                 HorizontalOptions="Center"
-                Source="trash_icon.svg"
+                Source="logout_icon.svg"
                 VerticalOptions="Center"
                 WidthRequest="30">
                 <Image.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding DeleteStudentCommand}" />
+                    <TapGestureRecognizer Command="{Binding LogoutCommand}" />
                 </Image.GestureRecognizers>
             </Image>
         </Border>
