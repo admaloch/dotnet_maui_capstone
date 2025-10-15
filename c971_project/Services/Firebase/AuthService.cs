@@ -12,7 +12,7 @@ namespace c971_project.Services.Firebase
         {
             var config = new FirebaseAuthConfig
             {
-                ApiKey = "AIzaSyA08iMZxu5NZWCquBPGqyNxBDWVNCg-1rQ", // From Firebase Console > Project Settings
+                ApiKey = "AIzaSyA08iMZxu5NZWCquBPGqyNxBDWVNCg-1rQ", // old key -- no longer valid
                 AuthDomain = "wgu-cloud-planner.firebaseapp.com", // From Firebase Console
                 Providers = new FirebaseAuthProvider[]
                 {

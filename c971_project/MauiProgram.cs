@@ -25,7 +25,9 @@ namespace c971_project
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
+
             builder.Services.AddSingleton<AppShell>();
+
 
             // Firebase Services
             builder.Services.AddSingleton<AuthService>();
