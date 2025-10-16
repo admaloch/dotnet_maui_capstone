@@ -64,7 +64,7 @@
                             VerticalOptions="Center"
                             WidthRequest="30">
                             <Image.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding DeleteCourseTermCommand}" />
+                                <TapGestureRecognizer Command="{Binding DeleteCourseCommand}" />
                             </Image.GestureRecognizers>
                         </Image>
                     </Border>
@@ -215,68 +215,44 @@
                 </Border>
 
 
-                <CollectionView ItemsSource="{Binding Assessments}" MinimumHeightRequest="130">
+                <CollectionView
+                    ItemsSource="{Binding Assessments}"
+                    MaximumHeightRequest="450"
+                    MinimumHeightRequest="130">
+
 
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <Border
-                                Margin="0,7"
+                                Margin="0,5"
                                 Padding="15"
                                 BackgroundColor="{StaticResource White}"
-                                Stroke="{StaticResource Charcoal}"
+                                Stroke="{StaticResource Charcoal+}"
                                 StrokeShape="RoundRectangle 10"
                                 StrokeThickness="3">
 
 
                                 <Grid>
                                     <!--  Content  -->
-                                    <VerticalStackLayout>
+                                    <VerticalStackLayout Spacing="8">
                                         <!--  Assessment Name  -->
                                         <Label
                                             FontAttributes="Bold"
                                             FontSize="16"
                                             HorizontalOptions="Start"
                                             Text="{Binding Name}"
-                                            TextColor="{StaticResource DarkBlue}" />
+                                            TextColor="{StaticResource DarkBlue}"
+                                            WidthRequest="200" />
 
-                                        <!--  Assessment Type  -->
-                                        <VerticalStackLayout Margin="0,10,0,0">
-                                            <HorizontalStackLayout Spacing="10">
-                                                <Label
-                                                    FontAttributes="Bold"
-                                                    Text="Type:"
-                                                    TextColor="{StaticResource MediumGray}" />
-                                                <Label Text="{Binding Type}" TextColor="{StaticResource DarkBlue}" />
-                                            </HorizontalStackLayout>
 
-                                            <!--  Assessment status  -->
-                                            <HorizontalStackLayout Spacing="10">
-                                                <Label
-                                                    FontAttributes="Bold"
-                                                    Text="Status:"
-                                                    TextColor="{StaticResource MediumGray}" />
-                                                <Label Text="{Binding Status}" TextColor="{StaticResource DarkBlue}" />
-                                            </HorizontalStackLayout>
-                                        </VerticalStackLayout>
-
-                                        <!--  Start and End Dates  -->
-                                        <VerticalStackLayout>
-                                            <HorizontalStackLayout Spacing="10">
-                                                <Label
-                                                    FontAttributes="Bold"
-                                                    Text="Start:"
-                                                    TextColor="{StaticResource MediumGray}" />
-                                                <Label Text="{Binding StartDateTime, StringFormat='{0:MM/dd/yyyy h:mm tt}'}" TextColor="{StaticResource DarkBlue}" />
-                                            </HorizontalStackLayout>
-
-                                            <HorizontalStackLayout Spacing="10">
-                                                <Label
-                                                    FontAttributes="Bold"
-                                                    Text="End:"
-                                                    TextColor="{StaticResource MediumGray}" />
-                                                <Label Text="{Binding EndDateTime, StringFormat='{0:MM/dd/yyyy h:mm tt}'}" TextColor="{StaticResource DarkBlue}" />
-                                            </HorizontalStackLayout>
-                                        </VerticalStackLayout>
+                                        <!--  Last updated  -->
+                                        <HorizontalStackLayout Spacing="5">
+                                            <Label
+                                                FontAttributes="Bold"
+                                                Text="Type:"
+                                                TextColor="{StaticResource MediumGray}" />
+                                            <Label Text="{Binding Type}" TextColor="{StaticResource DarkBlue}" />
+                                        </HorizontalStackLayout>
                                     </VerticalStackLayout>
 
                                     <!--  Icons container  -->
@@ -285,34 +261,25 @@
                                         Spacing="10"
                                         VerticalOptions="Center">
 
-                                        <!--  Delete icon  -->
+
+
+                                        <!--  More / navigate icon  -->
                                         <Image
                                             HeightRequest="40"
-                                            Source="trash_icon.svg"
+                                            Source="more_icon.svg"
                                             WidthRequest="40">
                                             <Image.GestureRecognizers>
-                                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeleteAssessmentCommand}" CommandParameter="{Binding .}" />
+                                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.AssessmentPageCommand}" CommandParameter="{Binding .}" />
                                             </Image.GestureRecognizers>
                                         </Image>
 
-                                        <!--  Edit icon  -->
-                                        <Image
-                                            HeightRequest="40"
-                                            Source="edit2_icon.svg"
-                                            WidthRequest="40">
-                                            <Image.GestureRecognizers>
-                                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.EditAssessmentCommand}" CommandParameter="{Binding .}" />
-                                            </Image.GestureRecognizers>
-                                        </Image>
                                     </HorizontalStackLayout>
+
                                 </Grid>
-
-
 
                             </Border>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
-                    <!--  EmptyView with styled box  -->
                     <CollectionView.EmptyView>
                         <Border
                             Padding="30,20"
@@ -350,7 +317,7 @@
                     </CollectionView.EmptyView>
                 </CollectionView>
 
-                <!--  Floating Add Term Button with Label  -->
+                <!--  Floating Add Assessment Button with Label  -->
                 <HorizontalStackLayout
                     Padding="16"
                     HorizontalOptions="End"
@@ -460,7 +427,7 @@
                                         Spacing="10"
                                         VerticalOptions="Center">
 
-                                       
+
 
                                         <!--  More / navigate icon  -->
                                         <Image

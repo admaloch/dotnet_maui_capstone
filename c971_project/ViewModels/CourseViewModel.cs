@@ -39,13 +39,13 @@ namespace c971_project.ViewModels
         [ObservableProperty]
         private ObservableCollection<Note> _notes = new();
 
+        //maximum of 2 per course -- check num and update
         public bool CanAddMoreAssessments
         {
             get
             {
                 var objectiveCount = Assessments.Count(a => a.Type == "Objective");
                 var performanceCount = Assessments.Count(a => a.Type == "Performance");
-
                 return objectiveCount < 1 || performanceCount < 1;
             }
         }
@@ -74,7 +74,6 @@ namespace c971_project.ViewModels
             {
                 await LoadCourseAsync(CourseId); // reload from DB on Course edit
                 await LoadInstructorAsync();
-
             });
         }
 
@@ -89,8 +88,8 @@ namespace c971_project.ViewModels
             await LoadInstructorAsync();
             await LoadAssessmentsAsync();
             await LoadNotesAsync();
-
         }
+
         //load data
         private async Task LoadCourseAsync(string id)
         {
@@ -129,7 +128,6 @@ namespace c971_project.ViewModels
                 IsBusy = false;
             }
         }
-
         public async Task LoadAssessmentsAsync()
         {
             if (IsBusy) return;
@@ -159,7 +157,6 @@ namespace c971_project.ViewModels
             // update on add courses
             OnPropertyChanged(nameof(CanAddMoreAssessments));
         }
-
         public async Task LoadNotesAsync()
         {
             if (IsBusy) return;
@@ -187,7 +184,7 @@ namespace c971_project.ViewModels
             }
         }
 
-        //edit course content
+        //Course Methods
         [RelayCommand]
         private async Task OnEditCourseAsync()
         {
@@ -200,32 +197,6 @@ namespace c971_project.ViewModels
             }
             finally { IsBusy = false; }
         }
-
-
-
-        //assessment methods
-        [RelayCommand]
-        private async Task OnAddAssessmentAsync()
-        {
-            {
-                if (!CanAddMoreAssessments)
-                {
-                    await Shell.Current.DisplayAlert("Notification", "You have reached the maximum 2 assessments", "OK");
-                    return;
-                }
-
-                if (IsBusy) return;
-                try
-                {
-                    IsBusy = true;
-                    await Shell.Current.GoToAsync(nameof(AddAssessmentPage),
-                        new Dictionary<string, object> { { "CourseId", CourseId } });
-
-                }
-                finally { IsBusy = false; }
-            }
-        }
-
         [RelayCommand]
         private async Task OnDeleteCourseAsync()
         {
@@ -257,49 +228,57 @@ namespace c971_project.ViewModels
             finally { IsBusy = false; }
 
         }
-
+        
+        
+        //assessment methods
         [RelayCommand]
-        private async Task OnEditAssessmentAsync(Assessment assessment)
+        private async Task OnAssessmentPageAsync(Assessment assessment)
         {
             if (IsBusy) return;
             try
             {
                 IsBusy = true;
-                await Shell.Current.GoToAsync(nameof(EditAssessmentPage),
+                await Shell.Current.GoToAsync(nameof(AssessmentPage),
                     new Dictionary<string, object> { { "AssessmentId", assessment.Id } });
             }
             finally { IsBusy = false; }
         }
-
         [RelayCommand]
-        private async Task OnDeleteAssessmentAsync(Assessment assessment)
+        private async Task OnAddAssessmentAsync()
         {
-            if (IsBusy || assessment == null) return;
-
-            bool confirm = await Shell.Current.DisplayAlert(
-                "Delete Assessment",
-                $"Are you sure you want to delete '{assessment.Name}'?",
-                "Delete",
-                "Cancel");
-
-            if (!confirm) return;
-
-            try
             {
-                IsBusy = true;
-                await _firestoreDataService.DeleteAssessmentAsync(assessment.Id);
-                Assessments.Remove(assessment);
+                if (!CanAddMoreAssessments)
+                {
+                    await Shell.Current.DisplayAlert("Notification", "You have reached the maximum 2 assessments", "OK");
+                    return;
+                }
+
+                if (IsBusy) return;
+                try
+                {
+                    IsBusy = true;
+                    await Shell.Current.GoToAsync(nameof(AddAssessmentPage),
+                        new Dictionary<string, object> { { "CourseId", CourseId } });
+
+                }
+                finally { IsBusy = false; }
             }
-            catch (Exception ex)
-            {
-                await Shell.Current.DisplayAlert("Error", ex.Message, "OK");
-            }
-            finally { IsBusy = false; }
         }
 
 
         //notes methods
-      
+        [RelayCommand]
+        private async Task OnNotePageAsync(Note note)
+        {
+            if (IsBusy) return;
+            try
+            {
+                IsBusy = true;
+                await Shell.Current.GoToAsync(nameof(NotePage),
+                    new Dictionary<string, object> { { "NoteId", note.Id } });
+            }
+            finally { IsBusy = false; }
+        }
         [RelayCommand]
         private async Task OnAddNoteAsync()
         {
@@ -315,20 +294,6 @@ namespace c971_project.ViewModels
                 finally { IsBusy = false; }
             }
         }
-
-        [RelayCommand]
-        private async Task OnNotePageAsync(Note note)
-        {
-            if (IsBusy) return;
-            try
-            {
-                IsBusy = true;
-                await Shell.Current.GoToAsync(nameof(NotePage),
-                    new Dictionary<string, object> { { "NoteId", note.Id } });
-            }
-            finally { IsBusy = false; }
-        }
-
 
     }
 }
