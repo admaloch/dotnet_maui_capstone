@@ -51,34 +51,29 @@ namespace c971_project
 
             builder.Services.AddTransient<AddTermPage>();
             builder.Services.AddTransient<AddTermViewModel>();
-
             builder.Services.AddTransient<TermPage>();
             builder.Services.AddTransient<TermViewModel>();
-
             builder.Services.AddTransient<EditTermPage>();
             builder.Services.AddTransient<EditTermViewModel>();
 
             builder.Services.AddTransient<AddCoursePage>();
             builder.Services.AddTransient<AddCourseViewModel>();
-
             builder.Services.AddTransient<CoursePage>();
             builder.Services.AddTransient<CourseViewModel>();
-
             builder.Services.AddTransient<EditCoursePage>();
             builder.Services.AddTransient<EditCourseViewModel>();
 
+            builder.Services.AddTransient<AssessmentPage>();
+            builder.Services.AddTransient<AssessmentViewModel>();
             builder.Services.AddTransient<AddAssessmentPage>();
             builder.Services.AddTransient<AddAssessmentViewModel>();
-
             builder.Services.AddTransient<EditAssessmentPage>();
             builder.Services.AddTransient<EditAssessmentViewModel>();
 
             builder.Services.AddTransient<AddNotePage>();
             builder.Services.AddTransient<AddNoteViewModel>();
-
             builder.Services.AddTransient<NotePage>();
             builder.Services.AddTransient<NoteViewModel>();
-
             builder.Services.AddTransient<EditNotePage>();
             builder.Services.AddTransient<EditNoteViewModel>();
 
