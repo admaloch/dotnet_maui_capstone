@@ -3,82 +3,103 @@
     x:Class="c971_project.Views.HomePage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    Title="{Binding Title}"
+    Title="Home"
     BackgroundColor="{StaticResource Cream}">
 
     <Grid>
-        <!--  Delete Icon at Top Right of Page  -->
-        <Border
-            Grid.Row="0"
-            Margin="10"
-            BackgroundColor="{StaticResource LightRed}"
-            HeightRequest="55"
-            HorizontalOptions="Start"
-            StrokeShape="Ellipse"
-            VerticalOptions="Start"
-            WidthRequest="55"
-            ZIndex="999">
 
-            <Border.Shadow>
-                <Shadow
-                    Brush="#40000000"
-                    Opacity="0.24"
-                    Radius="8"
-                    Offset="0,4" />
-            </Border.Shadow>
 
-            <Image
-                HeightRequest="30"
-                HorizontalOptions="Center"
-                Source="logout_icon.svg"
-                VerticalOptions="Center"
-                WidthRequest="30">
-                <Image.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding LogoutCommand}" />
-                </Image.GestureRecognizers>
-            </Image>
-        </Border>
-        <!--  Delete Icon at Top Right of Page  -->
-        <Border
-            Grid.Row="0"
-            Margin="10"
-            BackgroundColor="{StaticResource LightRed}"
-            HeightRequest="55"
-            HorizontalOptions="End"
-            StrokeShape="Ellipse"
-            VerticalOptions="Start"
-            WidthRequest="55"
-            ZIndex="999">
-
-            <Border.Shadow>
-                <Shadow
-                    Brush="#40000000"
-                    Opacity="0.24"
-                    Radius="8"
-                    Offset="0,4" />
-            </Border.Shadow>
-
-            <Image
-                HeightRequest="30"
-                HorizontalOptions="Center"
-                Source="trash2_icon.svg"
-                VerticalOptions="Center"
-                WidthRequest="30">
-                <Image.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding DeleteStudentCommand}" />
-                </Image.GestureRecognizers>
-            </Image>
-        </Border>
         <!--  Main scrollable content  -->
         <ScrollView>
-            <VerticalStackLayout Padding="20" Spacing="20">
+            <VerticalStackLayout Padding="20">
 
                 <!--  Header  -->
-                <Label
-                    Margin="0,20,0,0"
+                <Border
+                    Margin="0,10,0,0"
+                    Padding="20,10"
+                    BackgroundColor="{StaticResource DarkBlue}"
                     HorizontalOptions="Center"
-                    Style="{StaticResource HeaderLabel}"
-                    Text="Student Information" />
+                    Stroke="{StaticResource LightBrown}"
+                    StrokeShape="RoundRectangle 10"
+                    StrokeThickness="2">
+
+                    <Label
+                        BackgroundColor="Transparent"
+                        HorizontalOptions="Center"
+                        HorizontalTextAlignment="Center"
+                        Style="{StaticResource HeaderLabel}"
+                        Text="Student Information"
+                        TextColor="{StaticResource Cream}" />
+                </Border>
+                <HorizontalStackLayout
+                    Grid.Row="0"
+                    Margin="0"
+                    Padding="0"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Start">
+                    <!--  logout Icon at Top Right of Page  -->
+                    <Border
+                        Grid.Row="0"
+                        Margin="5,7,2,7"
+                        BackgroundColor="{StaticResource Charcoal}"
+                        HeightRequest="55"
+                        HorizontalOptions="Center"
+                        StrokeShape="Ellipse"
+                        VerticalOptions="Start"
+                        WidthRequest="55"
+                        ZIndex="999">
+
+                        <Border.Shadow>
+                            <Shadow
+                                Brush="#40000000"
+                                Opacity="0.24"
+                                Radius="8"
+                                Offset="0,4" />
+                        </Border.Shadow>
+
+                        <Image
+                            HeightRequest="30"
+                            HorizontalOptions="Center"
+                            Source="logout_icon.svg"
+                            VerticalOptions="Center"
+                            WidthRequest="30">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding LogoutCommand}" />
+                            </Image.GestureRecognizers>
+                        </Image>
+                    </Border>
+                    <!--  Delete Icon at Top Right of Page  -->
+                    <Border
+                        Grid.Row="0"
+                        Margin="3,7,5,7"
+                        BackgroundColor="{StaticResource Charcoal}"
+                        HeightRequest="55"
+                        HorizontalOptions="Center"
+                        StrokeShape="Ellipse"
+                        VerticalOptions="Start"
+                        WidthRequest="55"
+                        ZIndex="999">
+
+                        <Border.Shadow>
+                            <Shadow
+                                Brush="#40000000"
+                                Opacity="0.24"
+                                Radius="8"
+                                Offset="0,4" />
+                        </Border.Shadow>
+
+                        <Image
+                            HeightRequest="30"
+                            HorizontalOptions="Center"
+                            Source="trash2_icon.svg"
+                            VerticalOptions="Center"
+                            WidthRequest="30">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding DeleteStudentCommand}" />
+                            </Image.GestureRecognizers>
+                        </Image>
+                    </Border>
+                </HorizontalStackLayout>
                 <!--  Top margin: 20  -->
 
                 <!--  Student Info Card  -->
@@ -187,10 +208,23 @@
                 </Border>
 
                 <!--  Terms Section Header  -->
-                <Label
+                <Border
                     Margin="0,20,0,10"
-                    Style="{StaticResource HeaderLabel}"
-                    Text="Academic Terms" />
+                    Padding="20,10"
+                    BackgroundColor="{StaticResource DarkBlue}"
+                    HorizontalOptions="Center"
+                    Stroke="{StaticResource LightBrown}"
+                    StrokeShape="RoundRectangle 10"
+                    StrokeThickness="2">
+
+                    <Label
+                        BackgroundColor="Transparent"
+                        HorizontalOptions="Center"
+                        HorizontalTextAlignment="Center"
+                        Style="{StaticResource HeaderLabel}"
+                        Text="Academic Terms"
+                        TextColor="{StaticResource Cream}" />
+                </Border>
 
                 <!--  Terms List  -->
                 <Grid Margin="0,0,0,70" RowDefinitions="Auto,*">
@@ -205,7 +239,7 @@
                                     Margin="0,5"
                                     Padding="10,8"
                                     BackgroundColor="{StaticResource White}"
-                                    HeightRequest="80"
+                                    HeightRequest="70"
                                     Stroke="{StaticResource Charcoal}"
                                     StrokeShape="RoundRectangle 10"
                                     StrokeThickness="3">
@@ -223,16 +257,7 @@
                                             HorizontalOptions="End"
                                             Spacing="0"
                                             VerticalOptions="Center">
-                                            <!--  Delete icon  -->
-                                            <Image
-                                                Margin="0,0,10,0"
-                                                HeightRequest="40"
-                                                Source="trash_icon.svg"
-                                                WidthRequest="40">
-                                                <Image.GestureRecognizers>
-                                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeleteTermCommand}" CommandParameter="{Binding .}" />
-                                                </Image.GestureRecognizers>
-                                            </Image>
+
                                             <!--  More / navigate icon  -->
                                             <Image
                                                 HeightRequest="35"
@@ -309,7 +334,7 @@
 
             <!--  Circular Button  -->
             <Border
-                BackgroundColor="{StaticResource DarkBlue}"
+                BackgroundColor="{StaticResource Charcoal}"
                 HeightRequest="56"
                 StrokeShape="Ellipse"
                 WidthRequest="56">

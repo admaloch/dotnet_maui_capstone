@@ -4,18 +4,32 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:system="clr-namespace:System;assembly=netstandard"
-    Title="Add Course"
+    Title="Edit Course"
     BackgroundColor="{StaticResource Cream}">
     <Grid>
         <ScrollView>
             <VerticalStackLayout Padding="20" Spacing="15">
 
                 <!--  Header  -->
-                <Label
-                    Margin="0,20,0,0"
+                <!--  Header  -->
+                <Border
+                    Margin="0,10,0,0"
+                    Padding="20,10"
+                    BackgroundColor="{StaticResource DarkBlue}"
                     HorizontalOptions="Center"
-                    Style="{StaticResource HeaderLabel}"
-                    Text="New Course" />
+                    Stroke="{StaticResource LightBrown}"
+                    StrokeShape="RoundRectangle 10"
+                    StrokeThickness="2">
+
+                    <Label
+                        BackgroundColor="Transparent"
+                        HorizontalOptions="Center"
+                        HorizontalTextAlignment="Center"
+                        Style="{StaticResource HeaderLabel}"
+                        Text="{Binding Course.Name}"
+                        TextColor="{StaticResource Cream}" />
+                </Border>
+
 
                 <!--  Card container  -->
                 <Border

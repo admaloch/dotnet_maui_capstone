@@ -58,12 +58,10 @@
     <!--  Header Label Style  -->
     <Style x:Key="HeaderLabel" TargetType="Label">
         <Setter Property="TextColor" Value="{StaticResource Cream}" />
-        <Setter Property="FontSize" Value="24" />
+        <Setter Property="FontSize" Value="30" />
         <Setter Property="FontAttributes" Value="Bold" />
         <Setter Property="HorizontalOptions" Value="Center" />
         <Setter Property="BackgroundColor" Value="{StaticResource Charcoal}" />
-        <Setter Property="Padding" Value="20,10" />
-        <Setter Property="Margin" Value="-20,-20,-20,20" />
         <!--  Extend to edges  -->
     </Style>
 

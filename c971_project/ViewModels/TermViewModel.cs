@@ -143,14 +143,15 @@ namespace c971_project.ViewModels
                 finally { IsBusy = false; }
             }
         }
+
         [RelayCommand]
-        private async Task OnDeleteCourseAsync(Course course)
+        private async Task OnDeleteTermAsync()
         {
-            if (IsBusy || course == null) return;
+            if (IsBusy || Term.Name == null) return;
 
             bool confirm = await Shell.Current.DisplayAlert(
-                "Delete Course",
-                $"Are you sure you want to delete '{course.CourseNum} - {course.Name}'?",
+                "Delete Term",
+                $"Are you sure you want to delete '{Term.Name}'?",
                 "Delete",
                 "Cancel");
 
@@ -159,11 +160,19 @@ namespace c971_project.ViewModels
             try
             {
                 IsBusy = true;
-                //delete course and corresponding notes and assessments
-                await _firestoreDataService.DeleteAssessmentsByCourseIdAsync(course.Id);
-                await _firestoreDataService.DeleteNotesByCourseIdAsync(course.Id);
-                await _firestoreDataService.DeleteCourseAsync(course.Id);
-                Courses.Remove(course);
+                //also delete courses - notes - assessments
+                var courses = await _firestoreDataService.GetCoursesByTermIdAsync(TermId);
+                foreach (var course in courses)
+                {
+                    await _firestoreDataService.DeleteAssessmentsByCourseIdAsync(course.Id);
+                    await _firestoreDataService.DeleteNotesByCourseIdAsync(course.Id);
+                    await _firestoreDataService.DeleteCourseAsync(course.Id);
+                }
+                await _firestoreDataService.DeleteTermAsync(TermId);
+
+                WeakReferenceMessenger.Default.Send(new TermUpdatedMessage());
+
+                await Shell.Current.GoToAsync("..");
             }
             catch (Exception ex)
             {

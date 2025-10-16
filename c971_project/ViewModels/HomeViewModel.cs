@@ -19,16 +19,12 @@ namespace c971_project.ViewModels
         private readonly AuthService _authService;
         private string _currentUserId;
 
-
         [ObservableProperty]
         private Student _currentStudent;
-
         [ObservableProperty]
         private ObservableCollection<Term> _terms = new();
-
         // Computed property for button state
         public bool CanAddMoreTerms => Terms.Count < 6;
-
         public HomeViewModel(IFirestoreDataService firestoreDataService, AuthService authService)
         {
             _firestoreDataService = firestoreDataService;
@@ -203,42 +199,6 @@ namespace c971_project.ViewModels
             finally { IsBusy = false; }
         }
         [RelayCommand]
-        private async Task OnDeleteTermAsync(Term term)
-        {
-            if (IsBusy || term == null) return;
-
-            bool confirm = await Shell.Current.DisplayAlert(
-                "Delete Term",
-                $"Are you sure you want to delete '{term.Name}'?",
-                "Delete",
-                "Cancel");
-
-            if (!confirm) return;
-
-            try
-            {
-                IsBusy = true;
-                //also delete courses - notes - assessments
-                var courses = await _firestoreDataService.GetCoursesByTermIdAsync(term.Id);
-                foreach (var course in courses)
-                {
-                    await _firestoreDataService.DeleteAssessmentsByCourseIdAsync(course.Id);
-                    await _firestoreDataService.DeleteNotesByCourseIdAsync(course.Id);
-                    await _firestoreDataService.DeleteCourseAsync(course.Id);
-                }
-                await _firestoreDataService.DeleteTermAsync(term.Id);
-                Terms.Remove(term);
-
-            }
-            catch (Exception ex)
-            {
-                await Shell.Current.DisplayAlert("Error", ex.Message, "OK");
-            }
-            finally { IsBusy = false; }
-
-        }
-
-        [RelayCommand]
         private async Task OnEditStudentAsync()
         {
             if (IsBusy) return;
@@ -251,7 +211,6 @@ namespace c971_project.ViewModels
             }
             finally { IsBusy = false; }
         }
-
         [RelayCommand]
         private async Task OnTermPageAsync(Term term)
         {

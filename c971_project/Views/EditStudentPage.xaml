@@ -3,7 +3,7 @@
     x:Class="c971_project.Views.EditStudentPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    Title="Edit Students"
+    Title="Edit Student"
     BackgroundColor="{StaticResource Cream}">
 
     <Grid>
@@ -12,11 +12,25 @@
             <VerticalStackLayout Padding="20" Spacing="20">
 
                 <!--  Header  -->
-                <Label
-                    Margin="0,20,0,0"
+                <Border
+                    Margin="0,10,0,0"
+                    Padding="20,10"
+                    BackgroundColor="{StaticResource DarkBlue}"
                     HorizontalOptions="Center"
-                    Style="{StaticResource HeaderLabel}"
-                    Text="{Binding Student.Name}" />
+                    Stroke="{StaticResource LightBrown}"
+                    StrokeShape="RoundRectangle 10"
+                    StrokeThickness="2">
+
+                    <Label
+                        BackgroundColor="Transparent"
+                        HorizontalOptions="Center"
+                        HorizontalTextAlignment="Center"
+                        Style="{StaticResource HeaderLabel}"
+                        Text="{Binding Student.Name}"
+                        TextColor="{StaticResource Cream}" />
+                </Border>
+
+
 
                 <!--  Student Info Form  -->
                 <Border

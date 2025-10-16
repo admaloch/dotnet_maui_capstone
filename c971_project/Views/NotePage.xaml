@@ -9,15 +9,128 @@
     <Grid>
         <!--  Main scrollable content  -->
         <ScrollView>
-            <VerticalStackLayout Padding="20" Spacing="20">
+            <VerticalStackLayout Padding="20">
 
                 <!--  Header  -->
-                <Label
-                    Margin="0,20,0,0"
+                <Border
+                    Margin="0,10,0,0"
+                    Padding="20,10"
+                    BackgroundColor="{StaticResource DarkBlue}"
                     HorizontalOptions="Center"
-                    Style="{StaticResource HeaderLabel}"
-                    Text="{Binding Note.Title}" />
+                    Stroke="{StaticResource LightBrown}"
+                    StrokeShape="RoundRectangle 10"
+                    StrokeThickness="2">
 
+                    <Label
+                        BackgroundColor="Transparent"
+                        HorizontalOptions="Center"
+                        HorizontalTextAlignment="Center"
+                        Style="{StaticResource HeaderLabel}"
+                        Text="{Binding Note.Title}"
+                        TextColor="{StaticResource Cream}" />
+                </Border>
+
+                <HorizontalStackLayout
+                    Grid.Row="0"
+                    Margin="0"
+                    Padding="0"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Start">
+
+                    <!--  Edit Icon  -->
+                    <Border
+                        Grid.Row="0"
+                        Margin="15"
+                        BackgroundColor="{StaticResource Charcoal}"
+                        HeightRequest="55"
+                        HorizontalOptions="Center"
+                        StrokeShape="Ellipse"
+                        VerticalOptions="Start"
+                        WidthRequest="55"
+                        ZIndex="999">
+
+                        <Border.Shadow>
+                            <Shadow
+                                Brush="#40000000"
+                                Opacity="0.24"
+                                Radius="8"
+                                Offset="0,4" />
+                        </Border.Shadow>
+
+                        <Image
+                            HeightRequest="30"
+                            HorizontalOptions="Center"
+                            Source="edit_icon.png"
+                            VerticalOptions="Center"
+                            WidthRequest="30">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding EditNoteCommand}" />
+                            </Image.GestureRecognizers>
+                        </Image>
+                    </Border>
+                    <!--  Share Icon  -->
+                    <Border
+                        Grid.Row="0"
+                        Margin="15"
+                        BackgroundColor="{StaticResource Charcoal}"
+                        HeightRequest="55"
+                        HorizontalOptions="Center"
+                        StrokeShape="Ellipse"
+                        VerticalOptions="Start"
+                        WidthRequest="55"
+                        ZIndex="999">
+
+                        <Border.Shadow>
+                            <Shadow
+                                Brush="#40000000"
+                                Opacity="0.24"
+                                Radius="8"
+                                Offset="0,4" />
+                        </Border.Shadow>
+
+                        <Image
+                            HeightRequest="30"
+                            HorizontalOptions="Center"
+                            Source="share_icon.png"
+                            VerticalOptions="Center"
+                            WidthRequest="30">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ShareNoteCommand}" />
+                            </Image.GestureRecognizers>
+                        </Image>
+                    </Border>
+                    <!--  Delete Icon  -->
+                    <Border
+                        Grid.Row="0"
+                        Margin="15"
+                        BackgroundColor="{StaticResource Charcoal}"
+                        HeightRequest="55"
+                        HorizontalOptions="Center"
+                        StrokeShape="Ellipse"
+                        VerticalOptions="Start"
+                        WidthRequest="55"
+                        ZIndex="999">
+
+                        <Border.Shadow>
+                            <Shadow
+                                Brush="#40000000"
+                                Opacity="0.24"
+                                Radius="8"
+                                Offset="0,4" />
+                        </Border.Shadow>
+
+                        <Image
+                            HeightRequest="30"
+                            HorizontalOptions="Center"
+                            Source="trash2_icon.svg"
+                            VerticalOptions="Center"
+                            WidthRequest="30">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding DeleteNoteCommand}" />
+                            </Image.GestureRecognizers>
+                        </Image>
+                    </Border>
+                </HorizontalStackLayout>
                 <!--  Note Info Card  -->
                 <Border
                     Padding="15"
@@ -58,93 +171,7 @@
             </VerticalStackLayout>
         </ScrollView>
 
-        <VerticalStackLayout VerticalOptions="End">
-            <!--  Floating Add note Button with Label  -->
-            <HorizontalStackLayout
-                Padding="0,16,16,8"
-                HorizontalOptions="End"
-                InputTransparent="False"
-                Spacing="12"
-                VerticalOptions="End">
 
-                <!--  Label  -->
-                <Label
-                    FontAttributes="Bold"
-                    FontSize="22"
-                    Text="Edit Note"
-                    TextColor="{StaticResource DarkBlue}"
-                    VerticalOptions="Center" />
-
-                <!--  Circular Button  -->
-                <Border
-                    BackgroundColor="{StaticResource DarkBlue}"
-                    HeightRequest="56"
-                    StrokeShape="Ellipse"
-                    WidthRequest="56">
-                    <Border.Shadow>
-                        <Shadow
-                            Brush="{StaticResource DarkBlue}"
-                            Opacity="0.5"
-                            Radius="8"
-                            Offset="2,2" />
-                    </Border.Shadow>
-
-                    <Image
-                        HeightRequest="35"
-                        HorizontalOptions="Center"
-                        Source="add_icon.svg"
-                        VerticalOptions="Center"
-                        WidthRequest="35">
-                        <Image.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding EditNoteCommand}" />
-                        </Image.GestureRecognizers>
-                    </Image>
-                </Border>
-            </HorizontalStackLayout>
-            <!--  Floating Add note Button with Label  -->
-            <HorizontalStackLayout
-                Padding="0,0,16,16"
-                HorizontalOptions="End"
-                InputTransparent="False"
-                Spacing="12"
-                VerticalOptions="End">
-
-                <!--  Label  -->
-                <Label
-                    FontAttributes="Bold"
-                    FontSize="22"
-                    Text="Share Note"
-                    TextColor="{StaticResource DarkBlue}"
-                    VerticalOptions="Center" />
-
-                <!--  Circular Button  -->
-                <Border
-                    BackgroundColor="{StaticResource LightBrown}"
-                    HeightRequest="56"
-                    StrokeShape="Ellipse"
-                    WidthRequest="56">
-                    <Border.Shadow>
-                        <Shadow
-                            Brush="{StaticResource DarkBlue}"
-                            Opacity=".3"
-                            Radius="8"
-                            Offset="2,2" />
-                    </Border.Shadow>
-
-                    <Image
-                        HeightRequest="27"
-                        HorizontalOptions="Center"
-                        Source="share_icon.svg"
-                        VerticalOptions="Center"
-                        WidthRequest="27">
-                        <Image.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding ShareNoteCommand}" />
-                        </Image.GestureRecognizers>
-                    </Image>
-                </Border>
-            </HorizontalStackLayout>
-
-        </VerticalStackLayout>
 
     </Grid>
 </ContentPage>

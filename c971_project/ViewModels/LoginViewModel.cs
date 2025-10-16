@@ -60,7 +60,7 @@ namespace c971_project.ViewModels
             {
                 // Show detailed error
                 await Shell.Current.DisplayAlert("Login Error",
-                    $"Failed to login: {ex.Message}\n\nStack: {ex.StackTrace}", "OK");
+                    "We had trouble logging you in. Check your internet connection and try again", "OK");
                 Debug.WriteLine($"LOGIN ERROR: {ex}");
             }
             finally

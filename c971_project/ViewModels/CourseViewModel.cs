@@ -227,6 +227,38 @@ namespace c971_project.ViewModels
         }
 
         [RelayCommand]
+        private async Task OnDeleteCourseAsync()
+        {
+            if (IsBusy || Course == null) return;
+
+            bool confirm = await Shell.Current.DisplayAlert(
+                "Delete Course",
+                $"Are you sure you want to delete '{Course.CourseNum} - {Course.Name}'?",
+                "Delete",
+                "Cancel");
+
+            if (!confirm) return;
+
+            try
+            {
+                IsBusy = true;
+                //delete Course and corresponding notes and assessments
+                await _firestoreDataService.DeleteAssessmentsByCourseIdAsync(Course.Id);
+                await _firestoreDataService.DeleteNotesByCourseIdAsync(Course.Id);
+                await _firestoreDataService.DeleteCourseAsync(Course.Id);
+                WeakReferenceMessenger.Default.Send(new CourseUpdatedMessage());
+                await Shell.Current.GoToAsync("..");
+
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Error", ex.Message, "OK");
+            }
+            finally { IsBusy = false; }
+
+        }
+
+        [RelayCommand]
         private async Task OnEditAssessmentAsync(Assessment assessment)
         {
             if (IsBusy) return;
@@ -267,32 +299,7 @@ namespace c971_project.ViewModels
 
 
         //notes methods
-        [RelayCommand]
-        private async Task OnDeleteNoteAsync(Note note)
-        {
-            if (IsBusy || note == null) return;
-
-            bool confirm = await Shell.Current.DisplayAlert(
-                "Delete Note",
-                $"Are you sure you want to delete '{note.Title}'?",
-                "Delete",
-                "Cancel");
-
-            if (!confirm) return;
-
-            try
-            {
-                IsBusy = true;
-                await _firestoreDataService.DeleteNoteAsync(note.Id);
-                Notes.Remove(note);
-            }
-            catch (Exception ex)
-            {
-                await Shell.Current.DisplayAlert("Error", ex.Message, "OK");
-            }
-            finally { IsBusy = false; }
-        }
-
+      
         [RelayCommand]
         private async Task OnAddNoteAsync()
         {

@@ -105,6 +105,34 @@ namespace c971_project.ViewModels
             finally { IsBusy = false; }
         }
 
+        [RelayCommand]
+        private async Task OnDeleteNoteAsync()
+        {
+            if (IsBusy || Note == null) return;
+
+            bool confirm = await Shell.Current.DisplayAlert(
+                "Delete Note",
+                $"Are you sure you want to delete '{Note.Title}'?",
+                "Delete",
+                "Cancel");
+
+            if (!confirm) return;
+
+            try
+            {
+                IsBusy = true;
+                await _firestoreDataService.DeleteNoteAsync(Note.Id);
+                WeakReferenceMessenger.Default.Send(new NoteUpdatedMessage());
+                await Shell.Current.GoToAsync("..");
+
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Error", ex.Message, "OK");
+            }
+            finally { IsBusy = false; }
+        }
+
         //share note -- built in share feature
         [RelayCommand]
         private async Task ShareNote()

@@ -111,7 +111,7 @@ namespace c971_project.ViewModels
             {
                 // Show detailed error
                 await Shell.Current.DisplayAlert("Registration Error",
-                    $"Failed to register: {ex.Message}\n\nStack: {ex.StackTrace}", "OK");
+                                  "We had trouble registering your account. Check your internet connection and try again", "OK");
                 Debug.WriteLine($"REGISTRATION ERROR: {ex}");
             }
             finally { IsBusy = false; }
