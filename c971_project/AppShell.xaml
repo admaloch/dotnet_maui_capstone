@@ -14,5 +14,10 @@
         Title="Home"
         ContentTemplate="{DataTemplate views:HomePage}"
         Route="HomePage" />
+    <ShellContent
+        Title="Search"
+        ContentTemplate="{DataTemplate views:SearchPage}"
+        Icon="search.png"
+        Route="SearchPage" />
 
 </Shell>

@@ -1,11 +1,12 @@
 ﻿using c971_project.Services.Firebase;
+using c971_project.Services.Firebase;
 using c971_project.Services.Notifications;
 using c971_project.Services.ValidationServices;
 using c971_project.ViewModels;
 using c971_project.Views;
-using c971_project.Services.Firebase;
 using Microsoft.Extensions.Logging;
 using Plugin.LocalNotification;
+using Windows.ApplicationModel.Search;
 
 
 namespace c971_project
@@ -36,6 +37,10 @@ namespace c971_project
             // Other Services
             builder.Services.AddSingleton<CourseValidator>();
             builder.Services.AddSingleton<IScheduleNotificationService, NotificationService>();
+
+            builder.Services.AddTransient<SearchViewModel>();
+            builder.Services.AddTransient<SearchPage>();
+            builder.Services.AddSingleton<ISearchService, SearchService>();
 
             builder.Services.AddTransient<LoginViewModel>();
             builder.Services.AddTransient<LoginPage>();

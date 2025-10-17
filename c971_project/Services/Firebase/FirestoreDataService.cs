@@ -21,6 +21,7 @@ namespace c971_project.Services.Firebase
         Task DeleteTermAsync(string termId);
 
         // COURSE METHODS
+        Task<List<Course>> GetCoursesByUserIdAsync(string userId);
         Task<List<Course>> GetCoursesByTermIdAsync(string termId);
         Task<Course> GetCourseAsync(string courseId);
         Task<Course> GetCourseByCourseNumAsync(string courseNum);
@@ -28,11 +29,13 @@ namespace c971_project.Services.Firebase
         Task DeleteCourseAsync(string courseId);
 
         // INSTRUCTOR METHODS
+        Task<List<Instructor>> GetInstructorsAsync(string userId);
         Task<Instructor> GetInstructorAsync(string instructorId);
         Task<Instructor> GetInstructorByEmailAsync(string email);
         Task SaveInstructorAsync(Instructor instructor);
 
         // ASSESSMENT METHODS
+        Task<List<Assessment>> GetAssessmentsByUserIdAsync(string userId);
         Task<List<Assessment>> GetAssessmentsByCourseIdAsync(string courseId);
         Task<Assessment> GetAssessmentAsync(string assessmentId);
         Task SaveAssessmentAsync(Assessment assessment);
@@ -40,6 +43,7 @@ namespace c971_project.Services.Firebase
         Task DeleteAssessmentsByCourseIdAsync(string courseId);
 
         // NOTE METHODS
+        Task<List<Note>> GetNotesByUserIdAsync(string userId);
         Task<List<Note>> GetNotesByCourseIdAsync(string courseId);
         Task<Note> GetNoteAsync(string noteId);
         Task SaveNoteAsync(Note note);
@@ -132,6 +136,16 @@ namespace c971_project.Services.Firebase
         }
 
         // COURSE METHODS
+        public async Task<List<Course>> GetCoursesByUserIdAsync(string userId)
+        {
+            var courses = await _firebaseClient
+                .Child("courses")
+                .OrderBy("UserId")
+                .EqualTo(userId)
+                .OnceAsync<Course>();
+
+            return courses.Select(item => item.Object).ToList();
+        }
         public async Task<List<Course>> GetCoursesByTermIdAsync(string termId)
         {
             var courses = await _firebaseClient
@@ -180,6 +194,14 @@ namespace c971_project.Services.Firebase
         }
 
         // INSTRUCTOR METHODS
+        public async Task<List<Instructor>> GetInstructorsAsync(string userId)
+        {
+            var instructors = await _firebaseClient
+                .Child("instructors")
+                .OnceAsync<Instructor>();
+
+            return instructors.Select(item => item.Object).ToList();
+        }
         public async Task<Instructor> GetInstructorAsync(string instructorId)
         {
             var instructor = await _firebaseClient
@@ -209,6 +231,16 @@ namespace c971_project.Services.Firebase
         }
 
         // ASSESSMENT METHODS
+        public async Task<List<Assessment>> GetAssessmentsByUserIdAsync(string userId)
+        {
+            var assessments = await _firebaseClient
+                .Child("assessments")
+                .OrderBy("UserId")
+                .EqualTo(userId)
+                .OnceAsync<Assessment>();
+
+            return assessments.Select(item => item.Object).ToList();
+        }
         public async Task<List<Assessment>> GetAssessmentsByCourseIdAsync(string courseId)
         {
             var assessments = await _firebaseClient
@@ -255,6 +287,17 @@ namespace c971_project.Services.Firebase
         }
 
         // NOTE METHODS
+
+        public async Task<List<Note>> GetNotesByUserIdAsync(string userId)
+        {
+            var notes = await _firebaseClient
+                .Child("notes")
+                .OrderBy("UserId")
+                .EqualTo(userId)
+                .OnceAsync<Note>();
+
+            return notes.Select(item => item.Object).ToList();
+        }
         public async Task<List<Note>> GetNotesByCourseIdAsync(string courseId)
         {
             var notes = await _firebaseClient
