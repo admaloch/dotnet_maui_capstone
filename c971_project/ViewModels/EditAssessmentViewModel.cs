@@ -20,6 +20,9 @@ namespace c971_project.ViewModels
     {
         private readonly IFirestoreDataService _firestoreDataService;
         private readonly IScheduleNotificationService _notificationService;
+        private readonly AuthService _authService;
+        private string _currentUserId;
+
 
         [ObservableProperty]
         private string assessmentId;
@@ -39,10 +42,13 @@ namespace c971_project.ViewModels
         };
 
         public EditAssessmentViewModel(IFirestoreDataService firestoreDataService,
+            AuthService authService,
                                      IScheduleNotificationService notificationService)
         {
             _firestoreDataService = firestoreDataService;
             _notificationService = notificationService;
+            _authService = authService;
+            _currentUserId = _authService.CurrentUserId;
         }
 
         partial void OnAssessmentIdChanged(string value)
@@ -112,6 +118,8 @@ namespace c971_project.ViewModels
         private async Task SaveAssessmentAsync()
         {
             if (IsBusy) return;
+
+            Assessment.UserId = _currentUserId;
 
             try
             {

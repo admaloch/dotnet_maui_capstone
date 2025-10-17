@@ -6,7 +6,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Maui.Controls;
 using c971_project.Services.Firebase;
 
-using c971_project.Services.Firebase;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace c971_project

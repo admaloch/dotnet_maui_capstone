@@ -11,7 +11,7 @@ namespace c971_project
 
             Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage));
             Routing.RegisterRoute(nameof(RegisterPage), typeof(RegisterPage));
-
+            Routing.RegisterRoute(nameof(SearchPage), typeof(SearchPage));
 
             Routing.RegisterRoute(nameof(EditStudentPage), typeof(EditStudentPage));
 
@@ -31,7 +31,7 @@ namespace c971_project
             Routing.RegisterRoute(nameof(AddNotePage), typeof(AddNotePage));
             Routing.RegisterRoute(nameof(EditNotePage), typeof(EditNotePage));
 
-
+            Routing.RegisterRoute(nameof(InstructorPage), typeof(InstructorPage));
         }
     }
 

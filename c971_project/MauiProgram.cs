@@ -1,12 +1,11 @@
 ﻿using c971_project.Services.Firebase;
-using c971_project.Services.Firebase;
+using c971_project.Services.Search;
 using c971_project.Services.Notifications;
 using c971_project.Services.ValidationServices;
 using c971_project.ViewModels;
 using c971_project.Views;
 using Microsoft.Extensions.Logging;
 using Plugin.LocalNotification;
-using Windows.ApplicationModel.Search;
 
 
 namespace c971_project
@@ -40,7 +39,7 @@ namespace c971_project
 
             builder.Services.AddTransient<SearchViewModel>();
             builder.Services.AddTransient<SearchPage>();
-            builder.Services.AddSingleton<ISearchService, SearchService>();
+            builder.Services.AddSingleton< SearchService>();
 
             builder.Services.AddTransient<LoginViewModel>();
             builder.Services.AddTransient<LoginPage>();
@@ -75,12 +74,15 @@ namespace c971_project
             builder.Services.AddTransient<EditAssessmentPage>();
             builder.Services.AddTransient<EditAssessmentViewModel>();
 
-            builder.Services.AddTransient<AddNotePage>();
-            builder.Services.AddTransient<AddNoteViewModel>();
             builder.Services.AddTransient<NotePage>();
             builder.Services.AddTransient<NoteViewModel>();
+            builder.Services.AddTransient<AddNotePage>();
+            builder.Services.AddTransient<AddNoteViewModel>();
             builder.Services.AddTransient<EditNotePage>();
             builder.Services.AddTransient<EditNoteViewModel>();
+
+            builder.Services.AddTransient<InstructorPage>();
+            builder.Services.AddTransient<InstructorViewModel>();
 
 
 #if DEBUG

@@ -17,6 +17,9 @@ namespace c971_project.ViewModels
     public partial class EditNoteViewModel : BaseViewModel
     {
         private readonly IFirestoreDataService _firestoreDataService;
+        private readonly AuthService _authService;
+        private string _currentUserId;
+
 
         [ObservableProperty]
         private string noteId;
@@ -24,9 +27,11 @@ namespace c971_project.ViewModels
         [ObservableProperty]
         private Note _note;
 
-        public EditNoteViewModel(IFirestoreDataService firestoreDataService)
+        public EditNoteViewModel(IFirestoreDataService firestoreDataService, AuthService authService)
         {
             _firestoreDataService = firestoreDataService;
+            _authService = authService;
+            _currentUserId = _authService.CurrentUserId;
         }
 
         partial void OnNoteIdChanged(string value)
@@ -62,6 +67,7 @@ namespace c971_project.ViewModels
         private async Task SaveNoteAsync()
         {
             if (IsBusy) return;
+            Note.UserId = _currentUserId;
 
             try
             {

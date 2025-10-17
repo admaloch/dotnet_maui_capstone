@@ -17,6 +17,9 @@ namespace c971_project.ViewModels
         private readonly IFirestoreDataService _firestoreDataService;
         private readonly CourseValidator _courseValidator;
         private readonly IScheduleNotificationService _notificationService; // Added
+        private readonly AuthService _authService;
+        private string _currentUserId;
+
 
         [ObservableProperty]
         private string courseId;
@@ -37,11 +40,14 @@ namespace c971_project.ViewModels
         // Updated constructor with notification service
         public EditCourseViewModel(IFirestoreDataService firestoreDataService,
                                  CourseValidator courseValidator,
+                                 AuthService authService,
                                  IScheduleNotificationService notificationService) // Added parameter
         {
             _firestoreDataService = firestoreDataService;
             _courseValidator = courseValidator;
             _notificationService = notificationService; // Added
+            _authService = authService;
+            _currentUserId = _authService.CurrentUserId;
         }
 
         partial void OnCourseIdChanged(string value)
@@ -59,6 +65,7 @@ namespace c971_project.ViewModels
         private async Task SaveCourseAsync()
         {
             if (IsBusy) return;
+            Course.UserId = _currentUserId;
 
             try
             {

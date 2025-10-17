@@ -20,7 +20,8 @@ namespace c971_project.ViewModels
     {
         private readonly IFirestoreDataService _firestoreDataService;
         private readonly CourseValidator _courseValidator;
-        private readonly IScheduleNotificationService _notificationService; // Added
+        private readonly IScheduleNotificationService _notificationService;
+        private readonly AuthService _authService;
 
         [ObservableProperty]
         private string termId;
@@ -31,6 +32,9 @@ namespace c971_project.ViewModels
         [ObservableProperty]
         private Instructor _newInstructor;
 
+        private string _currentUserId;
+
+
         private bool isEdit = false;
 
         public List<int> CreditUnitOptions { get; } = new()
@@ -40,12 +44,15 @@ namespace c971_project.ViewModels
 
         // Updated constructor with notification service injection
         public AddCourseViewModel(IFirestoreDataService firestoreDataService,
+            AuthService authService,
                                 CourseValidator courseValidator,
                                 IScheduleNotificationService notificationService) // Added parameter
         {
             _firestoreDataService = firestoreDataService;
             _courseValidator = courseValidator;
             _notificationService = notificationService; // Added
+            _authService = authService;
+            _currentUserId = _authService.CurrentUserId;
         }
 
         partial void OnTermIdChanged(string value)
@@ -59,6 +66,7 @@ namespace c971_project.ViewModels
             NewCourse = new Course
             {
                 Name = string.Empty,
+                UserId = _currentUserId,
                 CourseNum = string.Empty,
                 CuNum = 3, 
                 StartDate = DateTime.Today,

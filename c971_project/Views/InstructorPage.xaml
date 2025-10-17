@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="c971_project.Views.InstructorPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Instructor Info"
+    BackgroundColor="{StaticResource Cream}">
+
+    <Grid>
+        <!--  Main scrollable content  -->
+        <ScrollView>
+            <VerticalStackLayout Padding="20">
+
+                <!--  Header  -->
+                <Border
+                    Margin="0,10,0,0"
+                    Padding="20,10"
+                    BackgroundColor="{StaticResource DarkBlue}"
+                    HorizontalOptions="Center"
+                    Stroke="{StaticResource LightBrown}"
+                    StrokeShape="RoundRectangle 10"
+                    StrokeThickness="2">
+
+                    <Label
+                        BackgroundColor="Transparent"
+                        HorizontalOptions="Center"
+                        HorizontalTextAlignment="Center"
+                        Style="{StaticResource HeaderLabel}"
+                        Text="{Binding Instructor.Name}"
+                        TextColor="{StaticResource Cream}" />
+                </Border>
+
+
+                <!--  Instructor Info Card  -->
+                <Border
+                    Padding="15"
+                    BackgroundColor="{StaticResource White}"
+                    Stroke="{StaticResource Charcoal}"
+                    StrokeShape="RoundRectangle 12"
+                    StrokeThickness="3">
+
+                    <Border.Shadow>
+                        <Shadow
+                            Brush="{StaticResource MediumGray}"
+                            Opacity="0.3"
+                            Radius="8"
+                            Offset="2,2" />
+                    </Border.Shadow>
+
+
+
+                    <!--  Main content - REMOVE AbsoluteLayout properties  -->
+                    <VerticalStackLayout Spacing="12">
+
+                        <!--  //name  -->
+                        <HorizontalStackLayout Spacing="10">
+                            <Label
+                                FontAttributes="Bold"
+                                Text="Name:"
+                                TextColor="{StaticResource MediumGray}" />
+                            <Label Text="{Binding Instructor.Name}" TextColor="{StaticResource DarkBlue}" />
+                        </HorizontalStackLayout>
+
+                        <!--  //email  -->
+                        <HorizontalStackLayout Spacing="10">
+                            <Label
+                                FontAttributes="Bold"
+                                Text="Email:"
+                                TextColor="{StaticResource MediumGray}" />
+                            <Label Text="{Binding Instructor.Email}" TextColor="{StaticResource DarkBlue}" />
+                        </HorizontalStackLayout>
+
+                        <!--  phone  -->
+                        <HorizontalStackLayout Spacing="10">
+                            <Label
+                                FontAttributes="Bold"
+                                Text="Phone:"
+                                TextColor="{StaticResource MediumGray}" />
+                            <Label Text="{Binding Instructor.Phone}" TextColor="{StaticResource DarkBlue}" />
+                        </HorizontalStackLayout>
+
+
+                    </VerticalStackLayout>
+
+
+                </Border>
+            </VerticalStackLayout>
+        </ScrollView>
+
+
+
+    </Grid>
+</ContentPage>

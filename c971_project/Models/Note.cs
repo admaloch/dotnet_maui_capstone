@@ -18,6 +18,9 @@ namespace c971_project.Models
         private string id;
 
         [ObservableProperty]
+        private string userId = string.Empty;
+
+        [ObservableProperty]
         private string courseId = string.Empty;
 
         [ObservableProperty]

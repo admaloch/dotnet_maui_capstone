@@ -21,6 +21,9 @@ namespace c971_project.ViewModels
     {
         private readonly IFirestoreDataService _firestoreDataService;
         private readonly IScheduleNotificationService _notificationService; // Added
+        private readonly AuthService _authService;
+        private string _currentUserId;
+
 
         [ObservableProperty]
         private string courseId;
@@ -63,10 +66,13 @@ namespace c971_project.ViewModels
 
         // Updated constructor with notification service
         public AddAssessmentViewModel(IFirestoreDataService firestoreDataService,
+            AuthService authService,
                                     IScheduleNotificationService notificationService) 
         {
             _firestoreDataService = firestoreDataService;
             _notificationService = notificationService;
+            _authService = authService;
+            _currentUserId = _authService.CurrentUserId;
 
             // Update dropdown when assessments collection changes
             Assessments.CollectionChanged += (s, e) =>
@@ -90,6 +96,7 @@ namespace c971_project.ViewModels
                 NewAssessment = new Assessment
                 {
                     Name = string.Empty,
+                    UserId = _currentUserId,
                     CourseId = courseId,
                     Type = TypeOptions.FirstOrDefault() ?? string.Empty,
                     Status = "In progress",

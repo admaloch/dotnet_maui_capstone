@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using c971_project.Models;
 using c971_project.Services.Firebase;
+using System.Diagnostics;
 
 namespace c971_project.Services.Search
 {
@@ -33,15 +34,29 @@ namespace c971_project.Services.Search
 
             try
             {
+                Debug.WriteLine($"=== SEARCH DEBUG ===");
+                Debug.WriteLine($"Searching for: '{query}' (lower: '{lowerQuery}')");
+                Debug.WriteLine($"User ID: {userId}");
+
                 // Search across all entities
                 var terms = await _firestoreDataService.GetTermsByUserIdAsync(userId);
                 var courses = await _firestoreDataService.GetCoursesByUserIdAsync(userId);
                 var assessments = await _firestoreDataService.GetAssessmentsByUserIdAsync(userId);
                 var notes = await _firestoreDataService.GetNotesByUserIdAsync(userId);
-                var instructors = await _firestoreDataService.GetInstructorsAsync(userId); // Add this
+                var instructors = await _firestoreDataService.GetInstructorsAsync(userId);
 
+                Debug.WriteLine($"Data counts - Terms: {terms?.Count() ?? 0}, Courses: {courses?.Count() ?? 0}, Assessments: {assessments?.Count() ?? 0}, Notes: {notes?.Count() ?? 0}, Instructors: {instructors?.Count() ?? 0}");
 
-                //  terms
+                // Debug: Print sample data
+                if (courses?.Any() == true)
+                {
+                    var sampleCourse = courses.First();
+                    Debug.WriteLine($"Sample Course - Name: '{sampleCourse.Name}', CourseNum: '{sampleCourse.CourseNum}'");
+                }
+
+                // ========== ACTUAL SEARCH LOGIC ==========
+
+                // Search terms
                 results.Terms = new ObservableCollection<Term>(
                     terms?.Where(t =>
                         t.Name?.ToLower().Contains(lowerQuery) == true ||
@@ -50,7 +65,7 @@ namespace c971_project.Services.Search
                     ) ?? Enumerable.Empty<Term>()
                 );
 
-                //  courses
+                // Search courses
                 results.Courses = new ObservableCollection<Course>(
                     courses?.Where(c =>
                         c.Name?.ToLower().Contains(lowerQuery) == true ||
@@ -60,7 +75,7 @@ namespace c971_project.Services.Search
                     ) ?? Enumerable.Empty<Course>()
                 );
 
-                //  instructors 
+                // Search instructors 
                 results.Instructors = new ObservableCollection<Instructor>(
                     instructors?.Where(i =>
                         i.Name?.ToLower().Contains(lowerQuery) == true ||
@@ -86,11 +101,14 @@ namespace c971_project.Services.Search
                         n.Title?.ToLower().Contains(lowerQuery) == true
                     ) ?? Enumerable.Empty<Note>()
                 );
+                // ========== END SEARCH LOGIC ==========
+
+                Debug.WriteLine($"Results - Terms: {results.Terms.Count}, Courses: {results.Courses.Count}, Assessments: {results.Assessments.Count}, Notes: {results.Notes.Count}, Instructors: {results.Instructors.Count}");
+                Debug.WriteLine($"=== END SEARCH DEBUG ===");
             }
             catch (Exception ex)
             {
-                // Log error or handle appropriately
-                System.Diagnostics.Debug.WriteLine($"Search error: {ex.Message}");
+                Debug.WriteLine($"Search error: {ex.Message}");
             }
 
             return results;

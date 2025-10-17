@@ -17,6 +17,8 @@ namespace c971_project.ViewModels
     public partial class AddNoteViewModel : BaseViewModel
     {
         private readonly IFirestoreDataService _firestoreDataService;
+        private readonly AuthService _authService;
+        private string _currentUserId;
 
         [ObservableProperty]
         private string courseId;
@@ -24,9 +26,11 @@ namespace c971_project.ViewModels
         [ObservableProperty]
         private Note _newNote;
 
-        public AddNoteViewModel(IFirestoreDataService firestoreDataService)
+        public AddNoteViewModel(IFirestoreDataService firestoreDataService, AuthService authService)
         {
             _firestoreDataService = firestoreDataService;
+            _authService = authService;
+            _currentUserId = _authService.CurrentUserId;
         }
 
         // This runs when CourseId is assigned by Shell after navigation
@@ -42,6 +46,7 @@ namespace c971_project.ViewModels
                 NewNote = new Note
                 {
                     Title = string.Empty,
+                    UserId = _currentUserId,
                     Body = string.Empty,
                     CourseId = courseId,
                     DateAdded = DateTime.Today,
