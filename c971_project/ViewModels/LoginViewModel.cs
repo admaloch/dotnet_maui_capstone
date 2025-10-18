@@ -19,8 +19,6 @@ namespace c971_project.ViewModels
         [ObservableProperty]
         private string password;
 
-        [ObservableProperty]
-        private bool isNotBusy = true;
 
         public LoginViewModel(AuthService authService, IFirestoreDataService firestoreDataService)
         {
@@ -36,16 +34,19 @@ namespace c971_project.ViewModels
         [RelayCommand]
         private async Task Login()
         {
+            if (IsBusy) return;
+
             if (string.IsNullOrWhiteSpace(Email) || string.IsNullOrWhiteSpace(Password))
             {
                 await Shell.Current.DisplayAlert("Error", "Please enter both email and password", "OK");
                 return;
             }
 
-            IsNotBusy = false;
+     
 
             try
             {
+                IsBusy = true;
                 var success = await _authService.LoginAsync(Email, Password);
                 if (success)
                 {
@@ -63,10 +64,8 @@ namespace c971_project.ViewModels
                     "We had trouble logging you in. Check your internet connection and try again", "OK");
                 Debug.WriteLine($"LOGIN ERROR: {ex}");
             }
-            finally
-            {
-                IsNotBusy = true;
-            }
+            finally { IsBusy = false; }
+
         }
 
         [RelayCommand]
