@@ -19,5 +19,10 @@
         ContentTemplate="{DataTemplate views:SearchPage}"
         Icon="search.png"
         Route="SearchPage" />
+    <ShellContent
+        Title="Reports"
+        ContentTemplate="{DataTemplate views:ReportsPage}"
+        Icon="chart.png"
+        Route="ReportsPage" />
 
 </Shell>

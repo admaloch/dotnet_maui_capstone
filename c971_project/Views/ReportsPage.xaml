@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="c971_project.Views.ReportsPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="ReportsPage">
+    <ScrollView>
+        <VerticalStackLayout Spacing="20" Padding="20">
+
+            <!-- Header -->
+            <Label Text="Generate Reports" 
+                   FontSize="24" 
+                   FontAttributes="Bold" 
+                   HorizontalOptions="Center" />
+
+            <!-- Progress Indicator -->
+            <Grid IsVisible="{Binding IsGeneratingReport}">
+                <VerticalStackLayout Spacing="10" HorizontalOptions="Center">
+                    <ActivityIndicator IsRunning="True" />
+                    <Label Text="{Binding CurrentOperation}" 
+                           HorizontalOptions="Center" 
+                           FontAttributes="Italic" />
+                </VerticalStackLayout>
+            </Grid>
+
+            <!-- Report Cards -->
+            <VerticalStackLayout Spacing="15">
+
+                <!-- Course Report Card -->
+                <Border BackgroundColor="{StaticResource LightBlue}"
+                        Stroke="{StaticResource DarkBlue}"
+                        StrokeThickness="1"
+                        Padding="15"
+                        HorizontalOptions="Fill">
+                    <VerticalStackLayout>
+                        <Label Text="Course List Report" 
+                               FontSize="18" 
+                               FontAttributes="Bold" />
+                        <Label Text="Complete list of all your courses with details" 
+                               FontSize="12" />
+                        <Button Text="Generate Report" 
+                                Command="{Binding GenerateCourseReportCommand}"
+                                IsEnabled="{Binding IsGeneratingReport, Converter={StaticResource InverseBoolConverter}}"
+                                HorizontalOptions="End" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Assessment Report Card -->
+                <Border BackgroundColor="{StaticResource LightGreen}"
+                        Stroke="{StaticResource DarkGreen}"
+                        StrokeThickness="1"
+                        Padding="15"
+                        HorizontalOptions="Fill">
+                    <VerticalStackLayout>
+                        <Label Text="Assessment Schedule" 
+                               FontSize="18" 
+                               FontAttributes="Bold" />
+                        <Label Text="Upcoming assessments and due dates" 
+                               FontSize="12" />
+                        <Button Text="Generate Report" 
+                                Command="{Binding GenerateAssessmentReportCommand}"
+                                IsEnabled="{Binding IsGeneratingReport, Converter={StaticResource InverseBoolConverter}}"
+                                HorizontalOptions="End" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Term Report Card -->
+                <Border BackgroundColor="{StaticResource LightOrange}"
+                        Stroke="{StaticResource DarkOrange}"
+                        StrokeThickness="1"
+                        Padding="15"
+                        HorizontalOptions="Fill">
+                    <VerticalStackLayout>
+                        <Label Text="Term Overview" 
+                               FontSize="18" 
+                               FontAttributes="Bold" />
+                        <Label Text="Academic terms with course summaries" 
+                               FontSize="12" />
+                        <Button Text="Generate Report" 
+                                Command="{Binding GenerateTermReportCommand}"
+                                IsEnabled="{Binding IsGeneratingReport, Converter={StaticResource InverseBoolConverter}}"
+                                HorizontalOptions="End" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Instructor Report Card -->
+                <Border BackgroundColor="{StaticResource LightPurple}"
+                        Stroke="{StaticResource DarkPurple}"
+                        StrokeThickness="1"
+                        Padding="15"
+                        HorizontalOptions="Fill">
+                    <VerticalStackLayout>
+                        <Label Text="Instructor Contacts" 
+                               FontSize="18" 
+                               FontAttributes="Bold" />
+                        <Label Text="Instructor contact information and courses" 
+                               FontSize="12" />
+                        <Button Text="Generate Report" 
+                                Command="{Binding GenerateInstructorReportCommand}"
+                                IsEnabled="{Binding IsGeneratingReport, Converter={StaticResource InverseBoolConverter}}"
+                                HorizontalOptions="End" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Comprehensive Report Card -->
+                <Border BackgroundColor="{StaticResource LightRed}"
+                        Stroke="{StaticResource DarkRed}"
+                        StrokeThickness="1"
+                        Padding="15"
+                        HorizontalOptions="Fill">
+                    <VerticalStackLayout>
+                        <Label Text="Comprehensive Report" 
+                               FontSize="18" 
+                               FontAttributes="Bold" />
+                        <Label Text="Complete overview of all your academic data" 
+                               FontSize="12" />
+                        <Button Text="Generate Report" 
+                                Command="{Binding GenerateComprehensiveReportCommand}"
+                                IsEnabled="{Binding IsGeneratingReport, Converter={StaticResource InverseBoolConverter}}"
+                                HorizontalOptions="End" />
+                    </VerticalStackLayout>
+                </Border>
+
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
