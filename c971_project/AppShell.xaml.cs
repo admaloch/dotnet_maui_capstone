@@ -12,6 +12,8 @@ namespace c971_project
             Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage));
             Routing.RegisterRoute(nameof(RegisterPage), typeof(RegisterPage));
             Routing.RegisterRoute(nameof(SearchPage), typeof(SearchPage));
+            Routing.RegisterRoute(nameof(ReportsPage), typeof(ReportsPage));
+
 
             Routing.RegisterRoute(nameof(EditStudentPage), typeof(EditStudentPage));
 

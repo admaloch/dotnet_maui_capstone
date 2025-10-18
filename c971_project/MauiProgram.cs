@@ -1,11 +1,13 @@
 ﻿using c971_project.Services.Firebase;
-using c971_project.Services.Search;
 using c971_project.Services.Notifications;
+using c971_project.Services.Reporting;
+using c971_project.Services.Search;
 using c971_project.Services.ValidationServices;
 using c971_project.ViewModels;
 using c971_project.Views;
 using Microsoft.Extensions.Logging;
 using Plugin.LocalNotification;
+using QuestPDF.Infrastructure;
 
 
 namespace c971_project
@@ -25,21 +27,24 @@ namespace c971_project
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
+            QuestPDF.Settings.License = LicenseType.Community;
 
             builder.Services.AddSingleton<AppShell>();
 
-
-            // Firebase Services
             builder.Services.AddSingleton<AuthService>();
             builder.Services.AddSingleton<IFirestoreDataService, FirestoreDataService>();
 
-            // Other Services
             builder.Services.AddSingleton<CourseValidator>();
             builder.Services.AddSingleton<IScheduleNotificationService, NotificationService>();
+            builder.Services.AddSingleton<SearchService>();
+            builder.Services.AddSingleton<IReportService, PdfReportService>();
+
+            // view models
+            builder.Services.AddTransient<ReportsViewModel>();
+            builder.Services.AddTransient<ReportsPage>();
 
             builder.Services.AddTransient<SearchViewModel>();
             builder.Services.AddTransient<SearchPage>();
-            builder.Services.AddSingleton< SearchService>();
 
             builder.Services.AddTransient<LoginViewModel>();
             builder.Services.AddTransient<LoginPage>();

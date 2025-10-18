@@ -8,7 +8,16 @@
     <Color x:Key="LightBrown">#C9ADA7</Color>
     <Color x:Key="Cream">#F2E9E4</Color>
     <Color x:Key="LightGray">#f5f3f4</Color>
-    <Color x:Key="LightRed">#FF5252</Color>
+    <Color x:Key="LightRed">#fae8ef</Color>
+    <Color x:Key="LightBlue">#eff6ff</Color>
+    <Color x:Key="DarkGreen">#059669</Color>
+    <Color x:Key="LightGreen">#ecfdf5</Color>
+    <Color x:Key="DarkOrange">#ea580c</Color>
+    <Color x:Key="LightOrange">#fff7ed</Color>
+    <Color x:Key="DarkPurple">#7c3aed</Color>
+    <Color x:Key="LightPurple">#f5f3ff</Color>
+    <Color x:Key="DarkRed">#dc2626</Color>
+
 
     <!--  Your rgba(0, 34, 255, 0.06)  -->
 

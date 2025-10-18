@@ -13,7 +13,7 @@ namespace c971_project.ViewModels
     {
         private readonly IReportService _reportService;
         private readonly AuthService _authService;
-        private readonly string userId;
+        private readonly string _currentUserId;
 
 
         [ObservableProperty]
@@ -26,61 +26,61 @@ namespace c971_project.ViewModels
         {
             _reportService = reportService;
             _authService = authService;
-            userId = _authService.CurrentUserId;
-
+            _currentUserId = _authService.CurrentUserId;
         }
 
         [RelayCommand]
-        private async Task GenerateCourseReportAsync()
+        private async Task OnGenerateCourseReportAsync()
         {
+            Debug.WriteLine("Starting course Report Generation");
+
             await GenerateReportAsync(
                 operation: "Course Report",
-                generateAction: () => _reportService.GenerateCourseReportAsync(GetUserId()),
-                successMessage: "Course report generated successfully!"
+                generateAction: () => _reportService.GenerateCourseReportAsync(_currentUserId)
             );
         }
 
         [RelayCommand]
-        private async Task GenerateAssessmentReportAsync()
+        private async Task OnGenerateAssessmentReportAsync()
         {
+            Debug.WriteLine("Starting Assessment Report Generation");
             await GenerateReportAsync(
                 operation: "Assessment Report",
-                generateAction: () => _reportService.GenerateAssessmentReportAsync(GetUserId()),
-                successMessage: "Assessment report generated successfully!"
+                generateAction: () => _reportService.GenerateAssessmentReportAsync(_currentUserId)
             );
         }
 
         [RelayCommand]
-        private async Task GenerateTermReportAsync()
+        private async Task OnGenerateTermReportAsync()
         {
+            Debug.WriteLine("Starting Term Report Generation");
             await GenerateReportAsync(
                 operation: "Term Report",
-                generateAction: () => _reportService.GenerateTermReportAsync(GetUserId()),
-                successMessage: "Term report generated successfully!"
+                generateAction: () => _reportService.GenerateTermReportAsync(_currentUserId)
             );
         }
 
         [RelayCommand]
-        private async Task GenerateInstructorReportAsync()
+        private async Task OnGenerateInstructorReportAsync()
         {
+            Debug.WriteLine("Starting Instructor Report Generation");
             await GenerateReportAsync(
                 operation: "Instructor Report",
-                generateAction: () => _reportService.GenerateInstructorReportAsync(GetUserId()),
-                successMessage: "Instructor report generated successfully!"
+                generateAction: () => _reportService.GenerateInstructorReportAsync(_currentUserId)
             );
         }
 
         [RelayCommand]
-        private async Task GenerateComprehensiveReportAsync()
+        private async Task OnGenerateComprehensiveReportAsync()
         {
+            Debug.WriteLine("Starting Comprehensive Report Generation");
             await GenerateReportAsync(
                 operation: "Comprehensive Report",
-                generateAction: () => _reportService.GenerateComprehensiveReportAsync(GetUserId()),
-                successMessage: "Comprehensive report generated successfully!"
+                generateAction: () => _reportService.GenerateComprehensiveReportAsync(_currentUserId)
             );
         }
 
-        private async Task GenerateReportAsync(string operation, Func<Task<string>> generateAction, string successMessage)
+        private async Task GenerateReportAsync(string operation, Func<Task<string>> generateAction)
         {
             if (IsGeneratingReport)
                 return;
@@ -90,7 +90,7 @@ namespace c971_project.ViewModels
 
             try
             {
-                if (string.IsNullOrEmpty(userId))
+                if (string.IsNullOrEmpty(_currentUserId))
                 {
                     await Shell.Current.DisplayAlert("Error", "Please log in to generate reports", "OK");
                     return;
@@ -101,7 +101,6 @@ namespace c971_project.ViewModels
                 if (!string.IsNullOrEmpty(filePath) && File.Exists(filePath))
                 {
                     await ShareReportAsync(filePath, operation);
-                    await Shell.Current.DisplayAlert("Success", successMessage, "OK");
                 }
                 else
                 {
@@ -139,9 +138,6 @@ namespace c971_project.ViewModels
             }
         }
 
-        private string GetUserId()
-        {
-            return _authService.CurrentUserId;
-        }
+      
     }
 }

@@ -6,20 +6,15 @@ using c971_project.Models;
 using c971_project.Services.Firebase;
 using QuestPDFColors = QuestPDF.Helpers.Colors;
 
-
 namespace c971_project.Services.Reporting
 {
     public class PdfReportService : IReportService
     {
         private readonly IFirestoreDataService _firestoreDataService;
-        private readonly IFileSystem _fileSystem;
 
-        public PdfReportService(IFirestoreDataService firestoreDataService, IFileSystem fileSystem)
+        public PdfReportService(IFirestoreDataService firestoreDataService)
         {
             _firestoreDataService = firestoreDataService;
-
-            _fileSystem = fileSystem;
-            QuestPDF.Settings.License = LicenseType.Community; // Free for community use
         }
 
         public async Task<string> GenerateCourseReportAsync(string userId)
@@ -35,7 +30,6 @@ namespace c971_project.Services.Reporting
                     page.Size(PageSizes.A4);
                     page.Margin(2, Unit.Centimetre);
                     page.PageColor(QuestPDFColors.White);
-
                     page.DefaultTextStyle(x => x.FontSize(12));
 
                     page.Header()
@@ -58,24 +52,25 @@ namespace c971_project.Services.Reporting
                             {
                                 column.Item().Table(table =>
                                 {
+                                    // FIXED: 4 columns for 4 data fields
                                     table.ColumnsDefinition(columns =>
                                     {
                                         columns.ConstantColumn(80); // Number
                                         columns.RelativeColumn(2);  // Name
-                                        columns.RelativeColumn();   // Status
                                         columns.RelativeColumn();   // Dates
                                         columns.ConstantColumn(60); // Credits
                                     });
 
+                                    // FIXED: 4 header cells for 4 columns
                                     table.Header(header =>
                                     {
                                         header.Cell().Background(QuestPDFColors.Grey.Lighten3).Padding(5).Text("Number");
                                         header.Cell().Background(QuestPDFColors.Grey.Lighten3).Padding(5).Text("Course Name");
-                                        header.Cell().Background(QuestPDFColors.Grey.Lighten3).Padding(5).Text("Status");
                                         header.Cell().Background(QuestPDFColors.Grey.Lighten3).Padding(5).Text("Dates");
                                         header.Cell().Background(QuestPDFColors.Grey.Lighten3).Padding(5).Text("Credits");
                                     });
 
+                                    // FIXED: 4 data cells for 4 columns
                                     foreach (var course in reportData.Courses)
                                     {
                                         table.Cell().BorderBottom(1).BorderColor(QuestPDFColors.Grey.Lighten2).Padding(5).Text(course.CourseNum);
@@ -183,34 +178,219 @@ namespace c971_project.Services.Reporting
 
         public async Task<string> GenerateTermReportAsync(string userId)
         {
-            // Similar implementation for terms
             var reportData = await LoadReportDataAsync(userId);
             var fileName = $"Term_Report_{DateTime.Now:yyyyMMdd_HHmmss}.pdf";
             var filePath = Path.Combine(FileSystem.CacheDirectory, fileName);
 
-            // Implementation similar to above...
+            var document = Document.Create(container =>
+            {
+                container.Page(page =>
+                {
+                    page.Size(PageSizes.A4);
+                    page.Margin(2, Unit.Centimetre);
+
+                    page.Header()
+                        .AlignCenter()
+                        .Text("Term Overview Report")
+                        .SemiBold().FontSize(20).FontColor(QuestPDFColors.Blue.Medium);
+
+                    page.Content()
+                        .PaddingVertical(1, Unit.Centimetre)
+                        .Column(column =>
+                        {
+                            column.Spacing(15);
+                            column.Item().Text($"Generated: {reportData.GeneratedAt:MMMM dd, yyyy hh:mm tt}");
+                            column.Item().Text($"Total Terms: {reportData.Terms.Count}");
+
+                            if (reportData.Terms.Any())
+                            {
+                                foreach (var term in reportData.Terms)
+                                {
+                                    var termCourses = reportData.Courses.Where(c => c.TermId == term.Id).ToList();
+
+                                    column.Item().Background(QuestPDFColors.Grey.Lighten2).Padding(15).Column(termColumn =>
+                                    {
+                                        // Term Header
+                                        termColumn.Item().Text(term.Name).SemiBold().FontSize(16);
+                                        termColumn.Item().Text($"{term.StartDate:MMM dd, yyyy} - {term.EndDate:MMM dd, yyyy}")
+                                            .FontColor(QuestPDFColors.Grey.Medium);
+                                        termColumn.Item().Text($"Courses: {termCourses.Count}")
+                                            .FontColor(QuestPDFColors.Grey.Medium);
+
+                                        // Courses Table
+                                        if (termCourses.Any())
+                                        {
+                                            termColumn.Item().PaddingTop(10).Table(courseTable =>
+                                            {
+                                                // Updated columns based on your actual Course model
+                                                courseTable.ColumnsDefinition(columns =>
+                                                {
+                                                    columns.RelativeColumn(2);  // Course Name
+                                                    columns.RelativeColumn(1);  // Course Number
+                                                    columns.RelativeColumn(1);  // Credits
+                                                    columns.RelativeColumn(1);  // Dates
+                                                });
+
+                                                // Table Header
+                                                courseTable.Header(header =>
+                                                {
+                                                    header.Cell().Background(QuestPDFColors.Grey.Lighten3).Padding(5).Text("Course Name");
+                                                    header.Cell().Background(QuestPDFColors.Grey.Lighten3).Padding(5).Text("Course #");
+                                                    header.Cell().Background(QuestPDFColors.Grey.Lighten3).Padding(5).Text("Credits");
+                                                    header.Cell().Background(QuestPDFColors.Grey.Lighten3).Padding(5).Text("Dates");
+                                                });
+
+                                                // Table Rows - using actual Course properties
+                                                foreach (var course in termCourses)
+                                                {
+                                                    courseTable.Cell().BorderBottom(1).BorderColor(QuestPDFColors.Grey.Lighten2).Padding(5).Text(course.Name);
+                                                    courseTable.Cell().BorderBottom(1).BorderColor(QuestPDFColors.Grey.Lighten2).Padding(5).Text(course.CourseNum);
+                                                    courseTable.Cell().BorderBottom(1).BorderColor(QuestPDFColors.Grey.Lighten2).Padding(5).Text(course.CuNum.ToString());
+                                                    courseTable.Cell().BorderBottom(1).BorderColor(QuestPDFColors.Grey.Lighten2).Padding(5).Text($"{course.StartDate:MM/dd} - {course.EndDate:MM/dd}");
+                                                }
+                                            });
+                                        }
+                                        else
+                                        {
+                                            termColumn.Item().PaddingTop(5).Text("No courses in this term").Italic().FontColor(QuestPDFColors.Grey.Medium);
+                                        }
+                                    });
+
+                                    column.Item().Height(10); // Add some space between terms
+                                }
+                            }
+                            else
+                            {
+                                column.Item().Text("No terms found.").Italic();
+                            }
+                        });
+                });
+            });
+
+            document.GeneratePdf(filePath);
             return filePath;
         }
 
         public async Task<string> GenerateInstructorReportAsync(string userId)
         {
-            // Similar implementation for instructors
             var reportData = await LoadReportDataAsync(userId);
             var fileName = $"Instructor_Report_{DateTime.Now:yyyyMMdd_HHmmss}.pdf";
             var filePath = Path.Combine(FileSystem.CacheDirectory, fileName);
 
-            // Implementation similar to above...
+            var document = Document.Create(container =>
+            {
+                container.Page(page =>
+                {
+                    page.Size(PageSizes.A4);
+                    page.Margin(2, Unit.Centimetre);
+
+                    page.Header()
+                        .AlignCenter()
+                        .Text("Instructor Contact Report")
+                        .SemiBold().FontSize(20).FontColor(QuestPDFColors.Blue.Medium);
+
+                    page.Content()
+                        .PaddingVertical(1, Unit.Centimetre)
+                        .Column(column =>
+                        {
+                            column.Spacing(10);
+                            column.Item().Text($"Generated: {reportData.GeneratedAt:MMMM dd, yyyy hh:mm tt}");
+                            column.Item().Text($"Total Instructors: {reportData.Instructors.Count}");
+
+                            if (reportData.Instructors.Any())
+                            {
+                                column.Item().Table(table =>
+                                {
+                                    table.ColumnsDefinition(columns =>
+                                    {
+                                        columns.RelativeColumn(2);  // Name
+                                        columns.RelativeColumn(2);  // Email
+                                        columns.RelativeColumn();   // Phone
+                                    });
+
+                                    table.Header(header =>
+                                    {
+                                        header.Cell().Background(QuestPDFColors.Grey.Lighten3).Padding(5).Text("Instructor");
+                                        header.Cell().Background(QuestPDFColors.Grey.Lighten3).Padding(5).Text("Email");
+                                        header.Cell().Background(QuestPDFColors.Grey.Lighten3).Padding(5).Text("Phone");
+                                    });
+
+                                    foreach (var instructor in reportData.Instructors)
+                                    {
+                                        table.Cell().BorderBottom(1).BorderColor(QuestPDFColors.Grey.Lighten2).Padding(5).Text(instructor.Name);
+                                        table.Cell().BorderBottom(1).BorderColor(QuestPDFColors.Grey.Lighten2).Padding(5).Text(instructor.Email ?? "N/A");
+                                        table.Cell().BorderBottom(1).BorderColor(QuestPDFColors.Grey.Lighten2).Padding(5).Text(instructor.Phone ?? "N/A");
+                                    }
+                                });
+                            }
+                            else
+                            {
+                                column.Item().Text("No instructors found.").Italic();
+                            }
+                        });
+                });
+            });
+
+            document.GeneratePdf(filePath);
             return filePath;
         }
 
         public async Task<string> GenerateComprehensiveReportAsync(string userId)
         {
-            // Combines all data into one comprehensive report
             var reportData = await LoadReportDataAsync(userId);
             var fileName = $"Comprehensive_Report_{DateTime.Now:yyyyMMdd_HHmmss}.pdf";
             var filePath = Path.Combine(FileSystem.CacheDirectory, fileName);
 
-            // Implementation that combines terms, courses, assessments...
+            var document = Document.Create(container =>
+            {
+                container.Page(page =>
+                {
+                    page.Size(PageSizes.A4);
+                    page.Margin(2, Unit.Centimetre);
+
+                    page.Header()
+                        .AlignCenter()
+                        .Text("Comprehensive Academic Report")
+                        .SemiBold().FontSize(20).FontColor(QuestPDFColors.Blue.Medium);
+
+                    page.Content()
+                        .PaddingVertical(1, Unit.Centimetre)
+                        .Column(column =>
+                        {
+                            column.Spacing(15);
+
+                            // Summary
+                            column.Item().Background(QuestPDFColors.Grey.Lighten3).Padding(10).Column(summaryColumn =>
+                            {
+                                summaryColumn.Item().Text("Summary").SemiBold().FontSize(16);
+                                summaryColumn.Item().Text($"Generated: {reportData.GeneratedAt:MMMM dd, yyyy hh:mm tt}");
+                                summaryColumn.Item().Text($"Terms: {reportData.Terms.Count}");
+                                summaryColumn.Item().Text($"Courses: {reportData.Courses.Count}");
+                                summaryColumn.Item().Text($"Assessments: {reportData.Assessments.Count}");
+                                summaryColumn.Item().Text($"Instructors: {reportData.Instructors.Count}");
+                            });
+
+                            // Recent Assessments
+                            var recentAssessments = reportData.Assessments
+                                .Where(a => a.EndDate >= DateTime.Today)
+                                .OrderBy(a => a.EndDate)
+                                .Take(5)
+                                .ToList();
+
+                            if (recentAssessments.Any())
+                            {
+                                column.Item().Text("Upcoming Assessments").SemiBold().FontSize(14);
+                                foreach (var assessment in recentAssessments)
+                                {
+                                    var course = reportData.Courses.FirstOrDefault(c => c.Id == assessment.CourseId);
+                                    column.Item().Padding(5).Text($"{assessment.Name} - Due: {assessment.EndDate:MMM dd} ({course?.Name ?? "Unknown Course"})");
+                                }
+                            }
+                        });
+                });
+            });
+
+            document.GeneratePdf(filePath);
             return filePath;
         }
 
