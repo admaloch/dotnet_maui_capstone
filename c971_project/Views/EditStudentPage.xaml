@@ -3,10 +3,26 @@
     x:Class="c971_project.Views.EditStudentPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    Title="Edit Student"
+    Title="Edit Students"
     BackgroundColor="{StaticResource Cream}">
 
     <Grid>
+        <!--  Full screen loading overlay  -->
+        <Grid
+            BackgroundColor="#80000000"
+            HorizontalOptions="Fill"
+            IsVisible="{Binding IsBusy}"
+            VerticalOptions="Fill"
+            ZIndex="1000">
+
+            <ActivityIndicator
+                HeightRequest="60"
+                HorizontalOptions="Center"
+                IsRunning="True"
+                VerticalOptions="Center"
+                WidthRequest="60"
+                Color="White" />
+        </Grid>
         <!--  Main scrollable content  -->
         <ScrollView>
             <VerticalStackLayout Padding="20" Spacing="20">

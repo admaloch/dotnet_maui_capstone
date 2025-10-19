@@ -3,190 +3,197 @@
     x:Class="c971_project.Views.ReportsPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    BackgroundColor="{StaticResource Cream}"
-    Title="Reports">
-    <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="20">
-
-            <!--  Header  -->
-            <Border
-                Margin="0,10,0,0"
-                Padding="20,10"
-                BackgroundColor="{StaticResource DarkBlue}"
+    Title="Reports"
+    BackgroundColor="{StaticResource Cream}">
+    <Grid>
+        <!--  Full screen loading overlay  -->
+        <Grid
+            BackgroundColor="#80000000"
+            HorizontalOptions="Fill"
+            IsVisible="{Binding IsBusy}"
+            VerticalOptions="Fill"
+            ZIndex="1000">
+            <ActivityIndicator
+                HeightRequest="60"
                 HorizontalOptions="Center"
-                Stroke="{StaticResource LightBrown}"
-                StrokeShape="RoundRectangle 10"
-                StrokeThickness="2">
+                IsRunning="True"
+                VerticalOptions="Center"
+                WidthRequest="60"
+                Color="White" />
+        </Grid>
+        <!--  Main scrollable content  -->
+        <ScrollView>
+            <VerticalStackLayout Padding="20" Spacing="20">
 
-                <Label
-                    BackgroundColor="Transparent"
+                <!--  Header  -->
+                <Border
+                    Margin="0,10,0,0"
+                    Padding="20,10"
+                    BackgroundColor="{StaticResource DarkBlue}"
                     HorizontalOptions="Center"
-                    HorizontalTextAlignment="Center"
-                    Style="{StaticResource HeaderLabel}"
-                    Text="Generate Reports"
-                    TextColor="{StaticResource Cream}" />
-            </Border>
+                    Stroke="{StaticResource LightBrown}"
+                    StrokeShape="RoundRectangle 10"
+                    StrokeThickness="2">
 
-            <!--  Progress Indicator  -->
-            <Grid IsVisible="{Binding IsGeneratingReport}">
-                <VerticalStackLayout HorizontalOptions="Center" Spacing="10">
-                    <ActivityIndicator IsRunning="True" />
                     <Label
-                        FontAttributes="Italic"
+                        BackgroundColor="Transparent"
                         HorizontalOptions="Center"
-                        Text="{Binding CurrentOperation}" />
+                        HorizontalTextAlignment="Center"
+                        Style="{StaticResource HeaderLabel}"
+                        Text="Generate Reports"
+                        TextColor="{StaticResource Cream}" />
+                </Border>
+
+                <!--  Report Cards  -->
+                <VerticalStackLayout Spacing="15">
+
+                    <!--  Course Report Card  -->
+                    <Border
+                        Padding="15"
+                        BackgroundColor="{StaticResource LightBlue}"
+                        HorizontalOptions="Fill"
+                        Stroke="{StaticResource DarkBlue}"
+                        StrokeThickness="1">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <VerticalStackLayout Grid.Column="0">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="18"
+                                    Text="Course List Report" />
+                                <Label FontSize="12" Text="Complete list of all your courses with details" />
+                            </VerticalStackLayout>
+                            <Image
+                                Grid.Column="1"
+                                HeightRequest="30"
+                                HorizontalOptions="End"
+                                Source="download_icon.svg"
+                                VerticalOptions="Center"
+                                WidthRequest="30">
+                                <Image.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding GenerateCourseReportCommand}" />
+                                </Image.GestureRecognizers>
+                            </Image>
+                        </Grid>
+                    </Border>
+
+                    <!--  Assessment Report Card  -->
+                    <Border
+                        Padding="15"
+                        BackgroundColor="{StaticResource LightGreen}"
+                        HorizontalOptions="Fill"
+                        Stroke="{StaticResource DarkGreen}"
+                        StrokeThickness="1">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <VerticalStackLayout Grid.Column="0">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="18"
+                                    Text="Assessment Schedule" />
+                                <Label FontSize="12" Text="Upcoming assessments and due dates" />
+                            </VerticalStackLayout>
+                            <Image
+                                Grid.Column="1"
+                                HeightRequest="30"
+                                HorizontalOptions="End"
+                                Source="download_icon.svg"
+                                VerticalOptions="Center"
+                                WidthRequest="30">
+                                <Image.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding GenerateAssessmentReportCommand}" />
+                                </Image.GestureRecognizers>
+                            </Image>
+                        </Grid>
+                    </Border>
+
+                    <!--  Term Report Card  -->
+                    <Border
+                        Padding="15"
+                        BackgroundColor="{StaticResource LightOrange}"
+                        HorizontalOptions="Fill"
+                        Stroke="{StaticResource DarkOrange}"
+                        StrokeThickness="1">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <VerticalStackLayout Grid.Column="0">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="18"
+                                    Text="Term Overview" />
+                                <Label FontSize="12" Text="Academic terms with course summaries" />
+                            </VerticalStackLayout>
+                            <Image
+                                Grid.Column="1"
+                                HeightRequest="30"
+                                HorizontalOptions="End"
+                                Source="download_icon.svg"
+                                VerticalOptions="Center"
+                                WidthRequest="30">
+                                <Image.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding GenerateTermReportCommand}" />
+                                </Image.GestureRecognizers>
+                            </Image>
+                        </Grid>
+                    </Border>
+
+                    <!--  Instructor Report Card  -->
+                    <Border
+                        Padding="15"
+                        BackgroundColor="{StaticResource LightPurple}"
+                        HorizontalOptions="Fill"
+                        Stroke="{StaticResource DarkPurple}"
+                        StrokeThickness="1">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <VerticalStackLayout Grid.Column="0">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="18"
+                                    Text="Instructor Contacts" />
+                                <Label FontSize="12" Text="Instructor contact information and courses" />
+                            </VerticalStackLayout>
+                            <Image
+                                Grid.Column="1"
+                                HeightRequest="30"
+                                HorizontalOptions="End"
+                                Source="download_icon.svg"
+                                VerticalOptions="Center"
+                                WidthRequest="30">
+                                <Image.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding GenerateInstructorReportCommand}" />
+                                </Image.GestureRecognizers>
+                            </Image>
+                        </Grid>
+                    </Border>
+
+                    <!--  Comprehensive Report Card  -->
+                    <Border
+                        Padding="15"
+                        BackgroundColor="{StaticResource LightRed}"
+                        HorizontalOptions="Fill"
+                        Stroke="{StaticResource DarkRed}"
+                        StrokeThickness="1">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <VerticalStackLayout Grid.Column="0">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="18"
+                                    Text="Comprehensive Report" />
+                                <Label FontSize="12" Text="Complete overview of all your academic data" />
+                            </VerticalStackLayout>
+                            <Image
+                                Grid.Column="1"
+                                HeightRequest="30"
+                                HorizontalOptions="End"
+                                Source="download_icon.svg"
+                                VerticalOptions="Center"
+                                WidthRequest="30">
+                                <Image.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding GenerateComprehensiveReportCommand}" />
+                                </Image.GestureRecognizers>
+                            </Image>
+                        </Grid>
+                    </Border>
+
                 </VerticalStackLayout>
-            </Grid>
-
-            <!--  Report Cards  -->
-            <VerticalStackLayout Spacing="15">
-
-                <!--  Course Report Card  -->
-                <Border
-                    Padding="15"
-                    BackgroundColor="{StaticResource LightBlue}"
-                    HorizontalOptions="Fill"
-                    Stroke="{StaticResource DarkBlue}"
-                    StrokeThickness="1">
-                    <Grid ColumnDefinitions="*,Auto">
-                        <VerticalStackLayout Grid.Column="0">
-                            <Label
-                                FontAttributes="Bold"
-                                FontSize="18"
-                                Text="Course List Report" />
-                            <Label FontSize="12" Text="Complete list of all your courses with details" />
-                        </VerticalStackLayout>
-                        <Image
-                            Grid.Column="1"
-                            HeightRequest="30"
-                            HorizontalOptions="End"
-                            Source="download_icon.svg"
-                            VerticalOptions="Center"
-                            WidthRequest="30">
-                            <Image.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding GenerateCourseReportCommand}" />
-                            </Image.GestureRecognizers>
-                        </Image>
-                    </Grid>
-                </Border>
-
-                <!--  Assessment Report Card  -->
-                <Border
-                    Padding="15"
-                    BackgroundColor="{StaticResource LightGreen}"
-                    HorizontalOptions="Fill"
-                    Stroke="{StaticResource DarkGreen}"
-                    StrokeThickness="1">
-                    <Grid ColumnDefinitions="*,Auto">
-                        <VerticalStackLayout Grid.Column="0">
-                            <Label
-                                FontAttributes="Bold"
-                                FontSize="18"
-                                Text="Assessment Schedule" />
-                            <Label FontSize="12" Text="Upcoming assessments and due dates" />
-                        </VerticalStackLayout>
-                        <Image
-                            Grid.Column="1"
-                            HeightRequest="30"
-                            HorizontalOptions="End"
-                            Source="download_icon.svg"
-                            VerticalOptions="Center"
-                            WidthRequest="30">
-                            <Image.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding GenerateAssessmentReportCommand}" />
-                            </Image.GestureRecognizers>
-                        </Image>
-                    </Grid>
-                </Border>
-
-                <!--  Term Report Card  -->
-                <Border
-                    Padding="15"
-                    BackgroundColor="{StaticResource LightOrange}"
-                    HorizontalOptions="Fill"
-                    Stroke="{StaticResource DarkOrange}"
-                    StrokeThickness="1">
-                    <Grid ColumnDefinitions="*,Auto">
-                        <VerticalStackLayout Grid.Column="0">
-                            <Label
-                                FontAttributes="Bold"
-                                FontSize="18"
-                                Text="Term Overview" />
-                            <Label FontSize="12" Text="Academic terms with course summaries" />
-                        </VerticalStackLayout>
-                        <Image
-                            Grid.Column="1"
-                            HeightRequest="30"
-                            HorizontalOptions="End"
-                            Source="download_icon.svg"
-                            VerticalOptions="Center"
-                            WidthRequest="30">
-                            <Image.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding GenerateTermReportCommand}" />
-                            </Image.GestureRecognizers>
-                        </Image>
-                    </Grid>
-                </Border>
-
-                <!--  Instructor Report Card  -->
-                <Border
-                    Padding="15"
-                    BackgroundColor="{StaticResource LightPurple}"
-                    HorizontalOptions="Fill"
-                    Stroke="{StaticResource DarkPurple}"
-                    StrokeThickness="1">
-                    <Grid ColumnDefinitions="*,Auto">
-                        <VerticalStackLayout Grid.Column="0">
-                            <Label
-                                FontAttributes="Bold"
-                                FontSize="18"
-                                Text="Instructor Contacts" />
-                            <Label FontSize="12" Text="Instructor contact information and courses" />
-                        </VerticalStackLayout>
-                        <Image
-                            Grid.Column="1"
-                            HeightRequest="30"
-                            HorizontalOptions="End"
-                            Source="download_icon.svg"
-                            VerticalOptions="Center"
-                            WidthRequest="30">
-                            <Image.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding GenerateInstructorReportCommand}" />
-                            </Image.GestureRecognizers>
-                        </Image>
-                    </Grid>
-                </Border>
-
-                <!--  Comprehensive Report Card  -->
-                <Border
-                    Padding="15"
-                    BackgroundColor="{StaticResource LightRed}"
-                    HorizontalOptions="Fill"
-                    Stroke="{StaticResource DarkRed}"
-                    StrokeThickness="1">
-                    <Grid ColumnDefinitions="*,Auto">
-                        <VerticalStackLayout Grid.Column="0">
-                            <Label
-                                FontAttributes="Bold"
-                                FontSize="18"
-                                Text="Comprehensive Report" />
-                            <Label FontSize="12" Text="Complete overview of all your academic data" />
-                        </VerticalStackLayout>
-                        <Image
-                            Grid.Column="1"
-                            HeightRequest="30"
-                            HorizontalOptions="End"
-                            Source="download_icon.svg"
-                            VerticalOptions="Center"
-                            WidthRequest="30">
-                            <Image.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding GenerateComprehensiveReportCommand}" />
-                            </Image.GestureRecognizers>
-                        </Image>
-                    </Grid>
-                </Border>
-
             </VerticalStackLayout>
-        </VerticalStackLayout>
-    </ScrollView>
+        </ScrollView>
+    </Grid>
 </ContentPage>

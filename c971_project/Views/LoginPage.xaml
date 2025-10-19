@@ -7,13 +7,44 @@
     Title="Login"
     BackgroundColor="{StaticResource Cream}">
     <Grid>
+        <!--  Full screen loading overlay  -->
+        <Grid
+            BackgroundColor="#80000000"
+            HorizontalOptions="Fill"
+            IsVisible="{Binding IsBusy}"
+            VerticalOptions="Fill"
+            ZIndex="1000">
+
+            <ActivityIndicator
+                HeightRequest="60"
+                HorizontalOptions="Center"
+                IsRunning="True"
+                VerticalOptions="Center"
+                WidthRequest="60"
+                Color="White" />
+        </Grid>
+
         <ScrollView>
             <VerticalStackLayout Padding="20" Spacing="15">
-                <Label
-                    FontAttributes="Bold"
-                    FontSize="32"
+
+                <!--  Header  -->
+                <Border
+                    Margin="0,10,0,0"
+                    Padding="20,10"
+                    BackgroundColor="{StaticResource DarkBlue}"
                     HorizontalOptions="Center"
-                    Text="WGU Cloud Planner" />
+                    Stroke="{StaticResource LightBrown}"
+                    StrokeShape="RoundRectangle 10"
+                    StrokeThickness="2">
+
+                    <Label
+                        BackgroundColor="Transparent"
+                        HorizontalOptions="Center"
+                        HorizontalTextAlignment="Center"
+                        Style="{StaticResource HeaderLabel}"
+                        Text="WGU Cloud Planner"
+                        TextColor="{StaticResource Cream}" />
+                </Border>
 
 
 
@@ -77,6 +108,7 @@
                 </Border>
             </VerticalStackLayout>
         </ScrollView>
+
 
 
     </Grid>

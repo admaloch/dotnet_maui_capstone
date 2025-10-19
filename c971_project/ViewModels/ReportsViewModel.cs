@@ -15,13 +15,6 @@ namespace c971_project.ViewModels
         private readonly AuthService _authService;
         private readonly string _currentUserId;
 
-
-        [ObservableProperty]
-        private bool isGeneratingReport;
-
-        [ObservableProperty]
-        private string currentOperation;
-
         public ReportsViewModel(IReportService reportService, AuthService authService)
         {
             _reportService = reportService;
@@ -82,14 +75,14 @@ namespace c971_project.ViewModels
 
         private async Task GenerateReportAsync(string operation, Func<Task<string>> generateAction)
         {
-            if (IsGeneratingReport)
+            if (IsBusy)
                 return;
 
-            IsGeneratingReport = true;
-            CurrentOperation = $"Generating {operation}...";
 
             try
             {
+                IsBusy = true;
+
                 if (string.IsNullOrEmpty(_currentUserId))
                 {
                     await Shell.Current.DisplayAlert("Error", "Please log in to generate reports", "OK");
@@ -114,8 +107,7 @@ namespace c971_project.ViewModels
             }
             finally
             {
-                IsGeneratingReport = false;
-                CurrentOperation = string.Empty;
+                IsBusy = false;
             }
         }
 

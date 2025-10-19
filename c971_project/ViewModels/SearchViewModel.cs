@@ -24,9 +24,6 @@ namespace c971_project.ViewModels
         private SearchResults searchResults;
 
         [ObservableProperty]
-        private bool isSearching;
-
-        [ObservableProperty]
         private bool hasSearched;
 
         public SearchViewModel(SearchService searchService, AuthService authService)
@@ -48,7 +45,7 @@ namespace c971_project.ViewModels
                 return;
             }
 
-            IsSearching = true;
+            IsBusy = true;
             HasSearched = true;
 
             try
@@ -74,7 +71,7 @@ namespace c971_project.ViewModels
             }
             finally
             {
-                IsSearching = false;
+                IsBusy = false;
             }
         }
 

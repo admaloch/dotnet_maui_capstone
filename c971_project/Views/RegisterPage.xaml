@@ -7,15 +7,42 @@
     Title="Register"
     BackgroundColor="{StaticResource Cream}">
     <Grid>
+        <!--  Full screen loading overlay  -->
+        <Grid
+            BackgroundColor="#80000000"
+            HorizontalOptions="Fill"
+            IsVisible="{Binding IsBusy}"
+            VerticalOptions="Fill"
+            ZIndex="1000">
+
+            <ActivityIndicator
+                HeightRequest="60"
+                HorizontalOptions="Center"
+                IsRunning="True"
+                VerticalOptions="Center"
+                WidthRequest="60"
+                Color="White" />
+        </Grid>
         <ScrollView>
             <VerticalStackLayout Padding="20" Spacing="15">
-                <Label
-                    Margin="0,0,0,0"
-                    FontAttributes="Bold"
-                    FontSize="32"
+                <!--  Header  -->
+                <Border
+                    Margin="0,10,0,0"
+                    Padding="20,10"
+                    BackgroundColor="{StaticResource DarkBlue}"
                     HorizontalOptions="Center"
-                    Style="{StaticResource HeaderLabel}"
-                    Text="Create account" />
+                    Stroke="{StaticResource LightBrown}"
+                    StrokeShape="RoundRectangle 10"
+                    StrokeThickness="2">
+
+                    <Label
+                        BackgroundColor="Transparent"
+                        HorizontalOptions="Center"
+                        HorizontalTextAlignment="Center"
+                        Style="{StaticResource HeaderLabel}"
+                        Text="Register Account"
+                        TextColor="{StaticResource Cream}" />
+                </Border>
 
 
 

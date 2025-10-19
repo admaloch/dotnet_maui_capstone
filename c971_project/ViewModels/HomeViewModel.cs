@@ -175,10 +175,6 @@ namespace c971_project.ViewModels
         {
             _authService.Logout();
 
-            // Check the state immediately
-            var state = _authService.GetAuthState();
-            await Shell.Current.DisplayAlert("Logout Test", state, "OK");
-
             // Try to navigate to a protected page to see if it blocks access
             await Shell.Current.GoToAsync(nameof(HomePage));
         }

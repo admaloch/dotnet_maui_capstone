@@ -7,6 +7,22 @@
     Title="Edit Note"
     BackgroundColor="{StaticResource Cream}">
     <Grid>
+        <!--  Full screen loading overlay  -->
+        <Grid
+            BackgroundColor="#80000000"
+            HorizontalOptions="Fill"
+            IsVisible="{Binding IsBusy}"
+            VerticalOptions="Fill"
+            ZIndex="1000">
+
+            <ActivityIndicator
+                HeightRequest="60"
+                HorizontalOptions="Center"
+                IsRunning="True"
+                VerticalOptions="Center"
+                WidthRequest="60"
+                Color="White" />
+        </Grid>
         <ScrollView>
             <VerticalStackLayout Padding="20" Spacing="15">
 
