@@ -206,6 +206,8 @@ namespace c971_project.ViewModels
             }
             finally { IsBusy = false; }
         }
+
+        //navigation buttons
         [RelayCommand]
         private async Task OnTermPageAsync(Term term)
         {
@@ -219,6 +221,28 @@ namespace c971_project.ViewModels
             finally { IsBusy = false; }
         }
 
+        [RelayCommand]
+        private async Task OnSearchPageAsync()
+        {
+            if (IsBusy) return;
+            try
+            {
+                IsBusy = true;
+                await Shell.Current.GoToAsync(nameof(SearchPage));
+            }
+            finally { IsBusy = false; }
+        }
+        [RelayCommand]
+        private async Task OnReportsPageAsync()
+        {
+            if (IsBusy) return;
+            try
+            {
+                IsBusy = true;
+                await Shell.Current.GoToAsync(nameof(ReportsPage));
+            }
+            finally { IsBusy = false; }
+        }
 
     }
 }

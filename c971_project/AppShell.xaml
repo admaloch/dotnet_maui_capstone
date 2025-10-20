@@ -3,40 +3,19 @@
     x:Class="c971_project.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:views="clr-namespace:c971_project.Views">
+    xmlns:views="clr-namespace:c971_project.Views"
+    FlyoutBehavior="Disabled">
 
     <ShellContent
         x:Name="LoginItem"
         Title="Login"
         ContentTemplate="{DataTemplate views:LoginPage}"
-        IsVisible="True"
         Route="LoginPage" />
-    <!--  Show login by default  -->
 
     <ShellContent
-        x:Name="HomeItem"
+        x:Name="HomeItem" 
         Title="Home"
         ContentTemplate="{DataTemplate views:HomePage}"
-        IsVisible="False"
         Route="HomePage" />
-    <!--  Hide app items by default  -->
-
-    <ShellContent
-        x:Name="SearchItem"
-        Title="Search"
-        ContentTemplate="{DataTemplate views:SearchPage}"
-        Icon="search.png"
-        IsVisible="False"
-        Route="SearchPage" />
-    <!--  Hide app items by default  -->
-
-    <ShellContent
-        x:Name="ReportsItem"
-        Title="Reports"
-        ContentTemplate="{DataTemplate views:ReportsPage}"
-        Icon="chart.png"
-        IsVisible="False"
-        Route="ReportsPage" />
-    <!--  Hide app items by default  -->
 
 </Shell>

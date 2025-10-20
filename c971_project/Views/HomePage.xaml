@@ -222,9 +222,95 @@
                     </AbsoluteLayout>
                 </Border>
 
+                <!--  Search Icon  -->
+                <HorizontalStackLayout
+                    Margin="0, 10, 0, 0"
+                    HorizontalOptions="Center"
+                    InputTransparent="False"
+                    Spacing="12"
+                    VerticalOptions="End">
+
+                    <!--  Label  -->
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="22"
+                        Text="Search"
+                        TextColor="{StaticResource DarkBlue}"
+                        VerticalOptions="Center" />
+
+                    <!--  Circular Button  -->
+                    <Border
+                        BackgroundColor="{StaticResource Charcoal}"
+                        HeightRequest="56"
+                        StrokeShape="Ellipse"
+                        WidthRequest="56">
+                        <Border.Shadow>
+                            <Shadow
+                                Brush="{StaticResource DarkBlue}"
+                                Opacity="0.5"
+                                Radius="8"
+                                Offset="2,2" />
+                        </Border.Shadow>
+
+                        <Image
+                            HeightRequest="30"
+                            HorizontalOptions="Center"
+                            Source="search_icon2.svg"
+                            VerticalOptions="Center"
+                            WidthRequest="30">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding SearchPageCommand}" />
+                            </Image.GestureRecognizers>
+                        </Image>
+                    </Border>
+                </HorizontalStackLayout>
+
+                <!--  Reports Icon  -->
+                <HorizontalStackLayout
+                  
+                    HorizontalOptions="Center"
+                    InputTransparent="False"
+                    Spacing="12"
+                    VerticalOptions="End">
+
+                    <!--  Label  -->
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="22"
+                        Text="Create reports"
+                        TextColor="{StaticResource DarkBlue}"
+                        VerticalOptions="Center" />
+
+                    <!--  Circular Button  -->
+                    <Border
+                        BackgroundColor="{StaticResource Charcoal}"
+                        HeightRequest="56"
+                        StrokeShape="Ellipse"
+                        WidthRequest="56">
+                        <Border.Shadow>
+                            <Shadow
+                                Brush="{StaticResource DarkBlue}"
+                                Opacity="0.5"
+                                Radius="8"
+                                Offset="2,2" />
+                        </Border.Shadow>
+
+                        <Image
+                            HeightRequest="30"
+                            HorizontalOptions="Center"
+                            Source="document_icon.png"
+                            VerticalOptions="Center"
+                            WidthRequest="30">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ReportsPageCommand}" />
+                            </Image.GestureRecognizers>
+                        </Image>
+                    </Border>
+                </HorizontalStackLayout>
+
                 <!--  Terms Section Header  -->
                 <Border
-                    Margin="0,20,0,10"
+                    Margin="0,10,0,10"
                     Padding="20,10"
                     BackgroundColor="{StaticResource DarkBlue}"
                     HorizontalOptions="Center"

@@ -1,5 +1,4 @@
-﻿using c971_project.Services;
-using c971_project.Services.Firebase;
+﻿using c971_project.Services.Firebase;
 using c971_project.Views;
 using Microsoft.Maui.Controls;
 using System.Diagnostics;
@@ -15,7 +14,20 @@ namespace c971_project
             _authService = authService;
             InitializeComponent();
 
-            // Register all routes
+            FlyoutBehavior = FlyoutBehavior.Disabled;
+
+            // Register all routes (for navigation within the app)
+            RegisterRoutes();
+
+            // Subscribe to auth state changes
+            _authService.AuthStateChanged += OnAuthStateChanged;
+
+            // Set initial page based on auth state
+            NavigateToInitialPage();
+        }
+
+        private void RegisterRoutes()
+        {
             Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage));
             Routing.RegisterRoute(nameof(RegisterPage), typeof(RegisterPage));
             Routing.RegisterRoute(nameof(SearchPage), typeof(SearchPage));
@@ -34,60 +46,48 @@ namespace c971_project
             Routing.RegisterRoute(nameof(AddNotePage), typeof(AddNotePage));
             Routing.RegisterRoute(nameof(EditNotePage), typeof(EditNotePage));
             Routing.RegisterRoute(nameof(InstructorPage), typeof(InstructorPage));
+        }
 
-            // Initialize menu visibility
-            UpdateMenuVisibility();
-
-            // Subscribe to auth state changes
-            _authService.AuthStateChanged += OnAuthStateChanged;
-
-            AutoNavigateToHome();
+        private void NavigateToInitialPage()
+        {
+            // Delay slightly to ensure Shell is fully loaded before navigating
+            Dispatcher.DispatchDelayed(TimeSpan.FromMilliseconds(50), () =>
+            {
+                if (_authService.IsAuthenticated())
+                {
+                    // Absolute route clears back stack
+                    GoToAsync("//HomePage");
+                    Debug.WriteLine("AppShell: User authenticated, navigating to HomePage.");
+                }
+                else
+                {
+                    GoToAsync("//LoginPage");
+                    Debug.WriteLine("AppShell: User not authenticated, navigating to LoginPage.");
+                }
+            });
         }
 
         private void OnAuthStateChanged(object sender, EventArgs e)
         {
-            UpdateMenuVisibility();
-        }
-
-        private void UpdateMenuVisibility()
-        {
-            var isAuthenticated = _authService.IsAuthenticated();
-
-            // Show app menu items only when authenticated
-            HomeItem.IsVisible = isAuthenticated;
-            SearchItem.IsVisible = isAuthenticated;
-            ReportsItem.IsVisible = isAuthenticated;
-
-            // Show login only when NOT authenticated
-            LoginItem.IsVisible = !isAuthenticated;
-
-            // Force UI update
-            OnPropertyChanged(nameof(CurrentItem));
-        }
-
-        private void AutoNavigateToHome()
-        {
-            if (_authService.IsAuthenticated())
+            // When login/logout happens, switch pages immediately
+            Dispatcher.Dispatch(() =>
             {
-                // Small delay to ensure Shell is fully initialized
-                Dispatcher.DispatchDelayed(TimeSpan.FromMilliseconds(100), () =>
+                if (_authService.IsAuthenticated())
                 {
-                    try
-                    {
-                        CurrentItem = HomeItem;
-                        Debug.WriteLine("Auto-navigated to HomePage");
-                    }
-                    catch (Exception ex)
-                    {
-                        Debug.WriteLine($"Auto-navigation error: {ex.Message}");
-                    }
-                });
-            }
+                    GoToAsync("//HomePage");
+                    Debug.WriteLine("AuthStateChanged: Navigating to HomePage.");
+                }
+                else
+                {
+                    GoToAsync("//LoginPage");
+                    Debug.WriteLine("AuthStateChanged: Navigating to LoginPage.");
+                }
+            });
         }
 
         protected override void OnDisappearing()
         {
-            // Clean up event subscription
+            // Unsubscribe to avoid memory leaks
             _authService.AuthStateChanged -= OnAuthStateChanged;
             base.OnDisappearing();
         }
