@@ -1,12 +1,8 @@
 ﻿using System.Diagnostics;
-
-
 using c971_project.Views;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Maui.Controls;
 using c971_project.Services.Firebase;
-
-using Microsoft.Extensions.DependencyInjection;
 
 namespace c971_project
 {
@@ -35,8 +31,11 @@ namespace c971_project
         {
             try
             {
-                // Switch to main app immediately - Firebase will handle errors at service level
-                MainPage = new AppShell();
+                // Get the AuthService from the service provider
+                var authService = serviceProvider.GetService<AuthService>();
+
+                // Create AppShell with the required AuthService parameter
+                MainPage = new AppShell(authService);
             }
             catch (Exception ex)
             {

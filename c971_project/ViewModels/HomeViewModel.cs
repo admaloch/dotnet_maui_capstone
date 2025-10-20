@@ -161,7 +161,6 @@ namespace c971_project.ViewModels
                 // Logout user and navigate
                 _authService.Logout();
 
-                await Shell.Current.GoToAsync($"//{nameof(LoginPage)}");
             }
             catch (Exception ex)
             {

@@ -10,6 +10,7 @@ namespace c971_project.Services.Firebase
     {
         private readonly FirebaseAuthClient _authClient;
         private bool _isLoggedIn;
+        public event EventHandler AuthStateChanged;
 
         public AuthService()
         {
@@ -27,8 +28,38 @@ namespace c971_project.Services.Firebase
             // Initialize login state
             _isLoggedIn = _authClient.User != null;
 
+            // Initialize auth state from secure storage
+            InitializeAuthState();
+
             // Debug initial state
             Debug.WriteLine($"AuthService initialized - User: {_authClient.User?.Uid ?? "null"}");
+        }
+
+        // Add this method to persist login state
+        public void InitializeAuthState()
+        {
+            try
+            {
+                // Check if we have a stored user ID from previous session
+                var storedUserId = SecureStorage.GetAsync("user_id").GetAwaiter().GetResult();
+
+                if (!string.IsNullOrEmpty(storedUserId) && _authClient.User == null)
+                {
+                    Debug.WriteLine($"Found stored user ID: {storedUserId}");
+                    // Note: FirebaseAuthClient should automatically handle session persistence
+                    // This is mainly for our internal state tracking
+                }
+
+                // Update our internal state based on Firebase auth client
+                _isLoggedIn = _authClient.User != null;
+
+                // Notify that auth state has been initialized
+                AuthStateChanged?.Invoke(this, EventArgs.Empty);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error initializing auth state: {ex.Message}");
+            }
         }
 
         public async Task<bool> LoginAsync(string email, string password)
@@ -38,7 +69,14 @@ namespace c971_project.Services.Firebase
                 var result = await _authClient.SignInWithEmailAndPasswordAsync(email, password);
                 _isLoggedIn = result != null;
 
-                Debug.WriteLine($"Login successful - User: {result?.User?.Uid ?? "null"}");
+                if (_isLoggedIn)
+                {
+                    // Save user ID to secure storage for persistence
+                    await SecureStorage.SetAsync("user_id", result.User.Uid);
+                    Debug.WriteLine($"Login successful - User: {result.User.Uid}");
+                }
+
+                AuthStateChanged?.Invoke(this, EventArgs.Empty);
                 return _isLoggedIn;
             }
             catch (Exception ex)
@@ -56,7 +94,13 @@ namespace c971_project.Services.Firebase
                 var result = await _authClient.CreateUserWithEmailAndPasswordAsync(email, password);
                 _isLoggedIn = result != null;
 
-                Debug.WriteLine($"Registration successful - User: {result?.User?.Uid ?? "null"}");
+                if (_isLoggedIn)
+                {
+                    // Save user ID to secure storage
+                    await SecureStorage.SetAsync("user_id", result.User.Uid);
+                    AuthStateChanged?.Invoke(this, EventArgs.Empty);
+                }
+
                 return _isLoggedIn;
             }
             catch (Exception ex)
@@ -75,6 +119,11 @@ namespace c971_project.Services.Firebase
                 {
                     // Delete the Firebase authentication user
                     await _authClient.User.DeleteAsync();
+
+                    // Clear secure storage
+                    SecureStorage.Remove("user_id");
+                    ClearAuthCache();
+
                     Debug.WriteLine("Firebase authentication user deleted successfully");
                 }
             }
@@ -97,19 +146,28 @@ namespace c971_project.Services.Firebase
                 // Force update internal state
                 _isLoggedIn = false;
 
-                // Clear any cached data
+                // Clear secure storage and cached data
+                SecureStorage.Remove("user_id");
                 ClearAuthCache();
 
-                Debug.WriteLine($"Logout completed. User {userIdBefore} ({emailBefore}) signed out.");
-                Debug.WriteLine($"After logout - IsLoggedIn: {IsLoggedIn}, User: {_authClient.User?.Uid ?? "null"}");
+                AuthStateChanged?.Invoke(this, EventArgs.Empty);
+
+                Debug.WriteLine($"Logout successful - Previous user: {userIdBefore}");
             }
             catch (Exception ex)
             {
                 Debug.WriteLine($"Logout error: {ex.Message}");
                 // Even if there's an error, force logged out state
                 _isLoggedIn = false;
+                SecureStorage.Remove("user_id");
                 ClearAuthCache();
             }
+        }
+
+        // Add this method to check authentication
+        public bool IsAuthenticated()
+        {
+            return _isLoggedIn && !string.IsNullOrEmpty(CurrentUserId);
         }
 
         private void ClearAuthCache()
@@ -138,11 +196,5 @@ namespace c971_project.Services.Firebase
         public bool IsLoggedIn => _authClient.User != null && _isLoggedIn;
         public string CurrentUserId => IsLoggedIn ? _authClient.User.Uid : null;
         public string CurrentUserEmail => IsLoggedIn ? _authClient.User.Info.Email : null;
-
-        // Method to verify auth state (useful for debugging)
-        public string GetAuthState()
-        {
-            return $"Internal: {_isLoggedIn}, Firebase: {_authClient.User != null}, UserId: {_authClient.User?.Uid ?? "null"}";
-        }
     }
 }
