@@ -2,54 +2,11 @@
 using Firebase.Database.Query;
 using c971_project.Models;
 using Newtonsoft.Json;
+using c971_project.Core.Services;  // ← ADD THIS
 
 namespace c971_project.Services.Firebase
 {
-    public interface IFirestoreDataService
-    {
-        Task<Dictionary<string, string>> GetMajorsAsync();
-        // STUDENT METHODS
-        Task<Student> GetStudentAsync(string studentId);
-        Task SaveStudentAsync(Student student);
-
-        Task DeleteStudentAsync(string userId);
-
-        // TERM METHODS  
-        Task<List<Term>> GetTermsByUserIdAsync(string userId);
-        Task<Term> GetTermAsync(string termId);
-        Task SaveTermAsync(Term term);
-        Task DeleteTermAsync(string termId);
-
-        // COURSE METHODS
-        Task<List<Course>> GetCoursesByUserIdAsync(string userId);
-        Task<List<Course>> GetCoursesByTermIdAsync(string termId);
-        Task<Course> GetCourseAsync(string courseId);
-        Task<Course> GetCourseByCourseNumAsync(string courseNum);
-        Task SaveCourseAsync(Course course);
-        Task DeleteCourseAsync(string courseId);
-
-        // INSTRUCTOR METHODS
-        Task<List<Instructor>> GetInstructorsAsync(string userId);
-        Task<Instructor> GetInstructorAsync(string instructorId);
-        Task<Instructor> GetInstructorByEmailAsync(string email);
-        Task SaveInstructorAsync(Instructor instructor);
-
-        // ASSESSMENT METHODS
-        Task<List<Assessment>> GetAssessmentsByUserIdAsync(string userId);
-        Task<List<Assessment>> GetAssessmentsByCourseIdAsync(string courseId);
-        Task<Assessment> GetAssessmentAsync(string assessmentId);
-        Task SaveAssessmentAsync(Assessment assessment);
-        Task DeleteAssessmentAsync(string assessmentId);
-        Task DeleteAssessmentsByCourseIdAsync(string courseId);
-
-        // NOTE METHODS
-        Task<List<Note>> GetNotesByUserIdAsync(string userId);
-        Task<List<Note>> GetNotesByCourseIdAsync(string courseId);
-        Task<Note> GetNoteAsync(string noteId);
-        Task SaveNoteAsync(Note note);
-        Task DeleteNoteAsync(string noteId);
-        Task DeleteNotesByCourseIdAsync(string courseId);
-    }
+   
 
     public class FirestoreDataService : IFirestoreDataService
     {

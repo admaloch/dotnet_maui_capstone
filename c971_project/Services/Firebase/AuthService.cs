@@ -2,26 +2,12 @@
 using Firebase.Auth.Providers;
 using System.Diagnostics;
 using Microsoft.Maui.Storage;
+using c971_project.Core.Services;  
 
 namespace c971_project.Services.Firebase
 {
 
-    public interface IAuthService
-    {
-        // Existing methods
-        Task<bool> LoginAsync(string email, string password);
-        Task<bool> RegisterAsync(string email, string password);
-        void Logout();
-        bool IsAuthenticated();
-        string CurrentUserId { get; }
-        string CurrentUserEmail { get; }
-
-        // ADD THESE MISSING MEMBERS:
-        event EventHandler AuthStateChanged;
-        Task DeleteUserAsync();
-        void InitializeAuthState();
-        bool IsLoggedIn { get; }
-    }
+   
 
     public class AuthService: IAuthService
     {

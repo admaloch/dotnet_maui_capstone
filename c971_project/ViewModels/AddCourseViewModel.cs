@@ -90,7 +90,7 @@ namespace c971_project.ViewModels
         }
 
         [RelayCommand]
-        private async Task SaveCourseAsync()
+        public async Task SaveCourseAsync()
         {
             if (IsBusy) return;
 
