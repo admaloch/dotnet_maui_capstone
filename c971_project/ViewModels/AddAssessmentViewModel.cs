@@ -21,7 +21,7 @@ namespace c971_project.ViewModels
     {
         private readonly IFirestoreDataService _firestoreDataService;
         private readonly IScheduleNotificationService _notificationService; // Added
-        private readonly AuthService _authService;
+        private readonly IAuthService _authService;
         private string _currentUserId;
 
 
@@ -66,7 +66,7 @@ namespace c971_project.ViewModels
 
         // Updated constructor with notification service
         public AddAssessmentViewModel(IFirestoreDataService firestoreDataService,
-            AuthService authService,
+            IAuthService authService,
                                     IScheduleNotificationService notificationService) 
         {
             _firestoreDataService = firestoreDataService;

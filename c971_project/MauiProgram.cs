@@ -31,7 +31,7 @@ namespace c971_project
 
             builder.Services.AddSingleton<AppShell>();
 
-            builder.Services.AddSingleton<AuthService>();
+            builder.Services.AddSingleton<IAuthService, AuthService>();
             builder.Services.AddSingleton<IFirestoreDataService, FirestoreDataService>();
 
             builder.Services.AddSingleton<CourseValidator>();

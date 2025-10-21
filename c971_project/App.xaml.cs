@@ -31,10 +31,10 @@ namespace c971_project
         {
             try
             {
-                // Get the AuthService from the service provider
+                // Get the IAuthService from the service provider
                 var authService = serviceProvider.GetService<AuthService>();
 
-                // Create AppShell with the required AuthService parameter
+                // Create AppShell with the required IAuthService parameter
                 MainPage = new AppShell(authService);
             }
             catch (Exception ex)

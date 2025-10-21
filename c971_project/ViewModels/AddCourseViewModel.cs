@@ -21,7 +21,7 @@ namespace c971_project.ViewModels
         private readonly IFirestoreDataService _firestoreDataService;
         private readonly CourseValidator _courseValidator;
         private readonly IScheduleNotificationService _notificationService;
-        private readonly AuthService _authService;
+        private readonly IAuthService _authService;
 
         [ObservableProperty]
         private string termId;
@@ -44,7 +44,7 @@ namespace c971_project.ViewModels
 
         // Updated constructor with notification service injection
         public AddCourseViewModel(IFirestoreDataService firestoreDataService,
-            AuthService authService,
+            IAuthService authService,
                                 CourseValidator courseValidator,
                                 IScheduleNotificationService notificationService) // Added parameter
         {

@@ -12,10 +12,10 @@ namespace c971_project.ViewModels
     public partial class ReportsViewModel : BaseViewModel
     {
         private readonly IReportService _reportService;
-        private readonly AuthService _authService;
+        private readonly IAuthService _authService;
         private readonly string _currentUserId;
 
-        public ReportsViewModel(IReportService reportService, AuthService authService)
+        public ReportsViewModel(IReportService reportService, IAuthService authService)
         {
             _reportService = reportService;
             _authService = authService;

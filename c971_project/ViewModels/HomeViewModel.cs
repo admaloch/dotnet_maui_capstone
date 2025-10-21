@@ -16,7 +16,7 @@ namespace c971_project.ViewModels
     public partial class HomeViewModel : BaseViewModel
     {
         private readonly IFirestoreDataService _firestoreDataService;
-        private readonly AuthService _authService;
+        private readonly IAuthService _authService;
         private string _currentUserId;
 
         [ObservableProperty]
@@ -25,7 +25,7 @@ namespace c971_project.ViewModels
         private ObservableCollection<Term> _terms = new();
         // Computed property for button state
         public bool CanAddMoreTerms => Terms.Count < 6;
-        public HomeViewModel(IFirestoreDataService firestoreDataService, AuthService authService)
+        public HomeViewModel(IFirestoreDataService firestoreDataService, IAuthService authService)
         {
             _firestoreDataService = firestoreDataService;
             _authService = authService;

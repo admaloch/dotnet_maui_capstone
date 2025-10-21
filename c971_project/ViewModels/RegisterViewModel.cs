@@ -10,7 +10,7 @@ namespace c971_project.ViewModels
 {
     public partial class RegisterViewModel : BaseViewModel
     {
-        private readonly AuthService _authService;
+        private readonly IAuthService _authService;
         private readonly IFirestoreDataService _firestoreDataService;
 
         [ObservableProperty]
@@ -37,7 +37,7 @@ namespace c971_project.ViewModels
         // Computed property for the Picker
         public List<string> MajorDisplayNames => _majorOptions.Values.ToList();
 
-        public RegisterViewModel(AuthService authService, IFirestoreDataService firestoreDataService)
+        public RegisterViewModel(IAuthService authService, IFirestoreDataService firestoreDataService)
         {
             _authService = authService;
             _firestoreDataService = firestoreDataService;

@@ -13,7 +13,7 @@ namespace c971_project.ViewModels
     public partial class SearchViewModel : BaseViewModel
     {
         private readonly SearchService _searchService;
-        private readonly AuthService _authService;
+        private readonly IAuthService _authService;
         private string _currentUserId;
 
 
@@ -26,7 +26,7 @@ namespace c971_project.ViewModels
         [ObservableProperty]
         private bool hasSearched;
 
-        public SearchViewModel(SearchService searchService, AuthService authService)
+        public SearchViewModel(SearchService searchService, IAuthService authService)
         {
             _searchService = searchService;
             _authService = authService;

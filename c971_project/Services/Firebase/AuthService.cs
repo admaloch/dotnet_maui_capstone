@@ -8,13 +8,21 @@ namespace c971_project.Services.Firebase
 
     public interface IAuthService
     {
+        // Existing methods
         Task<bool> LoginAsync(string email, string password);
         Task<bool> RegisterAsync(string email, string password);
         void Logout();
         bool IsAuthenticated();
         string CurrentUserId { get; }
         string CurrentUserEmail { get; }
+
+        // ADD THESE MISSING MEMBERS:
+        event EventHandler AuthStateChanged;
+        Task DeleteUserAsync();
+        void InitializeAuthState();
+        bool IsLoggedIn { get; }
     }
+
     public class AuthService: IAuthService
     {
         private readonly FirebaseAuthClient _authClient;
@@ -40,7 +48,7 @@ namespace c971_project.Services.Firebase
             // Initialize auth state from SecureStorage
             InitializeAuthState();
 
-            Debug.WriteLine($"AuthService initialized - User: {_authClient.User?.Uid ?? "null"}");
+            Debug.WriteLine($"IAuthService initialized - User: {_authClient.User?.Uid ?? "null"}");
         }
 
         /// <summary>

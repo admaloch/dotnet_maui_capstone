@@ -18,13 +18,13 @@ namespace c971_project.ViewModels
     public partial class AddTermViewModel : BaseViewModel
     {
         private readonly IFirestoreDataService _firestoreDataService;
-        private readonly AuthService _authService;
+        private readonly IAuthService _authService;
 
 
         [ObservableProperty]
         private Term _newTerm;
 
-        public AddTermViewModel(IFirestoreDataService firestoreDataService, AuthService authService)
+        public AddTermViewModel(IFirestoreDataService firestoreDataService, IAuthService authService)
         {
             _firestoreDataService = firestoreDataService;
             _authService = authService;

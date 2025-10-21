@@ -7,9 +7,9 @@ namespace c971_project
 {
     public partial class AppShell : Shell
     {
-        private readonly AuthService _authService;
+        private readonly IAuthService _authService;
 
-        public AppShell(AuthService authService)
+        public AppShell(IAuthService authService)
         {
             _authService = authService;
             InitializeComponent();

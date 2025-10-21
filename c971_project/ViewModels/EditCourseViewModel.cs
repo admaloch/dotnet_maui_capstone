@@ -17,7 +17,7 @@ namespace c971_project.ViewModels
         private readonly IFirestoreDataService _firestoreDataService;
         private readonly CourseValidator _courseValidator;
         private readonly IScheduleNotificationService _notificationService; // Added
-        private readonly AuthService _authService;
+        private readonly IAuthService _authService;
         private string _currentUserId;
 
 
@@ -40,7 +40,7 @@ namespace c971_project.ViewModels
         // Updated constructor with notification service
         public EditCourseViewModel(IFirestoreDataService firestoreDataService,
                                  CourseValidator courseValidator,
-                                 AuthService authService,
+                                 IAuthService authService,
                                  IScheduleNotificationService notificationService) // Added parameter
         {
             _firestoreDataService = firestoreDataService;

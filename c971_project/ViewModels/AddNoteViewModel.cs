@@ -17,7 +17,7 @@ namespace c971_project.ViewModels
     public partial class AddNoteViewModel : BaseViewModel
     {
         private readonly IFirestoreDataService _firestoreDataService;
-        private readonly AuthService _authService;
+        private readonly IAuthService _authService;
         private string _currentUserId;
 
         [ObservableProperty]
@@ -26,7 +26,7 @@ namespace c971_project.ViewModels
         [ObservableProperty]
         private Note _newNote;
 
-        public AddNoteViewModel(IFirestoreDataService firestoreDataService, AuthService authService)
+        public AddNoteViewModel(IFirestoreDataService firestoreDataService, IAuthService authService)
         {
             _firestoreDataService = firestoreDataService;
             _authService = authService;

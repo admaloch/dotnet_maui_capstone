@@ -15,10 +15,10 @@ namespace c971_project.Services.Search
     public class SearchService : ISearchService
     {
         private readonly IFirestoreDataService _firestoreDataService;
-        private readonly AuthService _authService;
+        private readonly IAuthService _authService;
 
 
-        public SearchService(IFirestoreDataService firestoreDataService, AuthService authService)
+        public SearchService(IFirestoreDataService firestoreDataService, IAuthService authService)
         {
             _firestoreDataService = firestoreDataService;
             _authService = authService;

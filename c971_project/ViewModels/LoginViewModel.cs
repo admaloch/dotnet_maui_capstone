@@ -10,7 +10,7 @@ namespace c971_project.ViewModels
 {
     public partial class LoginViewModel : BaseViewModel
     {
-        private readonly AuthService _authService;
+        private readonly IAuthService _authService;
         private readonly IFirestoreDataService _firestoreDataService;
 
         [ObservableProperty]
@@ -20,7 +20,7 @@ namespace c971_project.ViewModels
         private string password;
 
 
-        public LoginViewModel(AuthService authService, IFirestoreDataService firestoreDataService)
+        public LoginViewModel(IAuthService authService, IFirestoreDataService firestoreDataService)
         {
             _authService = authService;
             _firestoreDataService = firestoreDataService;

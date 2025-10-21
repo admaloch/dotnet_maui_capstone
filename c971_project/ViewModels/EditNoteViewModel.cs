@@ -17,7 +17,7 @@ namespace c971_project.ViewModels
     public partial class EditNoteViewModel : BaseViewModel
     {
         private readonly IFirestoreDataService _firestoreDataService;
-        private readonly AuthService _authService;
+        private readonly IAuthService _authService;
         private string _currentUserId;
 
 
@@ -27,7 +27,7 @@ namespace c971_project.ViewModels
         [ObservableProperty]
         private Note _note;
 
-        public EditNoteViewModel(IFirestoreDataService firestoreDataService, AuthService authService)
+        public EditNoteViewModel(IFirestoreDataService firestoreDataService, IAuthService authService)
         {
             _firestoreDataService = firestoreDataService;
             _authService = authService;
