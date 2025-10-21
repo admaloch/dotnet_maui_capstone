@@ -9,40 +9,40 @@
     <Grid>
         <!--  Full screen loading overlay  -->
         <Grid
-    BackgroundColor="#B3000000"
-    HorizontalOptions="Fill"
-    IsVisible="{Binding IsBusy}"
-    VerticalOptions="Fill"
-    ZIndex="1000">
+            BackgroundColor="#B3000000"
+            HorizontalOptions="Fill"
+            IsVisible="{Binding IsBusy}"
+            VerticalOptions="Fill"
+            ZIndex="1000">
 
             <Border
-        Padding="20"
-        BackgroundColor="{StaticResource DarkBlue}"
-        HorizontalOptions="Center"
-        Stroke="White"
-        StrokeThickness="2"
-        StrokeShape="RoundRectangle 100"
-        VerticalOptions="Center">
+                Padding="20"
+                BackgroundColor="{StaticResource DarkBlue}"
+                HorizontalOptions="Center"
+                Stroke="White"
+                StrokeShape="RoundRectangle 100"
+                StrokeThickness="2"
+                VerticalOptions="Center">
 
                 <Grid>
                     <!--  SVG Background  -->
                     <Image
-                Aspect="AspectFit"
-                HeightRequest="80"
-                HorizontalOptions="Center"
-                Opacity="0.3"
-                Source="owl_icon.png"
-                VerticalOptions="Center"
-                WidthRequest="80" />
+                        Aspect="AspectFit"
+                        HeightRequest="80"
+                        HorizontalOptions="Center"
+                        Opacity="0.3"
+                        Source="owl_icon.png"
+                        VerticalOptions="Center"
+                        WidthRequest="80" />
 
                     <!--  Spinner on top  -->
                     <ActivityIndicator
-                HeightRequest="100"
-                HorizontalOptions="Center"
-                IsRunning="True"
-                VerticalOptions="Center"
-                WidthRequest="100"
-                Color="White" />
+                        HeightRequest="100"
+                        HorizontalOptions="Center"
+                        IsRunning="True"
+                        VerticalOptions="Center"
+                        WidthRequest="100"
+                        Color="White" />
                 </Grid>
 
             </Border>
@@ -174,29 +174,29 @@
                 <!--  Note Info Card  -->
 
                 <Border
-    Padding="15"
-    BackgroundColor="{StaticResource White}"
-    HeightRequest="560"
-    Stroke="{StaticResource Charcoal}"
-    StrokeShape="RoundRectangle 12"
-    StrokeThickness="3">
+                    Padding="15"
+                    BackgroundColor="{StaticResource White}"
+                    HeightRequest="560"
+                    Stroke="{StaticResource Charcoal}"
+                    StrokeShape="RoundRectangle 12"
+                    StrokeThickness="3">
 
                     <Border.Shadow>
                         <Shadow
-            Brush="{StaticResource MediumGray}"
-            Opacity="0.3"
-            Radius="8"
-            Offset="2,2" />
+                            Brush="{StaticResource MediumGray}"
+                            Opacity="0.3"
+                            Radius="8"
+                            Offset="2,2" />
                     </Border.Shadow>
 
                     <ScrollView>
                         <VerticalStackLayout Spacing="12">
-                            <!-- body -->
+                            <!--  body  -->
                             <VerticalStackLayout Padding="0,10,0,10">
                                 <Label
-                    LineBreakMode="WordWrap"
-                    Text="{Binding Note.Body}"
-                    TextColor="{StaticResource DarkBlue}" />
+                                    LineBreakMode="WordWrap"
+                                    Text="{Binding Note.Body}"
+                                    TextColor="{StaticResource DarkBlue}" />
                             </VerticalStackLayout>
                         </VerticalStackLayout>
                     </ScrollView>

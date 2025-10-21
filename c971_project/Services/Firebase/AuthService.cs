@@ -5,7 +5,17 @@ using Microsoft.Maui.Storage;
 
 namespace c971_project.Services.Firebase
 {
-    public class AuthService
+
+    public interface IAuthService
+    {
+        Task<bool> LoginAsync(string email, string password);
+        Task<bool> RegisterAsync(string email, string password);
+        void Logout();
+        bool IsAuthenticated();
+        string CurrentUserId { get; }
+        string CurrentUserEmail { get; }
+    }
+    public class AuthService: IAuthService
     {
         private readonly FirebaseAuthClient _authClient;
         private bool _isLoggedIn;

@@ -9,40 +9,40 @@
     <Grid>
         <!--  Full screen loading overlay  -->
         <Grid
-    BackgroundColor="#B3000000"
-    HorizontalOptions="Fill"
-    IsVisible="{Binding IsBusy}"
-    VerticalOptions="Fill"
-    ZIndex="1000">
+            BackgroundColor="#B3000000"
+            HorizontalOptions="Fill"
+            IsVisible="{Binding IsBusy}"
+            VerticalOptions="Fill"
+            ZIndex="1000">
 
             <Border
-        Padding="20"
-        BackgroundColor="{StaticResource DarkBlue}"
-        HorizontalOptions="Center"
-        Stroke="White"
-        StrokeThickness="2"
-        StrokeShape="RoundRectangle 100"
-        VerticalOptions="Center">
+                Padding="20"
+                BackgroundColor="{StaticResource DarkBlue}"
+                HorizontalOptions="Center"
+                Stroke="White"
+                StrokeShape="RoundRectangle 100"
+                StrokeThickness="2"
+                VerticalOptions="Center">
 
                 <Grid>
                     <!--  SVG Background  -->
                     <Image
-                Aspect="AspectFit"
-                HeightRequest="80"
-                HorizontalOptions="Center"
-                Opacity="0.3"
-                Source="owl_icon.png"
-                VerticalOptions="Center"
-                WidthRequest="80" />
+                        Aspect="AspectFit"
+                        HeightRequest="80"
+                        HorizontalOptions="Center"
+                        Opacity="0.3"
+                        Source="owl_icon.png"
+                        VerticalOptions="Center"
+                        WidthRequest="80" />
 
                     <!--  Spinner on top  -->
                     <ActivityIndicator
-                HeightRequest="100"
-                HorizontalOptions="Center"
-                IsRunning="True"
-                VerticalOptions="Center"
-                WidthRequest="100"
-                Color="White" />
+                        HeightRequest="100"
+                        HorizontalOptions="Center"
+                        IsRunning="True"
+                        VerticalOptions="Center"
+                        WidthRequest="100"
+                        Color="White" />
                 </Grid>
 
             </Border>
@@ -248,7 +248,7 @@
 
                 <!--  Search Icon  -->
                 <HorizontalStackLayout
-                    Margin="0, 10, 0, 0"
+                    Margin="0,10,0,0"
                     HorizontalOptions="Center"
                     InputTransparent="False"
                     Spacing="12"
@@ -291,7 +291,6 @@
 
                 <!--  Reports Icon  -->
                 <HorizontalStackLayout
-                  
                     HorizontalOptions="Center"
                     InputTransparent="False"
                     Spacing="12"

@@ -9,40 +9,40 @@
     <Grid>
         <!--  Full screen loading overlay  -->
         <Grid
-    BackgroundColor="#B3000000"
-    HorizontalOptions="Fill"
-    IsVisible="{Binding IsBusy}"
-    VerticalOptions="Fill"
-    ZIndex="1000">
+            BackgroundColor="#B3000000"
+            HorizontalOptions="Fill"
+            IsVisible="{Binding IsBusy}"
+            VerticalOptions="Fill"
+            ZIndex="1000">
 
             <Border
-        Padding="20"
-        BackgroundColor="{StaticResource DarkBlue}"
-        HorizontalOptions="Center"
-        Stroke="White"
-        StrokeThickness="2"
-        StrokeShape="RoundRectangle 100"
-        VerticalOptions="Center">
+                Padding="20"
+                BackgroundColor="{StaticResource DarkBlue}"
+                HorizontalOptions="Center"
+                Stroke="White"
+                StrokeShape="RoundRectangle 100"
+                StrokeThickness="2"
+                VerticalOptions="Center">
 
                 <Grid>
                     <!--  SVG Background  -->
                     <Image
-                Aspect="AspectFit"
-                HeightRequest="80"
-                HorizontalOptions="Center"
-                Opacity="0.3"
-                Source="owl_icon.png"
-                VerticalOptions="Center"
-                WidthRequest="80" />
+                        Aspect="AspectFit"
+                        HeightRequest="80"
+                        HorizontalOptions="Center"
+                        Opacity="0.3"
+                        Source="owl_icon.png"
+                        VerticalOptions="Center"
+                        WidthRequest="80" />
 
                     <!--  Spinner on top  -->
                     <ActivityIndicator
-                HeightRequest="100"
-                HorizontalOptions="Center"
-                IsRunning="True"
-                VerticalOptions="Center"
-                WidthRequest="100"
-                Color="White" />
+                        HeightRequest="100"
+                        HorizontalOptions="Center"
+                        IsRunning="True"
+                        VerticalOptions="Center"
+                        WidthRequest="100"
+                        Color="White" />
                 </Grid>
 
             </Border>
@@ -72,46 +72,46 @@
 
                 <!--  Card container  -->
                 <Border
-    Padding="20"
-    BackgroundColor="{StaticResource LightGray}"
-    HeightRequest="580"
-    Stroke="{StaticResource Charcoal}"
-    StrokeShape="RoundRectangle 12"
-    StrokeThickness="3">
+                    Padding="20"
+                    BackgroundColor="{StaticResource LightGray}"
+                    HeightRequest="580"
+                    Stroke="{StaticResource Charcoal}"
+                    StrokeShape="RoundRectangle 12"
+                    StrokeThickness="3">
 
                     <Border.Shadow>
                         <Shadow
-            Brush="{StaticResource DarkBlue}"
-            Opacity="0.15"
-            Radius="8"
-            Offset="0,4" />
+                            Brush="{StaticResource DarkBlue}"
+                            Opacity="0.15"
+                            Radius="8"
+                            Offset="0,4" />
                     </Border.Shadow>
 
                     <ScrollView>
                         <VerticalStackLayout>
 
-                            <!-- Note Title -->
+                            <!--  Note Title  -->
                             <VerticalStackLayout>
                                 <Label Style="{StaticResource FieldLabel}" Text="Title" />
 
                                 <Border Style="{StaticResource FieldBorder}">
                                     <Entry
-                        Placeholder="Enter note title"
-                        Style="{StaticResource FieldEntry}"
-                        Text="{Binding Note.Title, Mode=TwoWay}" />
+                                        Placeholder="Enter note title"
+                                        Style="{StaticResource FieldEntry}"
+                                        Text="{Binding Note.Title, Mode=TwoWay}" />
                                 </Border>
                             </VerticalStackLayout>
 
-                            <!-- Note Body -->
+                            <!--  Note Body  -->
                             <VerticalStackLayout>
                                 <Label Style="{StaticResource FieldLabel}" Text="Body" />
 
                                 <Border Style="{StaticResource FieldBorder}">
                                     <Editor
-                        MaxLength="1000"
-                        Placeholder="Enter note body"
-                        Style="{StaticResource FieldEditor}"
-                        Text="{Binding Note.Body, Mode=TwoWay}" />
+                                        MaxLength="1000"
+                                        Placeholder="Enter note body"
+                                        Style="{StaticResource FieldEditor}"
+                                        Text="{Binding Note.Body, Mode=TwoWay}" />
                                 </Border>
                             </VerticalStackLayout>
 
