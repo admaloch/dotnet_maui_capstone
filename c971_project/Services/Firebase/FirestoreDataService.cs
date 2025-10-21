@@ -1,8 +1,8 @@
 ﻿using Firebase.Database;
 using Firebase.Database.Query;
-using c971_project.Models;
+using c971_project.Core.Models;
 using Newtonsoft.Json;
-using c971_project.Core.Services;  // ← ADD THIS
+using c971_project.Core.Services;  
 
 namespace c971_project.Services.Firebase
 {

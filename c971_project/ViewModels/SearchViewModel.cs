@@ -1,8 +1,9 @@
 ﻿// ViewModels/SearchViewModel.cs
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using c971_project.Models;
+using c971_project.Core.Models;
 using c971_project.Views;
+using c971_project.Core.Services;
 
 using c971_project.Services.Firebase;
 using c971_project.Services.Search;

@@ -1,11 +1,12 @@
 ﻿using c971_project.Messages;
-using c971_project.Models;
+using c971_project.Core.Models;
 using c971_project.Helpers;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using System.Diagnostics;
 using c971_project.Services.Firebase;
+using c971_project.Core.Services;
 
 
 namespace c971_project.ViewModels

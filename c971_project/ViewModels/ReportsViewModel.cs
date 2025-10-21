@@ -1,5 +1,5 @@
 ﻿// ViewModels/ReportsViewModel.cs
-using c971_project.Services;
+using c971_project.Core.Services;
 using c971_project.Services.Firebase;
 using c971_project.Services.Reporting;
 using c971_project.ViewModels;

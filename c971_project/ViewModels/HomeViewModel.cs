@@ -1,5 +1,5 @@
 ﻿using c971_project.Messages;
-using c971_project.Models;
+using c971_project.Core.Models;
 using c971_project.Services.Firebase;
 using c971_project.ViewModels;
 using c971_project.Views;
@@ -9,6 +9,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using c971_project.Core.Services;
 
 
 namespace c971_project.ViewModels

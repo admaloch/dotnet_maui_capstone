@@ -2,8 +2,9 @@
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
-using c971_project.Models;
+using c971_project.Core.Models;
 using c971_project.Services.Firebase;
+using c971_project.Core.Services;
 using QuestPDFColors = QuestPDF.Helpers.Colors;
 
 namespace c971_project.Services.Reporting

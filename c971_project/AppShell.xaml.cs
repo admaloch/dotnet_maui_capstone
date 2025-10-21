@@ -2,6 +2,7 @@
 using c971_project.Views;
 using Microsoft.Maui.Controls;
 using System.Diagnostics;
+using c971_project.Core.Services;
 
 namespace c971_project
 {

@@ -1,5 +1,5 @@
 ﻿namespace c971_project.Services.Notifications;
-using c971_project.Models;
+using c971_project.Core.Models;
 
 public interface IScheduleNotificationService
 {

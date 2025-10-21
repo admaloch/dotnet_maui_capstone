@@ -3,7 +3,7 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:helpers="clr-namespace:c971_project.Helpers"
-    xmlns:models="clr-namespace:c971_project.Models"
+xmlns:models="clr-namespace:c971_project.Core.Models;assembly=c971_project.Core"
     xmlns:viewmodels="clr-namespace:c971_project.ViewModels"
     Title="Search"
     BackgroundColor="{StaticResource Cream}">

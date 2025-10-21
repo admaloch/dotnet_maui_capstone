@@ -7,8 +7,6 @@ using c971_project.Core.Services;
 namespace c971_project.Services.Firebase
 {
 
-   
-
     public class AuthService: IAuthService
     {
         private readonly FirebaseAuthClient _authClient;

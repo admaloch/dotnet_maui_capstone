@@ -1,7 +1,7 @@
 ﻿
 
 //using SQLite;
-//using c971_project.Models;
+//using c971_project.Core.Models;
 
 //using System.IO;
 //using System.Diagnostics;

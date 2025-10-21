@@ -1,6 +1,6 @@
 ﻿using c971_project.Helpers;
 using c971_project.Messages;
-using c971_project.Models;
+using c971_project.Core.Models;
 using c971_project.Services.Firebase;
 using c971_project.Services.Notifications;
 using c971_project.Services.ValidationServices;
@@ -13,6 +13,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using c971_project.Core.Services;
 
 namespace c971_project.ViewModels
 {

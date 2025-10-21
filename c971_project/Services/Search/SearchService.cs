@@ -1,16 +1,15 @@
 ﻿// Services/SearchService.cs
 using System.Collections.ObjectModel;
 using System.Linq;
-using c971_project.Models;
+using c971_project.Core.Services;
+
+using c971_project.Core.Models;
 using c971_project.Services.Firebase;
 using System.Diagnostics;
 
 namespace c971_project.Services.Search
 {
-    public interface ISearchService
-    {
-        Task<SearchResults> SearchAsync(string query, string userId);
-    }
+
 
     public class SearchService : ISearchService
     {
@@ -115,16 +114,5 @@ namespace c971_project.Services.Search
         }
     }
 
-    public class SearchResults
-    {
-        public ObservableCollection<Term> Terms { get; set; } = new();
-        public ObservableCollection<Course> Courses { get; set; } = new();
-        public ObservableCollection<Assessment> Assessments { get; set; } = new();
-        public ObservableCollection<Note> Notes { get; set; } = new();
-        public ObservableCollection<Instructor> Instructors { get; set; } = new(); // Add this
-
-
-        public bool HasResults => Terms.Any() || Courses.Any() || Assessments.Any() || Notes.Any() || Instructors.Any();
-        public int TotalResults => Terms.Count + Courses.Count + Assessments.Count + Notes.Count;
-    }
+    
 }

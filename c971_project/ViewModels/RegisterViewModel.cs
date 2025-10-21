@@ -1,9 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using c971_project.Services.Firebase;
-using c971_project.Models;
+using c971_project.Core.Models;
 using System.Diagnostics;
 using c971_project.Views;
+using c971_project.Core.Services;
 
 
 namespace c971_project.ViewModels

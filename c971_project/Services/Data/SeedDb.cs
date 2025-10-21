@@ -1,5 +1,5 @@
 ﻿//using SQLite;
-//using c971_project.Models;
+//using c971_project.Core.Models;
 //using System.Diagnostics;
 
 //namespace c971_project.Services.Data
