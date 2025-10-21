@@ -11,17 +11,26 @@
         <Grid
             BackgroundColor="#80000000"
             HorizontalOptions="Fill"
-            IsVisible="{Binding IsBusy}"
+            IsVisible="{Binding !IsBusy}"
             VerticalOptions="Fill"
             ZIndex="1000">
 
-            <ActivityIndicator
-                HeightRequest="60"
+            <Border
+                Padding="20"
+                BackgroundColor="{StaticResource DarkBlue}"
                 HorizontalOptions="Center"
-                IsRunning="True"
-                VerticalOptions="Center"
-                WidthRequest="60"
-                Color="White" />
+                StrokeShape="RoundRectangle 8"
+                VerticalOptions="Center">
+
+                <ActivityIndicator
+                    HeightRequest="60"
+                    HorizontalOptions="Center"
+                    IsRunning="True"
+                    VerticalOptions="Center"
+                    WidthRequest="60"
+                    Color="White" />
+
+            </Border>
         </Grid>
 
         <ScrollView>

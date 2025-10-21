@@ -57,7 +57,8 @@
 
                 <!--  Search Box  -->
                 <Border
-                    Padding="10"
+                    Padding="20"
+                    
                     BackgroundColor="{StaticResource White}"
                     Stroke="{StaticResource Charcoal}"
                     StrokeShape="RoundRectangle 12"
@@ -94,44 +95,28 @@
                     IsVisible="{Binding HasSearched}"
                     Text="Clear Search" />
 
-                <!--  Loading Indicator  -->
-                <ActivityIndicator
-                    HorizontalOptions="Center"
-                    IsRunning="{Binding IsSearching}"
-                    IsVisible="{Binding IsSearching}" />
-
+              
                 <!--  No Results Message  -->
                 <Label
+
                     FontAttributes="Italic"
                     HorizontalOptions="Center"
+                    FontSize="22"
                     IsVisible="{Binding HasSearched, Converter={StaticResource InverseBoolConverter}}"
                     Text="Currently no results. Try a search term."
-                    TextColor="{StaticResource Gray500}" />
+                    TextColor="{StaticResource DarkBlue}" />
 
 
-                <Border
-                    Padding="15"
-                    BackgroundColor="{StaticResource White}"
-                    Stroke="{StaticResource Charcoal}"
-                    StrokeShape="RoundRectangle 12"
-                    StrokeThickness="3">
-
-                    <Border.Shadow>
-                        <Shadow
-                            Brush="{StaticResource MediumGray}"
-                            Opacity="0.3"
-                            Radius="8"
-                            Offset="2,2" />
-                    </Border.Shadow>
+               
 
                     <!--  Search Results  -->
-                    <VerticalStackLayout IsVisible="{Binding SearchResults.HasResults}" Spacing="15">
+                    <VerticalStackLayout IsVisible="{Binding SearchResults.HasResults}" Spacing="10">
 
                         <!--  Terms Results  -->
                         <VerticalStackLayout IsVisible="{Binding SearchResults.Terms.Count, Converter={StaticResource CountToVisibilityConverter}}">
                             <Label
                                 FontAttributes="Bold"
-                                FontSize="18"
+                                FontSize="22"
                                 Text="Terms" />
 
                             <CollectionView ItemsSource="{Binding SearchResults.Terms}">
@@ -139,8 +124,8 @@
                                     <DataTemplate x:DataType="models:Term">
                                         <Border
                                             Margin="2,1"
-                                            Padding="5"
-                                            BackgroundColor="{StaticResource White}"
+                                            Padding="15, 5"
+                                            BackgroundColor="{StaticResource LightBlue}"
                                             HorizontalOptions="Fill"
                                             Stroke="{StaticResource DarkBlue}"
                                             StrokeShape="RoundRectangle 5"
@@ -153,22 +138,22 @@
                                                     VerticalOptions="Center">
                                                     <Label
                                                         FontAttributes="Bold"
-                                                        FontSize="13"
+                                                        FontSize="16"
                                                         Text="{Binding Name}"
                                                         VerticalOptions="Center" />
                                                     <Label
-                                                        FontSize="11"
+                                                        FontSize="16"
                                                         Text="{Binding StartDate, StringFormat='{0:MMM dd, yyyy} - {1:MMM dd, yyyy}'}"
                                                         TextColor="{StaticResource Gray600}"
                                                         VerticalOptions="Center" />
                                                 </VerticalStackLayout>
                                                 <Image
                                                     Grid.Column="1"
-                                                    HeightRequest="20"
+                                                    HeightRequest="33"
                                                     HorizontalOptions="End"
                                                     Source="more_icon.svg"
                                                     VerticalOptions="Center"
-                                                    WidthRequest="20" />
+                                                    WidthRequest="33" />
                                                 <Grid.GestureRecognizers>
                                                     <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:SearchViewModel}}, Path=NavigateToResultCommand}" CommandParameter="{Binding .}" />
                                                 </Grid.GestureRecognizers>
@@ -184,7 +169,7 @@
 
                             <Label
                                 FontAttributes="Bold"
-                                FontSize="18"
+                                FontSize="22"
                                 Text="Courses" />
 
                             <CollectionView ItemsSource="{Binding SearchResults.Courses}">
@@ -194,10 +179,10 @@
                                     <DataTemplate x:DataType="models:Course">
                                         <Border
                                             Margin="2,1"
-                                            Padding="5"
-                                            BackgroundColor="{StaticResource White}"
+                                            Padding="15, 5"
+                                            BackgroundColor="{StaticResource LightGreen}"
                                             HorizontalOptions="Fill"
-                                            Stroke="{StaticResource DarkBlue}"
+                                            Stroke="{StaticResource DarkGreen}"
                                             StrokeShape="RoundRectangle 5"
                                             StrokeThickness="1"
                                             VerticalOptions="Center">
@@ -208,22 +193,22 @@
                                                     VerticalOptions="Center">
                                                     <Label
                                                         FontAttributes="Bold"
-                                                        FontSize="13"
+                                                        FontSize="16"
                                                         Text="{Binding Name}"
                                                         VerticalOptions="Center" />
                                                     <Label
-                                                        FontSize="11"
+                                                        FontSize="16"
                                                         Text="{Binding CourseNum}"
                                                         TextColor="{StaticResource Gray600}"
                                                         VerticalOptions="Center" />
                                                 </VerticalStackLayout>
                                                 <Image
                                                     Grid.Column="1"
-                                                    HeightRequest="20"
+                                                    HeightRequest="33"
                                                     HorizontalOptions="End"
                                                     Source="more_icon.svg"
                                                     VerticalOptions="Center"
-                                                    WidthRequest="20" />
+                                                    WidthRequest="33" />
                                                 <Grid.GestureRecognizers>
                                                     <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:SearchViewModel}}, Path=NavigateToResultCommand}" CommandParameter="{Binding .}" />
                                                 </Grid.GestureRecognizers>
@@ -239,17 +224,17 @@
                         <VerticalStackLayout IsVisible="{Binding SearchResults.Assessments.Count, Converter={StaticResource CountToVisibilityConverter}}">
                             <Label
                                 FontAttributes="Bold"
-                                FontSize="18"
+                                FontSize="22"
                                 Text="Assessments" />
                             <CollectionView ItemsSource="{Binding SearchResults.Assessments}">
                                 <CollectionView.ItemTemplate>
                                     <DataTemplate x:DataType="models:Assessment">
                                         <Border
                                             Margin="2,1"
-                                            Padding="5"
-                                            BackgroundColor="{StaticResource White}"
+                                            Padding="15, 5"
+                                            BackgroundColor="{StaticResource LightOrange}"
                                             HorizontalOptions="Fill"
-                                            Stroke="{StaticResource DarkBlue}"
+                                            Stroke="{StaticResource DarkOrange}"
                                             StrokeShape="RoundRectangle 5"
                                             StrokeThickness="1"
                                             VerticalOptions="Center">
@@ -260,27 +245,27 @@
                                                     VerticalOptions="Center">
                                                     <Label
                                                         FontAttributes="Bold"
-                                                        FontSize="13"
+                                                        FontSize="16"
                                                         Text="{Binding Name}"
                                                         VerticalOptions="Center" />
                                                     <Label
-                                                        FontSize="11"
+                                                        FontSize="16"
                                                         Text="{Binding Type}"
                                                         TextColor="{StaticResource Gray600}"
                                                         VerticalOptions="Center" />
                                                     <Label
-                                                        FontSize="11"
+                                                        FontSize="16"
                                                         Text="{Binding StartDate, StringFormat='Due: {0:MMM dd, yyyy}'}"
                                                         TextColor="{StaticResource Gray600}"
                                                         VerticalOptions="Center" />
                                                 </VerticalStackLayout>
                                                 <Image
                                                     Grid.Column="1"
-                                                    HeightRequest="20"
+                                                    HeightRequest="33"
                                                     HorizontalOptions="End"
                                                     Source="more_icon.svg"
                                                     VerticalOptions="Center"
-                                                    WidthRequest="20" />
+                                                    WidthRequest="33" />
                                                 <Grid.GestureRecognizers>
                                                     <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:SearchViewModel}}, Path=NavigateToResultCommand}" CommandParameter="{Binding .}" />
                                                 </Grid.GestureRecognizers>
@@ -295,17 +280,17 @@
                         <VerticalStackLayout IsVisible="{Binding SearchResults.Notes.Count, Converter={StaticResource CountToVisibilityConverter}}">
                             <Label
                                 FontAttributes="Bold"
-                                FontSize="18"
+                                FontSize="22"
                                 Text="Notes" />
                             <CollectionView ItemsSource="{Binding SearchResults.Notes}">
                                 <CollectionView.ItemTemplate>
                                     <DataTemplate x:DataType="models:Note">
                                         <Border
                                             Margin="2,1"
-                                            Padding="5"
-                                            BackgroundColor="{StaticResource White}"
+                                            Padding="15, 5"
+                                            BackgroundColor="{StaticResource LightPurple}"
                                             HorizontalOptions="Fill"
-                                            Stroke="{StaticResource DarkBlue}"
+                                            Stroke="{StaticResource DarkPurple}"
                                             StrokeShape="RoundRectangle 5"
                                             StrokeThickness="1"
                                             VerticalOptions="Center">
@@ -316,11 +301,11 @@
                                                     VerticalOptions="Center">
                                                     <Label
                                                         FontAttributes="Bold"
-                                                        FontSize="13"
+                                                        FontSize="16"
                                                         Text="{Binding Title}"
                                                         VerticalOptions="Center" />
                                                     <Label
-                                                        FontSize="11"
+                                                        FontSize="16"
                                                         LineBreakMode="TailTruncation"
                                                         MaxLines="2"
                                                         Text="{Binding Body}"
@@ -329,11 +314,11 @@
                                                 </VerticalStackLayout>
                                                 <Image
                                                     Grid.Column="1"
-                                                    HeightRequest="20"
+                                                    HeightRequest="33"
                                                     HorizontalOptions="End"
                                                     Source="more_icon.svg"
                                                     VerticalOptions="Center"
-                                                    WidthRequest="20" />
+                                                    WidthRequest="33" />
                                                 <Grid.GestureRecognizers>
                                                     <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:SearchViewModel}}, Path=NavigateToResultCommand}" CommandParameter="{Binding .}" />
                                                 </Grid.GestureRecognizers>
@@ -348,17 +333,17 @@
                         <VerticalStackLayout IsVisible="{Binding SearchResults.Instructors.Count, Converter={StaticResource CountToVisibilityConverter}}">
                             <Label
                                 FontAttributes="Bold"
-                                FontSize="18"
+                                FontSize="22"
                                 Text="Instructors" />
                             <CollectionView ItemsSource="{Binding SearchResults.Instructors}">
                                 <CollectionView.ItemTemplate>
                                     <DataTemplate x:DataType="models:Instructor">
                                         <Border
                                             Margin="2,1"
-                                            Padding="5"
-                                            BackgroundColor="{StaticResource White}"
+                                            Padding="15, 5"
+                                            BackgroundColor="{StaticResource LightRed}"
                                             HorizontalOptions="Fill"
-                                            Stroke="{StaticResource DarkBlue}"
+                                            Stroke="{StaticResource DarkRed}"
                                             StrokeShape="RoundRectangle 5"
                                             StrokeThickness="1"
                                             VerticalOptions="Center">
@@ -369,27 +354,27 @@
                                                     VerticalOptions="Center">
                                                     <Label
                                                         FontAttributes="Bold"
-                                                        FontSize="13"
+                                                        FontSize="16"
                                                         Text="{Binding Name}"
                                                         VerticalOptions="Center" />
                                                     <Label
-                                                        FontSize="11"
+                                                        FontSize="16"
                                                         Text="{Binding Email}"
                                                         TextColor="{StaticResource Gray600}"
                                                         VerticalOptions="Center" />
                                                     <Label
-                                                        FontSize="11"
+                                                        FontSize="16"
                                                         Text="{Binding Phone}"
                                                         TextColor="{StaticResource Gray600}"
                                                         VerticalOptions="Center" />
                                                 </VerticalStackLayout>
                                                 <Image
                                                     Grid.Column="1"
-                                                    HeightRequest="20"
+                                                    HeightRequest="33"
                                                     HorizontalOptions="End"
                                                     Source="more_icon.svg"
                                                     VerticalOptions="Center"
-                                                    WidthRequest="20" />
+                                                    WidthRequest="33" />
                                                 <Grid.GestureRecognizers>
                                                     <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:SearchViewModel}}, Path=NavigateToResultCommand}" CommandParameter="{Binding .}" />
                                                 </Grid.GestureRecognizers>
@@ -401,7 +386,7 @@
                         </VerticalStackLayout>
 
                     </VerticalStackLayout>
-                </Border>
+               
             </VerticalStackLayout>
         </ScrollView>
     </Grid>

@@ -81,12 +81,33 @@
                         <VerticalStackLayout>
                             <Label Style="{StaticResource FieldLabel}" Text="Body" />
 
-                            <Border Style="{StaticResource FieldBorder}">
-                                <Editor
-                                    MaxLength="1000"
-                                    Placeholder="Enter note body"
-                                    Style="{StaticResource FieldEditor}"
-                                    Text="{Binding Note.Body, Mode=TwoWay}" />
+                            <Border
+                                Padding="15"
+                                BackgroundColor="{StaticResource White}"
+                                HeightRequest="560"
+                                Stroke="{StaticResource Charcoal}"
+                                StrokeShape="RoundRectangle 12"
+                                StrokeThickness="3">
+
+                                <Border.Shadow>
+                                    <Shadow
+                                        Brush="{StaticResource MediumGray}"
+                                        Opacity="0.3"
+                                        Radius="8"
+                                        Offset="2,2" />
+                                </Border.Shadow>
+
+                                <ScrollView>
+                                    <VerticalStackLayout Spacing="12">
+                                        <!--  body  -->
+                                        <VerticalStackLayout Padding="0,10,0,10">
+                                            <Label
+                                                LineBreakMode="WordWrap"
+                                                Text="{Binding Note.Body}"
+                                                TextColor="{StaticResource DarkBlue}" />
+                                        </VerticalStackLayout>
+                                    </VerticalStackLayout>
+                                </ScrollView>
                             </Border>
                         </VerticalStackLayout>
 

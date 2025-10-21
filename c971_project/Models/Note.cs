@@ -30,7 +30,6 @@ namespace c971_project.Models
 
         [ObservableProperty]
         [Required(ErrorMessage = "Body is required.")]
-        [MaxLength(5000, ErrorMessage = "Note body cannot exceed 5000 characters.")]
         private string body = string.Empty;
 
         [ObservableProperty]
