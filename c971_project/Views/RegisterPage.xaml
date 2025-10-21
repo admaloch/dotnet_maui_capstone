@@ -9,19 +9,43 @@
     <Grid>
         <!--  Full screen loading overlay  -->
         <Grid
-            BackgroundColor="#80000000"
-            HorizontalOptions="Fill"
-            IsVisible="{Binding IsBusy}"
-            VerticalOptions="Fill"
-            ZIndex="1000">
+    BackgroundColor="#B3000000"
+    HorizontalOptions="Fill"
+    IsVisible="{Binding IsBusy}"
+    VerticalOptions="Fill"
+    ZIndex="1000">
 
-            <ActivityIndicator
-                HeightRequest="60"
+            <Border
+        Padding="20"
+        BackgroundColor="{StaticResource DarkBlue}"
+        HorizontalOptions="Center"
+        Stroke="White"
+        StrokeThickness="2"
+        StrokeShape="RoundRectangle 100"
+        VerticalOptions="Center">
+
+                <Grid>
+                    <!--  SVG Background  -->
+                    <Image
+                Aspect="AspectFit"
+                HeightRequest="80"
+                HorizontalOptions="Center"
+                Opacity="0.3"
+                Source="owl_icon.png"
+                VerticalOptions="Center"
+                WidthRequest="80" />
+
+                    <!--  Spinner on top  -->
+                    <ActivityIndicator
+                HeightRequest="100"
                 HorizontalOptions="Center"
                 IsRunning="True"
                 VerticalOptions="Center"
-                WidthRequest="60"
+                WidthRequest="100"
                 Color="White" />
+                </Grid>
+
+            </Border>
         </Grid>
         <ScrollView>
             <VerticalStackLayout Padding="20" Spacing="15">
