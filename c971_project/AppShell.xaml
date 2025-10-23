@@ -13,7 +13,7 @@
         Route="LoginPage" />
 
     <ShellContent
-        x:Name="HomeItem" 
+        x:Name="HomeItem"
         Title="Home"
         ContentTemplate="{DataTemplate views:HomePage}"
         Route="HomePage" />
