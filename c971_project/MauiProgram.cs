@@ -10,7 +10,6 @@ using Plugin.LocalNotification;
 using QuestPDF.Infrastructure;
 using c971_project.Core.Services;
 
-
 namespace c971_project
 {
     public static class MauiProgram
@@ -32,15 +31,22 @@ namespace c971_project
 
             builder.Services.AddSingleton<AppShell>();
 
+            // FIX: Register services with their interfaces
             builder.Services.AddSingleton<IAuthService, AuthService>();
             builder.Services.AddSingleton<IFirestoreDataService, FirestoreDataService>();
 
-            builder.Services.AddSingleton<CourseValidator>();
-            builder.Services.AddSingleton<IScheduleNotificationService, NotificationService>();
-            builder.Services.AddSingleton<SearchService>();
+            // ADD THIS LINE - Register ISearchService with SearchService implementation
+            builder.Services.AddSingleton<ISearchService, SearchService>();
+
+            // FIX: Register IReportService (you already have this, but ensure it's correct)
             builder.Services.AddSingleton<IReportService, PdfReportService>();
 
-            // view models
+            // FIX: Register INotificationService if you have the interface
+            builder.Services.AddSingleton<IScheduleNotificationService, NotificationService>();
+
+            builder.Services.AddSingleton<CourseValidator>();
+
+            // view models - THESE LOOK GOOD
             builder.Services.AddTransient<ReportsViewModel>();
             builder.Services.AddTransient<ReportsPage>();
 
@@ -89,7 +95,6 @@ namespace c971_project
 
             builder.Services.AddTransient<InstructorPage>();
             builder.Services.AddTransient<InstructorViewModel>();
-
 
 #if DEBUG
             builder.Logging.AddDebug();
