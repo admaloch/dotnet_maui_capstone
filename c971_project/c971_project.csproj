@@ -92,49 +92,49 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<MauiXaml Update="Views\AddAssessmentPage.xaml">
+		<MauiXaml Update="Views\Assessments\AddAssessmentPage.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
-		<MauiXaml Update="Views\AddCoursePage.xaml">
+		<MauiXaml Update="Views\Courses\AddCoursePage.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
-		<MauiXaml Update="Views\AddNotePage.xaml">
+		<MauiXaml Update="Views\Notes\AddNotePage.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
-		<MauiXaml Update="Views\AddTermPage.xaml">
+		<MauiXaml Update="Views\Terms\AddTermPage.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
-		<MauiXaml Update="Views\AssessmentPage.xaml">
+		<MauiXaml Update="Views\Assessments\AssessmentPage.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
-		<MauiXaml Update="Views\CoursePage.xaml">
+		<MauiXaml Update="Views\Courses\CoursePage.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
-		<MauiXaml Update="Views\EditAssessmentPage.xaml">
+		<MauiXaml Update="Views\Assessments\EditAssessmentPage.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
-		<MauiXaml Update="Views\EditCoursePage.xaml">
+		<MauiXaml Update="Views\Courses\EditCoursePage.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
-		<MauiXaml Update="Views\EditNotePage.xaml">
+		<MauiXaml Update="Views\Notes\EditNotePage.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="Views\EditStudentPage.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
-		<MauiXaml Update="Views\EditTermPage.xaml">
+		<MauiXaml Update="Views\Terms\EditTermPage.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="Views\InstructorPage.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
-		<MauiXaml Update="Views\LoginPage.xaml">
+		<MauiXaml Update="Views\Auth\LoginPage.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
-		<MauiXaml Update="Views\NotePage.xaml">
+		<MauiXaml Update="Views\Notes\NotePage.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
-		<MauiXaml Update="Views\RegisterPage.xaml">
+		<MauiXaml Update="Views\Auth\RegisterPage.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="Views\ReportsPage.xaml">
@@ -143,7 +143,7 @@
 		<MauiXaml Update="Views\SearchPage.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
-		<MauiXaml Update="Views\TermPage.xaml">
+		<MauiXaml Update="Views\Terms\TermPage.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 	</ItemGroup>

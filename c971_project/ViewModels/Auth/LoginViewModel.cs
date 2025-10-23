@@ -27,7 +27,6 @@ namespace c971_project.ViewModels
         {
             _authService = authService;
             _firestoreDataService = firestoreDataService;
-
         }
 
         [RelayCommand]

@@ -13,10 +13,9 @@ namespace c971_project.ViewModels
 {
     public partial class SearchViewModel : BaseViewModel
     {
-        private readonly SearchService _searchService;
+        private readonly ISearchService _searchService;  // Use interface here
         private readonly IAuthService _authService;
         private string _currentUserId;
-
 
         [ObservableProperty]
         private string searchQuery;
@@ -27,7 +26,7 @@ namespace c971_project.ViewModels
         [ObservableProperty]
         private bool hasSearched;
 
-        public SearchViewModel(SearchService searchService, IAuthService authService)
+        public SearchViewModel(ISearchService searchService, IAuthService authService)  // Use interface here
         {
             _searchService = searchService;
             _authService = authService;
