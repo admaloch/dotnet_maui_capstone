@@ -1,92 +1,140 @@
-# C971 Mobile Application Development Using C Sharp
+# WGU Cloud Planner - Academic Planning Mobile Application
 
 
 
-## Getting started
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+<div align="center">
+    <img src="https://img.shields.io/badge/.NET%20MAUI-512BD4?style=for-square&logo=dotnet&logoColor=white" alt=".NET MAUI">
+    <img src="https://img.shields.io/badge/Firebase-FFCA28?style=for-square&logo=firebase&logoColor=black" alt="Firebase">
+    <img src="https://img.shields.io/badge/xUnit-5C2D91?style=for-square&logo=.net&logoColor=white" alt="XUnit">
+    
+    
 
-## Add your files
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+</div>
 
-```
-cd existing_repo
-git remote add origin https://gitlab.com/wgu-gitlab-environment/task-templates/c971-mobile-application-development-using-c-sharp.git
-git branch -M main
-git push -uf origin main
-```
+<h2>📋 Project Overview</h2>
+<p>The WGU Cloud Planner is a full-stack mobile application designed to streamline academic planning and course management for students. Built with modern cloud-native architecture, it provides real-time synchronization across devices with robust data management capabilities.</p>
 
-## Integrate with your tools
+<h3>🎯 Key Features</h3>
+<ul class="feature-list">
+    <li><strong>Course & Term Management</strong> - Organize academic terms and courses with intuitive scheduling</li>
+    <li><strong>Assessment Tracking</strong> - Monitor objectives and performance assessments with validation</li>
+    <li><strong>Real-time Cloud Sync</strong> - Automatic data synchronization using Firebase Firestore</li>
+    <li><strong>PDF Report Generation</strong> - Create shareable progress reports and course plans</li>
+    <li><strong>User Authentication</strong> - Secure login and data isolation with Firebase Auth</li>
+    <li><strong>Cross-Platform</strong> - Native Android experience built with .NET MAUI</li>
+</ul>
 
-- [ ] [Set up project integrations](https://gitlab.com/wgu-gitlab-environment/task-templates/c971-mobile-application-development-using-c-sharp/-/settings/integrations)
+<h2>🛠️ Technology Stack</h2>
 
-## Collaborate with your team
+<div class="tech-section">
+    <h3>Frontend & Mobile</h3>
+    <ul>
+        <li><strong>.NET MAUI</strong> - Cross-platform mobile framework</li>
+        <li><strong>MVVM Architecture</strong> - CommunityToolkit.Mvvm implementation</li>
+        <li><strong>XAML</strong> - UI markup and data binding</li>
+    </ul>
+</div>
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+<div class="tech-section">
+    <h3>Backend & Cloud Services</h3>
+    <ul>
+        <li><strong>Google Cloud Platform (GCP)</strong> - Cloud infrastructure</li>
+        <li><strong>Firebase Firestore</strong> - NoSQL database with real-time sync</li>
+        <li><strong>Firebase Authentication</strong> - Secure user management</li>
+        <li><strong>.NET 9</strong> - Runtime and framework</li>
+    </ul>
+</div>
 
-## Test and Deploy
+<div class="tech-section">
+    <h3>Development & Quality</h3>
+    <ul>
+        <li><strong>xUnit</strong> - Unit testing framework</li>
+        <li><strong>GitLab CI/CD</strong> - Automated deployment pipelines</li>
+        <li><strong>Visual Studio 2022</strong> - Primary development environment</li>
+    </ul>
+</div>
 
-Use the built-in continuous integration in GitLab.
+<h2>📁 Project Structure</h2>
+<pre>
+WGU-Cloud-Planner/
+├── 📱 c971_project.Maui/          # MAUI mobile application
+├── 🏗️ c971_project.Core/          # Core models & services
+├── ✅ c971_project.Tests/         # Unit test project
+├── 📄 Project Documentation/      # Comprehensive documentation
+├── 🎨 Wireframes/                 # UI/UX design mockups
+└── 📋 Project Proposal/          # Initial project planning
+</pre>
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+<h2>📚 Documentation</h2>
 
-***
 
-# Editing this README
+<h3>Available Documentation Assets</h3>
+<h4>Files located in root of github project</h4>
+<ul>
+    <li><strong>📋 Project Proposal</strong> - Initial concept and requirements analysis</li>
+    <li><strong>✅ Project Approval</strong> - Formal project authorization documents</li>
+    <li><strong>🏗️ System Architecture</strong> - Technical design and infrastructure overview</li>
+    <li><strong>📊 Class Diagrams</strong> - UML diagrams showing system structure and relationships</li>
+    <li><strong>🎨 Wireframes</strong> - UI/UX mockups and design specifications</li>
+    <li><strong>📄 Project Documentation</strong> - Comprehensive technical documentation</li>
+    <li><strong>🎥 Video Demonstration</strong> - Full feature walkthrough and deployment demo</li>
+</ul>
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thank you to [makeareadme.com](https://www.makeareadme.com/) for this template.
+<h2>🚀 Deployment & Access</h2>
 
-## Suggestions for a good README
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+<h3>Mobile Application</h3>
+<ul>
+    <li><strong>Platform</strong>: Android (via .NET MAUI)</li>
+    <li><strong>Deployment</strong>: Development deployment with APK generation</li>
+    <li><strong>Cloud Backend</strong>: Fully deployed on Google Cloud Platform via Firebase</li>
+</ul>
 
-## Name
-Choose a self-explaining name for your project.
+<h3>Web Presence</h3>
+<ul>
+    <li><strong>Display Site</strong>: <a href="https://wgucloudplanner.netlify.app/">https://wgucloudplanner.netlify.app/</a></li>
+    <li><strong>Features</strong>: Project information, feature showcase, and APK download</li>
+    <li><strong>Hosting</strong>: Netlify with continuous deployment from GitLab</li>
+</ul>
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+<h3>Video Demonstration</h3>
+<ul>
+    <li><strong>Full Walkthrough</strong>: <a target="_blank" href="https://www.youtube.com/watch?v=76u9LMjPJxE">YouTube Demo</a></li>
+    <li><strong>Content</strong>: Feature demonstration, cloud integration, and deployment process</li>
+</ul>
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+<h2>🔧 Development Features</h2>
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+<h3>Architecture</h3>
+<ul>
+    <li><strong>Multi-project Solution</strong> - Clean separation of concerns</li>
+    <li><strong>Dependency Injection</strong> - Loosely coupled components</li>
+    <li><strong>Repository Pattern</strong> - Abstracted data access layer</li>
+    <li><strong>Validation System</strong> - Comprehensive data validation</li>
+</ul>
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+<h3>Data Management</h3>
+<ul>
+    <li><strong>Real-time Sync</strong>: Automatic cloud synchronization</li>
+    <li><strong>Offline Capability</strong>: Local data persistence with cloud reconciliation</li>
+    <li><strong>Data Validation</strong>: Robust client-side and server-side validation rules</li>
+    <li><strong>Security</strong>: User-based data isolation and Firebase security rules</li>
+</ul>
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+<h2>📞 Support & Resources</h2>
+<p>For additional information, demonstration, or technical details:</p>
+<ul>
+    <li><strong>🎥 Live Demo</strong>: <a target="_blank" href="https://www.youtube.com/watch?v=76u9LMjPJxE">Video Demonstration</a></li>
+    <li><strong>🌐 Project Site</strong>: <a target="_blank" href="https://wgucloudplanner.netlify.app/">WGU Cloud Planner</a></li>
+    <li><strong>📧 Contact</strong>: Via project documentation site</li>
+</ul>
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+<hr>
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+<div align="center">
+    <p><em>Built with ❤️ using .NET MAUI and Firebase • WGU Computer Science Capstone Project</em></p>
+</div>
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
